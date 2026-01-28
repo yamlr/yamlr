@@ -34,6 +34,33 @@ def add_standard_flags(sub):
     sub.add_argument("-s", "--summary-only", action="store_true",
                     help="Show aggregate stats (recommended for 100+ files)")
 
+def validate_required_arg(value, arg_name: str, context: str, examples: list):
+    """
+    Validates that a required argument is present. 
+    If missing, prints a Smart Error Panel and returns False.
+    """
+    if value:
+        return True
+        
+    from rich.align import Align
+    
+    error_msg = f"[bold red]❌ Missing Required Argument: {arg_name}[/bold red]\n\n"
+    error_msg += f"The [bold]{context}[/bold] command requires a specific target.\n"
+    
+    if examples:
+         error_msg += f"\n[dim italic]Try:[/dim italic]\n"
+         for ex in examples:
+             error_msg += f"  [cyan]{ex}[/cyan]\n"
+
+    console.print(Panel(
+        Align.center(error_msg),
+        border_style="red",
+        title="[bold yellow]Input Error[/bold yellow]",
+        padding=(0, 2),
+        expand=False
+    ))
+    return False
+
 def print_custom_header(invoked_as: str, is_pro: bool):
     """
     Displays the top-level application banner.
@@ -50,15 +77,18 @@ def print_custom_header(invoked_as: str, is_pro: bool):
         subtitle = "High-Fidelity Kubernetes Manifest Healing"
         border = "cyan"
 
+    from rich.align import Align
+    
     banner_content = (
-        f"[bold]{title:^54}[/bold]\n"
-        f"[dim italic]{subtitle:^58}[/dim italic]"
+        f"[bold]{title}[/bold]\n"
+        f"[dim italic]{subtitle}[/dim italic]"
     )
     
     console.print(Panel(
-        banner_content, 
+        Align.center(banner_content), 
         border_style=border, 
         expand=False,
+        padding=(0, 2)
     ))
 
 def print_version(invoked_as: str, is_pro: bool, cluster_version: str = None):

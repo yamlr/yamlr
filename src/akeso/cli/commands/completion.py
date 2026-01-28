@@ -95,6 +95,16 @@ def handle_completion_command(args, parser: argparse.ArgumentParser, console):
     # In a full comprehensive implementation, we would extract these dynamically from 'parser'
     # For now, we use the static templates which cover the Phase 4 features accurately.
     
+    if not shell:
+         console.print("[bold]Autocompletion Generator[/bold]")
+         console.print("Please specify a shell to generate the script for:\n")
+         console.print("  [cyan]akeso completion powershell[/cyan]")
+         console.print("  [cyan]akeso completion bash[/cyan]")
+         console.print("  [cyan]akeso completion zsh[/cyan]")
+         return 1
+
+    shell = shell.lower()
+
     if shell == "powershell":
         print(POWERSHELL_TEMPLATE.strip())
         # Print usage to stderr so it doesn't corrupt the pipe

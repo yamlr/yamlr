@@ -29,7 +29,11 @@ from akeso.cli.commands.base import (
     get_console, 
     print_custom_header, 
     print_version, 
-    add_standard_flags
+    get_console, 
+    print_custom_header, 
+    print_version, 
+    add_standard_flags,
+    validate_required_arg
 )
 from akeso.cli.commands.scan import handle_scan_command
 from akeso.cli.commands.heal import handle_heal_command
@@ -53,7 +57,7 @@ def print_kubectl_help(invoked_as: str):
     # Core Flow
     cmd_table.add_row("init", "Bootstrap a new project with defaults")
     cmd_table.add_row("scan", "Audit manifests for logical issues (read-only)")
-    cmd_table.add_row("heal", "Execute manifest reconciliation and healing")
+    cmd_table.add_row("heal", "Fix validation issues and enforce best practices")
     
     # Info & Docs
     cmd_table.add_row("explain", "Get documentation for a specific rule")
@@ -61,7 +65,7 @@ def print_kubectl_help(invoked_as: str):
     cmd_table.add_row("catalog", "Manage Kubernetes schema definitions")
     
     # System
-    cmd_table.add_row("version", "Display detailed system and license details")
+    cmd_table.add_row("version", "Display version info and license status")
     cmd_table.add_row("auth", "Manage Kubecuro Enterprise authentication")
     
     console.print(cmd_table)
@@ -70,7 +74,7 @@ def print_kubectl_help(invoked_as: str):
     opt_table = Table(show_header=False, box=None, padding=(0, 2, 0, 0))
     opt_table.add_column(style="yellow", width=24)
     opt_table.add_column(style="dim white")
-    opt_table.add_row("-h, --help", "Show this help message")
+    opt_table.add_row("-h, --help", "Display usage information")
     opt_table.add_row("-v, --version", "Display version information")
     opt_table.add_row("--kube-version VERSION", "Target K8s version (e.g., 1.28, v1.31)")
     opt_table.add_row("--catalog PATH", "Specify a custom K8s schema catalog")
@@ -81,7 +85,7 @@ def print_kubectl_help(invoked_as: str):
     
     console.print(f"\n[bold magenta]💡 TIP[/bold magenta]")
     console.print(f"   Use [cyan bold]{invoked_as} <command> --help[/cyan bold] for subcommand specific flags.")
-    console.print(f"   Override cluster version: [dim]AKESO_KUBE_VERSION=1.28 {invoked_as} heal ...[/dim]\n")
+    console.print(f"   Override cluster version: [dim]AKESO_KUBE_VERSION=<version> {invoked_as} heal ...[/dim]\n")
 
 def main():
     """
@@ -140,7 +144,7 @@ def main():
 
     # COMPLETION
     completion_parser = subparsers.add_parser("completion", add_help=False)
-    completion_parser.add_argument("shell", choices=["powershell", "bash", "zsh"], nargs="?", default="powershell", help="Target shell")
+    completion_parser.add_argument("shell", choices=["powershell", "bash", "zsh"], nargs="?", help="Target shell")
     completion_parser.add_argument("-h", "--help", action="store_true")
 
     # CATALOG
@@ -240,6 +244,11 @@ def main():
     if args.command == "catalog":
         sys.exit(handle_catalog_command(args, target_cluster_version))
 
+    # Auth Dispatch
+    if args.command == "auth":
+        from akeso.cli.commands.auth import handle_auth_command
+        sys.exit(handle_auth_command(args, console))
+
     # Engine Setup (For Scan/Heal)
     try:
         if target_cluster_version:
@@ -259,9 +268,14 @@ def main():
         )
 
         if args.command == "scan":
+            if not validate_required_arg(args.path, "path", "scan", [f"{invoked_as} scan .", f"{invoked_as} scan ./manifests"]):
+                sys.exit(1)
             sys.exit(handle_scan_command(args, engine, formatter))
             
         elif args.command == "heal":
+            if not validate_required_arg(args.path, "path", "heal", [f"{invoked_as} heal .", f"{invoked_as} heal -y ./deploy.yaml"]):
+                sys.exit(1)
+
             # Pro Gate
             if getattr(args, 'harden', False) and not is_pro:
                 AkesoBridge.notify_pro_required("Shield Security Hardening")
