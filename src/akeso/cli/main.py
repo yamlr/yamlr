@@ -278,17 +278,31 @@ def main():
         if args.catalog:
             fallback_path = args.catalog
         else:
-            # Resolve relative to project root (dev structure)
-            # file: src/akeso/cli/main.py
-            # up 4: src/akeso/cli -> src/akeso -> src -> ROOT
-            base_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
-            fallback_path = os.path.join(base_dir, "catalog", "k8s_v1_distilled.json")
+            # Robust Resolution Strategy: Check multiple candidate locations
+            candidates = []
             
-            if not os.path.exists(fallback_path):
-                 # Try package structure (if installed) -> src/akeso/catalog
-                 # up 2: src/akeso
-                 base_dir_pkg = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-                 fallback_path = os.path.join(base_dir_pkg, "catalog", "k8s_v1_distilled.json")
+            # 1. Dev/Source Root (up 4 levels from cli/main.py)
+            dev_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+            candidates.append(os.path.join(dev_root, "catalog", "k8s_v1_distilled.json"))
+            
+            # 2. Package Root (up 2 levels from cli/main.py -> src/akeso/catalog)
+            pkg_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+            candidates.append(os.path.join(pkg_root, "catalog", "k8s_v1_distilled.json"))
+            
+            # 3. System Install (share/akeso/catalog)
+            # This handles pip install prefixes
+            candidates.append(os.path.join(sys.prefix, "share", "akeso", "catalog", "k8s_v1_distilled.json"))
+
+            fallback_path = None
+            for p in candidates:
+                if os.path.isfile(p):
+                    fallback_path = p
+                    break
+            
+            if not fallback_path:
+                # If we can't find a bundled catalog, explicitly warn (but let Manager try cache)
+                logger.debug(f"Could not locate bundled catalog in {candidates}")
+                # fallback_path remains None
             
         catalog_mgr = CatalogManager()
         final_catalog_path = catalog_mgr.resolve_catalog(target_cluster_version, fallback_path=fallback_path)
