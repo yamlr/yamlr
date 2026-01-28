@@ -94,14 +94,23 @@ def print_custom_header(invoked_as: str, is_pro: bool):
         border = "cyan"
 
     from rich import box
+    from rich.text import Text
     
-    # Calculate target width based on the longest line (subtitle)
-    target_width = len(subtitle)
+    # Create Text objects to get proper cell width
+    title_text = Text(title)
+    subtitle_text = Text(subtitle)
     
-    # Center the title within that width
-    # Note: simple .center() usually works well enough; 
-    # visual mismatch from emojis is minimal with this padding.
-    title_centered = title.center(target_width)
+    # Get visual cell widths
+    title_width = title_text.cell_len
+    subtitle_width = subtitle_text.cell_len
+    
+    # Calculate padding needed to center title over the longer subtitle
+    if subtitle_width > title_width:
+        padding_needed = (subtitle_width - title_width) // 2
+        # Add spaces to center the title
+        title_centered = " " * padding_needed + title
+    else:
+        title_centered = title
     
     banner_content = (
         f"[bold]{title_centered}[/bold]\n"
