@@ -576,8 +576,36 @@ class AkesoLexer:
             # Phase 1: Stateful flush-left repair
             working_line = self._fix_flush_left_lists_phase1(shards, original_line)
             
-            # Phase 1.5: Missing Colon Heuristic (Lookahead)
+            # Phase 1.5: Universal Fused Keyword Heuristic
+            # Fixes: "kindService" -> "kind: Service", "apiVersionV1" -> "apiVersion: V1"
+            stripped = working_line.strip()
+            # Run this BEFORE missing colon check to catch "specPorts" -> "spec: Ports" 
+            # instead of "specPorts:"
+            if stripped and ":" not in working_line:
+                # Safe List: Keys that should NEVER be prefixes of other standard keys
+                SAFE_FUSED_KEYS = {
+                    "kind", "apiVersion", "metadata", "spec", "status", 
+                    "selector", "template", "resources", "containers", 
+                    "volumes", "labels", "annotations", "data", "ports",
+                    "env", "image"
+                }
+                
+                for key_candidate in SAFE_FUSED_KEYS:
+                    if stripped.startswith(key_candidate) and len(stripped) > len(key_candidate):
+                        suffix = stripped[len(key_candidate):]
+                        # Only split if suffix implies a new word (Uppercase or Digit)
+                        if suffix[0].isupper() or suffix[0].isdigit() or (key_candidate == "apiVersion" and suffix.lower().startswith('v')):
+                             # Calculate original indent
+                             prefix_indent = len(working_line) - len(working_line.lstrip())
+                             working_line = (" " * prefix_indent) + f"{key_candidate}: {suffix}"
+                             self.repair_stats["spacing_fixes"] += 1
+                             logger.debug(f"Line {i+1}: Healed fused keyword '{stripped}' -> '{key_candidate}: {suffix}'")
+                             break
+
+            # Phase 1.6: Missing Colon Heuristic (Lookahead)
             # Fixes: "spec" (newline) "  ports:" -> "spec:" (newline) "  ports:"
+            # Re-strip working_line in case Phase 1.5 modified it? 
+            # If Phase 1.5 modified it, it has a colon now, so the check `if ":" not in` matches intended behavior.
             stripped = working_line.strip()
             if stripped and stripped.replace("-", "").replace("_","").isalnum() and ":" not in stripped:
                 # Look ahead for indentation
@@ -590,7 +618,7 @@ class AkesoLexer:
                         working_line = working_line.rstrip() + ":"
                         self.repair_stats["spacing_fixes"] += 1
                         logger.debug(f"Line {i+1}: Healed missing colon for parent key '{stripped}'")
-            
+
             # Structural repair (spacing, quotes, etc.)
             indent, code, comment, is_now_in_block = self.repair_line(working_line)
             
