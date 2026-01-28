@@ -95,6 +95,10 @@ class AkesoLexer:
         in_single_quote = False
         escaped = False
 
+        # Track the first "comment-like" hash seen inside a quote
+        # If the quote never closes, we fallback to this index.
+        potential_comment_idx = -1
+
         for i, char in enumerate(text):
             if escaped:
                 escaped = False
@@ -108,9 +112,22 @@ class AkesoLexer:
                 in_single_quote = not in_single_quote
 
             # Hash is a comment if not quoted and preceded by whitespace
-            if char == "#" and not in_double_quote and not in_single_quote:
-                if i == 0 or text[i - 1].isspace():
+            if char == "#":
+                is_quoted = in_double_quote or in_single_quote
+                is_boundary = (i == 0 or text[i - 1].isspace())
+                
+                if not is_quoted and is_boundary:
                     return i
+                
+                # If it looks like a comment but is quoted, track it as candidate
+                if is_quoted and is_boundary and potential_comment_idx == -1:
+                    potential_comment_idx = i
+
+        # Edge Case: If we ended with an unclosed quote, assume the first 
+        # "comment-like" hash was actually a comment (lexical recovery).
+        if (in_double_quote or in_single_quote) and potential_comment_idx != -1:
+            return potential_comment_idx
+
         return -1
 
     # =========================================================================
