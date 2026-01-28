@@ -160,6 +160,11 @@ def main():
 
     # 3. Parse Args
     args, unknown = parser.parse_known_args()
+    
+    # Pre-process: Support comma-separated args
+    from akeso.cli.commands.base import normalize_paths
+    if hasattr(args, 'path') and args.path:
+        args.path = normalize_paths(args.path)
 
     # 4. Version Check
     target_cluster_version = None

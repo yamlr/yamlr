@@ -61,6 +61,22 @@ def validate_required_arg(value, arg_name: str, context: str, examples: list):
     ))
     return False
 
+def normalize_paths(raw_paths):
+    """
+    Flattens a list of paths that might contain split commas.
+    Example: ["f1,f2", "f3"] -> ["f1", "f2", "f3"]
+    """
+    if not raw_paths:
+        return []
+        
+    normalized = []
+    for p in raw_paths:
+        for sub in p.split(","):
+            clean = sub.strip()
+            if clean:
+                normalized.append(clean)
+    return normalized
+
 def print_custom_header(invoked_as: str, is_pro: bool):
     """
     Displays the top-level application banner.
