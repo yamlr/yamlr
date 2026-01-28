@@ -100,9 +100,12 @@ def print_custom_header(invoked_as: str, is_pro: bool):
         f"[dim italic]{subtitle}[/dim italic]"
     )
     
+    from rich import box
+    
     console.print(Panel(
         Align.center(banner_content), 
         border_style=border, 
+        box=box.SQUARE,
         expand=False,
         padding=(0, 2)
     ))
