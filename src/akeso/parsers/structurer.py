@@ -275,11 +275,24 @@ class AkesoStructurer:
                 
                 # Handle "- value" vs "- key: value"
                 if not s_key:
-                    target_seq.append(clean_value(s_val))
+                    if isinstance(target_seq, T_MAP):
+                        # SAFETY FIX: Parent is a Map (default assumption), but we found a scalar list.
+                        # Instead of crashing with .append(), synthesize a key.
+                        # This turns "- item" into "item_N: item" which Validator will flag as type error.
+                        idx = len(target_seq)
+                        target_seq[f"item_{idx}"] = clean_value(s_val)
+                    else:
+                        target_seq.append(clean_value(s_val))
                 else:
                     new_item = T_MAP()
                     new_item[s_key] = clean_value(s_val)
-                    target_seq.append(new_item)
+                    if isinstance(target_seq, T_MAP):
+                        # Same safety fix for keyed items, though rare
+                        # ("- key: val" inside a Map -> "item_N: {key: val}")
+                        idx = len(target_seq)
+                        target_seq[f"item_{idx}"] = new_item
+                    else:
+                        target_seq.append(new_item)
                     apply_layout(new_item, shard, is_key=True)
                     stack.append((s_indent, new_item, field_info))
                 continue

@@ -70,7 +70,7 @@ def handle_heal_command(args, engine, formatter, is_pro: bool):
                  
              if not auto_yes:
                  # Interactive Prompt
-                 confirm = console.input(f"\n[bold yellow]Apply changes to {target_file}? [y/N]: [/bold yellow]")
+                 confirm = console.input(f"\n[bold yellow]Apply changes to {target_file}? (y/n) [n]: [/bold yellow]")
                  if confirm.lower() != 'y':
                      console.print("[red]Aborted.[/red]")
                      return 0

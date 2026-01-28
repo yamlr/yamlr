@@ -169,9 +169,16 @@ class AkesoFormatter:
         console.print()
 
         # Recommendation Hint
+        invoked_as = "akeso"
+        try:
+            from akeso.core.bridge import AkesoBridge
+            invoked_as = AkesoBridge.get_invoked_command()
+        except:
+             pass
+
         if any(i["rule"] == "GhostService" for i in issues):
              console.print(Panel(
-                 "Run [white]akeso heal <file>[/white] to automatically fix specific issues.",
+                 f"Run [white]{invoked_as} heal <file>[/white] to automatically fix specific issues.",
                  title="💡 SUGGESTION",
                  border_style="green",
                  expand=False
