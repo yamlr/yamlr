@@ -212,6 +212,7 @@ def main():
             console.print("\n[bold cyan]OPTIONS[/bold cyan]")
             console.print("  target              File(s) or directory(s) to audit")
             console.print("  --output FORMAT     Report format (text, json, sarif)")
+            console.print("  --diff              Show visual diff of proposed fixes")
             console.print("  --ext LIST          Extensions to scan (default: .yaml,.yml)")
             console.print("  --max-depth N       Recursion depth (default: 10)")
             
