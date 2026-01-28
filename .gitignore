@@ -3,6 +3,7 @@
 *.akeso.tmp
 *.kubecuro.backup
 *.kubecuro.tmp
+.kubecuro/
 
 # --- Python Environment ---
 __pycache__/
