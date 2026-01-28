@@ -11,6 +11,7 @@ Refactored (2026-01-27):
 """
 
 import sys
+import os
 import argparse
 import logging
 import platform
@@ -113,7 +114,7 @@ def main():
     
     # Global flags
     parser.add_argument("--kube-version", type=str, default=None, metavar="VERSION", dest="kube_version")
-    parser.add_argument("--catalog", default="catalog/k8s_v1_distilled.json")
+    parser.add_argument("--catalog", default=None, help="Path to custom catalog (default: bundled)")
     parser.add_argument("-h", "--help", action="store_true")
     parser.add_argument('-v', '--version', action='store_true')
     parser.add_argument('-s', '--summary-only', action='store_true')
@@ -273,8 +274,24 @@ def main():
             console.print(f"🎯 Target K8s: [bold green]{detected_version}[/bold green] (default)")
             target_cluster_version = detected_version
             
+        # Programmatically resolve bundled catalog location
+        if args.catalog:
+            fallback_path = args.catalog
+        else:
+            # Resolve relative to project root (dev structure)
+            # file: src/akeso/cli/main.py
+            # up 4: src/akeso/cli -> src/akeso -> src -> ROOT
+            base_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+            fallback_path = os.path.join(base_dir, "catalog", "k8s_v1_distilled.json")
+            
+            if not os.path.exists(fallback_path):
+                 # Try package structure (if installed) -> src/akeso/catalog
+                 # up 2: src/akeso
+                 base_dir_pkg = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+                 fallback_path = os.path.join(base_dir_pkg, "catalog", "k8s_v1_distilled.json")
+            
         catalog_mgr = CatalogManager()
-        final_catalog_path = catalog_mgr.resolve_catalog(target_cluster_version, fallback_path=args.catalog)
+        final_catalog_path = catalog_mgr.resolve_catalog(target_cluster_version, fallback_path=fallback_path)
 
         engine = AkesoEngine(
             workspace_path=".", 
