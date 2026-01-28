@@ -70,35 +70,44 @@ def run_quiet(cmd, env=None, cwd=None):
 def install_binary(src_path: Path):
     """Installs binary to a common system path if possible."""
     # Priority paths for Linux/Mac
-    # We prefer system-wide install (/usr/local/bin) but fallback to user-local if no permission
-    install_candidates = [
-        Path("/usr/local/bin"),
-        Path.home() / ".local" / "bin"
-    ]
+    # 1. System: /usr/local/bin (Needs sudo/root)
+    # 2. User: ~/.local/bin (Safe fallback, creates if missing)
+    
+    system_path = Path("/usr/local/bin")
+    user_path = Path.home() / ".local" / "bin"
     
     target_dir = None
     
-    # On Windows, installation is tricky without Admin, so we stick to dist
     if sys.platform == "win32":
         return None
 
-    # Find the first writable directory in PATH
-    path_dirs = os.environ.get("PATH", "").split(os.pathsep)
-    for candidate in install_candidates:
-        if candidate.exists() and os.access(candidate, os.W_OK) and str(candidate) in path_dirs:
-            target_dir = candidate
-            break
-            
-    # Fallback: check if ~/.local/bin exists even if not in PATH (common issue)
-    if not target_dir and (Path.home() / ".local" / "bin").exists():
-         target_dir = Path.home() / ".local" / "bin"
+    # Check System Path (Preferred)
+    if system_path.exists() and os.access(system_path, os.W_OK):
+        target_dir = system_path
+    else:
+        # Fallback to User Path
+        if not user_path.exists():
+            try:
+                user_path.mkdir(parents=True, exist_ok=True)
+            except OSError:
+                pass # Can't create, likely permission or read-only
+        
+        if user_path.exists() and os.access(user_path, os.W_OK):
+            target_dir = user_path
 
     if target_dir:
         try:
             dest = target_dir / src_path.name
             shutil.copy2(src_path, dest)
+            
+            # Check if in PATH
+            path_dirs = os.environ.get("PATH", "").split(os.pathsep)
+            if str(target_dir) not in path_dirs:
+                print(f"\n⚠️  Warning: {target_dir} is not in your PATH.")
+                
             return dest
-        except Exception:
+        except Exception as e:
+            print(f"Install failed: {e}")
             return None
     return None
 

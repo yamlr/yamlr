@@ -251,6 +251,14 @@ def main():
 
     # Engine Setup (For Scan/Heal)
     try:
+        # Pre-Validation (Before spinning up engine)
+        if args.command == "scan":
+            if not validate_required_arg(args.path, "path", "scan", [f"{invoked_as} scan .", f"{invoked_as} scan <target-folder>"]):
+                sys.exit(1)
+        elif args.command == "heal":
+            if not validate_required_arg(args.path, "path", "heal", [f"{invoked_as} heal .", f"{invoked_as} heal -y <target-folder>"]):
+                sys.exit(1)
+
         if target_cluster_version:
             console.print(f"🎯 Target K8s: [bold green]{target_cluster_version}[/bold green]")
         else:
@@ -268,14 +276,9 @@ def main():
         )
 
         if args.command == "scan":
-            if not validate_required_arg(args.path, "path", "scan", [f"{invoked_as} scan .", f"{invoked_as} scan ./manifests"]):
-                sys.exit(1)
             sys.exit(handle_scan_command(args, engine, formatter))
             
         elif args.command == "heal":
-            if not validate_required_arg(args.path, "path", "heal", [f"{invoked_as} heal .", f"{invoked_as} heal -y ./deploy.yaml"]):
-                sys.exit(1)
-
             # Pro Gate
             if getattr(args, 'harden', False) and not is_pro:
                 AkesoBridge.notify_pro_required("Shield Security Hardening")
