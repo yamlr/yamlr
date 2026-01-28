@@ -95,6 +95,16 @@ def main():
     # Enable twin command creation (akeso <--> kubecuro symlinks)
     AkesoBridge.ensure_dual_identity()
     
+    # 0. Setup Logging (Default: WARNING, Verbose: INFO)
+    # We check sys.argv manually here because argparse hasn't run yet
+    log_level = logging.WARNING
+    if "--verbose" in sys.argv:
+        log_level = logging.INFO
+        
+    logging.basicConfig(level=log_level, format="%(message)s")
+    # Silence noisy libs
+    logging.getLogger("urllib3").setLevel(logging.WARNING)
+
     # 1. Identity Gate
     try:
         invoked_as = AkesoBridge.get_invoked_command()

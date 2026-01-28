@@ -33,6 +33,7 @@ def add_standard_flags(sub):
     sub.add_argument("-h", "--help", action="store_true")
     sub.add_argument("-s", "--summary-only", action="store_true",
                     help="Show aggregate stats (recommended for 100+ files)")
+    sub.add_argument("--verbose", action="store_true", help="Show full audit logs and stages")
 
 def validate_required_arg(value, arg_name: str, context: str, examples: list):
     """

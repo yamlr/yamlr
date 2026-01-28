@@ -36,11 +36,7 @@ from akeso.core.context import HealContext
 from akeso.core.io import FileSystemManager
 from akeso.core.config import ConfigManager
 
-# Configure logging to meet CNCF observability standards
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-)
+
 logger = logging.getLogger("akeso.engine")
 
 class AkesoEngine:

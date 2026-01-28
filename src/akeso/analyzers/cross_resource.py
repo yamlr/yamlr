@@ -110,8 +110,9 @@ class CrossResourceAnalyzer(BaseAnalyzer):
             ))
 
         # Log summary (keeping existing logging behavior for transparency)
+        # Log summary (keeping existing logging behavior for transparency)
         if results:
-            logger.warning(f"Cross-resource analysis found {len(results)} issues.")
+            logger.info(f"Cross-resource analysis found {len(results)} issues.")
         else:
             logger.info("Cross-resource analysis: No issues detected ✓")
 

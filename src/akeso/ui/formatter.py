@@ -35,12 +35,13 @@ class AkesoFormatter:
     # Unified Report Display
     # -------------------------------------------------------------------------
 
-    def display_report(self, result: Dict[str, Any]):
+    def display_report(self, result: Dict[str, Any], verbose: bool = False):
         """
         Renders the full surgical details for a single file.
         
         Args:
             result: Result dict from engine.audit_and_heal_file()
+            verbose: If True, shows the full 'Stage X' audit trail.
         """
         status = result.get("status", "UNKNOWN")
         file_path = result.get("file_path", "Unknown")
@@ -78,16 +79,18 @@ class AkesoFormatter:
             f"[bold]Status:[/bold] {status}",
             title=f"[bold {color}]Reference: {file_path}[/bold {color}]",
             border_style=color,
-            expand=False
+            expand=True # Expanded for better layout
         ))
 
-        # Show audit logs in a clean Tree
         logs = result.get("logic_logs", [])
-        if logs:
-            self._render_staged_logs(logs)
-        
-        # Note: Diff rendering is now handled externally by DiffEngine in the CLI command
-        # to support interactive confirmation flow. We do NOT render diffs here to avoid duplicating it.
+
+        # NEW: Issues Summary Table (Always visible if there are issues)
+        self._render_issues_summary(logs)
+
+        # OLD: Audit Tree (Visible ONLY if verbose)
+        if verbose:
+            if logs:
+                self._render_staged_logs(logs, file_path)
         
         # =====================================================================
         # DEPRECATION WARNINGS (OSS Feature)
@@ -106,6 +109,74 @@ class AkesoFormatter:
                     border_style="yellow",
                     padding=(1, 2)
                 ))
+
+    def _render_issues_summary(self, logs: List[str]):
+        """Renders a clean table of Warnings and Errors found in the logs."""
+        issues = []
+        for log in logs:
+            severity = None
+            rule = "General"
+            msg = log
+            
+            if "Ghost Service detected" in log:
+                severity = "WARNING"
+                rule = "GhostService"
+                msg = log.replace("Stage 3.5: Semantic Warnings (1):", "").strip()
+                # Clean up nested log structure artifacts if present
+                if "Ghost Service detected:" in msg:
+                    msg = msg.split("Ghost Service detected:")[1].strip()
+                if "└─" in msg: msg = msg.replace("└─", "").strip()
+                if "•" in msg: msg = msg.replace("•", "").strip()
+                msg = f"Ghost Service detected: {msg}"
+            
+            elif "Warning" in log or "WARNING" in log:
+                 # Check if it is a real issue or just a header
+                 if "Semantic Warnings" in log: continue
+                 # Filter internal layout warnings
+                 if "Stage 2" in log or "layout preservation" in log.lower(): continue
+                 
+                 severity = "WARNING"
+                 if "Deprecation" in log: rule = "DeprecatedAPI"
+                 msg = log.replace("[WARNING]", "").replace("Warning -", "").strip()
+
+            elif "Error" in log or "CRITICAL" in log:
+                 severity = "ERROR"
+                 msg = log.replace("[ERROR]", "").replace("Error -", "").strip()
+
+            if severity:
+                # Deduplicate simplistic way
+                if not any(i['msg'] == msg for i in issues):
+                    issues.append({"severity": severity, "rule": rule, "msg": msg})
+
+        if not issues:
+            return
+
+        table = Table(title="[bold red]ISSUES FOUND[/bold red]", show_header=True, header_style="bold white", expand=True, box=None)
+        table.add_column("Severity", width=10)
+        table.add_column("Rule", width=20)
+        table.add_column("Message")
+
+        for i in issues:
+            sev_style = "bold red" if i["severity"] == "ERROR" else "bold yellow"
+            icon = "❌" if i["severity"] == "ERROR" else "⚠️"
+            table.add_row(
+                f"[{sev_style}]{icon} {i['severity']}[/{sev_style}]",
+                f"[cyan]{i['rule']}[/cyan]",
+                i["msg"]
+            )
+        
+        console.print(table)
+        console.print()
+
+        # Recommendation Hint
+        if any(i["rule"] == "GhostService" for i in issues):
+             console.print(Panel(
+                 "Run [white]akeso heal <file>[/white] to automatically fix specific issues.",
+                 title="💡 SUGGESTION",
+                 border_style="green",
+                 expand=False
+             ))
+        console.print()
 
     def _render_staged_logs(self, logs: List[str], file_path: Optional[str] = None):
         """Groups logs by 'Stage X:' prefixes with visual hierarchy."""

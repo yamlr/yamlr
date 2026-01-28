@@ -119,16 +119,34 @@ def handle_heal_command(args, engine, formatter, is_pro: bool):
         
         if is_dry:
             console.print(f"\n[bold yellow]Dry Run Complete. Found {len(changed_jobs)} files to heal.[/bold yellow]")
-            # Show diffs for all of them?
-            if len(changed_jobs) < 10 or auto_yes_all: # Don't spam unless asked/small
+            
+            # Batch Throttling Strategy
+            THRESHOLD = 5
+            show_diffs = True
+            
+            if len(changed_jobs) > THRESHOLD and not auto_yes_all:
+                console.print(f"\n[bold]Summary of Changes:[/bold]")
+                for job in changed_jobs:
+                    # Determine change type hint
+                    hint = "Modified"
+                    if "Ghost Service" in str(job.get("logic_logs", [])): hint = "Ghost Fix"
+                    console.print(f"  • {job.get('file_path')} [dim]({hint})[/dim]")
+                
+                # Ask user if they want to see the wall of text
+                view_diffs = console.input(f"\n[bold cyan]View detailed diffs for all {len(changed_jobs)} files? [y/N] (Default: No): [/bold cyan]")
+                if view_diffs.lower() != 'y':
+                    show_diffs = False
+                    console.print("[dim]Skipping detailed diffs.[/dim]")
+
+            if show_diffs:
                  for job in changed_jobs:
                       DiffEngine.render_diff(
                           job.get("raw_content", ""), 
                           job.get("healed_content", ""), 
                           job.get("file_path", "Unknown")
                       )
-            else:
-                 console.print(f"[dim](Skipping detailed diffs for {len(changed_jobs)} files. Use SINGLE file mode to view specific diffs)[/dim]")
+            
+            # Return 1 to indicate "Diff Found"
             return 1
 
         # Safety Interlock

@@ -76,7 +76,7 @@ def handle_scan_command(args, engine, formatter):
         # Heuristic: If we only have 1 result, show detailed view
         if len(job_results) == 1:
              result = job_results[0]
-             formatter.display_report(result)
+             formatter.display_report(result, verbose=getattr(args, 'verbose', False))
              
              # Support --diff
              if getattr(args, 'diff', False):
