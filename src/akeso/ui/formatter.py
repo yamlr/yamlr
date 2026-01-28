@@ -121,13 +121,23 @@ class AkesoFormatter:
             if "Ghost Service detected" in log:
                 severity = "WARNING"
                 rule = "GhostService"
-                msg = log.replace("Stage 3.5: Semantic Warnings (1):", "").strip()
-                # Clean up nested log structure artifacts if present
-                if "Ghost Service detected:" in msg:
-                    msg = msg.split("Ghost Service detected:")[1].strip()
-                if "└─" in msg: msg = msg.replace("└─", "").strip()
-                if "•" in msg: msg = msg.replace("•", "").strip()
-                msg = f"Ghost Service detected: {msg}"
+                
+                # Extract core message and hint
+                # Expected format from pipeline: "Ghost Service detected: ... \n  Hint: ..."
+                parts = log.split("Hint:")
+                core_msg = parts[0]
+                hint = parts[1].strip() if len(parts) > 1 else ""
+                
+                # Clean up core message
+                if "Ghost Service detected:" in core_msg:
+                    core_msg = core_msg.split("Ghost Service detected:")[1]
+                
+                # Remove tree characters
+                core_msg = core_msg.replace("Stage 3.5: Semantic Warnings (1):", "").replace("└─", "").replace("•", "").strip()
+                
+                msg = f"Ghost Service detected: {core_msg}"
+                if hint:
+                    msg += f"\n[dim italic]Hint: {hint}[/dim italic]"
             
             elif "Warning" in log or "WARNING" in log:
                  # Check if it is a real issue or just a header

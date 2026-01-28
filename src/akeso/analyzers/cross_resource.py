@@ -17,6 +17,7 @@ Metadata:
 """
 
 import logging
+import difflib
 from typing import List, Dict, Any
 from akeso.models import ManifestIdentity
 from akeso.analyzers.base import BaseAnalyzer, AnalysisResult
@@ -146,6 +147,28 @@ class CrossResourceAnalyzer(BaseAnalyzer):
             if not matching_workloads:
                 # Ghost service detected!
                 hint = self._generate_ghost_service_hint(service)
+                
+                # Intelligent Suggestion: Fuzzy Match for Typos
+                # Scan all workloads for "almost matching" labels
+                typo_candidates = self._find_typo_matches(service.selector, workloads)
+                if typo_candidates:
+                    best_match = typo_candidates[0] # Pick the best one
+                    
+                    # Format the suggestion nicely
+                    diff_msg = []
+                    for k, v in service.selector.items():
+                        match_val = best_match['labels'].get(k)
+                        if match_val and match_val != v:
+                            diff_msg.append(f"'{k}: {match_val}'")
+                        elif k not in best_match['labels']:
+                             # Check for key typos
+                             close_keys = [wk for wk in best_match['labels'] if difflib.SequenceMatcher(None, k, wk).ratio() > 0.8]
+                             if close_keys:
+                                 diff_msg.append(f"'{close_keys[0]}: {best_match['labels'][close_keys[0]]}'")
+
+                    if diff_msg:
+                        hint += f"\n\n    💡 Did you mean: {', '.join(diff_msg)}? (Found in {best_match['kind']}/{best_match['name']})"
+
                 ghost_services.append({
                     "name": service.name,
                     "namespace": service.namespace or "default",
@@ -155,6 +178,59 @@ class CrossResourceAnalyzer(BaseAnalyzer):
                 })
         
         return ghost_services
+
+    def _find_typo_matches(self, selector: Dict[str, str], workloads: List[ManifestIdentity]) -> List[Dict]:
+        """Finds workloads that *almost* match the selector."""
+        candidates = []
+        
+        # Helper to flatten dict to comparable strings
+        def flatten(d): return sorted([f"{k}={v}" for k,v in d.items()])
+        
+        sel_str = str(flatten(selector))
+        
+        for workload in workloads:
+            if not workload.labels: continue
+            
+            # 1. Direct value typo? (Keys match, values close)
+            # Check overlap of keys first
+            common_keys = set(selector.keys()) & set(workload.labels.keys())
+            if len(common_keys) == len(selector):
+                 # All keys exist, check value similarity
+                 similarity = 0
+                 for k in selector:
+                     v1 = selector[k]
+                     v2 = workload.labels[k]
+                     similarity += difflib.SequenceMatcher(None, v1, v2).ratio()
+                 
+                 avg_sim = similarity / len(selector)
+                 if avg_sim > 0.75 and avg_sim < 1.0: # 75% match on values
+                     candidates.append({'name': workload.name, 'kind': workload.kind, 'score': avg_sim, 'labels': workload.labels})
+                     continue
+
+            # 2. General fuzzy match (e.g. key typo)
+            # Compare the full label sets
+            # We filter workload labels to only include relevant keys (fuzzy intersection) to avoid noise from extra labels
+            
+            # Simple approach: Textual similarity of the "selector part" only
+            # Construct a virtual label set from workload that tries to match selector keys
+            # (Too complex? Let's stick to simple sequence matching of flattened str)
+            
+            # FallbackRecalculate against full workload labels is noisy.
+            # Let's try matching individual items.
+            matches = 0
+            for k, v in selector.items():
+                # Is this k=v *almost* in workload?
+                for wk, wv in workload.labels.items():
+                    # Check string distance of "k=v"
+                    if difflib.SequenceMatcher(None, f"{k}={v}", f"{wk}={wv}").ratio() > 0.85:
+                        matches += 1
+                        break
+            
+            if matches == len(selector): # Found a close match for EVERY selector item
+                 # Ensure it's not an exact match (logic error check)
+                 candidates.append({'name': workload.name, 'kind': workload.kind, 'score': 0.9, 'labels': workload.labels})
+
+        return sorted(candidates, key=lambda x: x['score'], reverse=True)
     
     def _detect_orphan_configs(
         self,
