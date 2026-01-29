@@ -66,7 +66,7 @@ class HealingPipeline:
                  cpu_limit: str = "500m",
                  mem_limit: str = "512Mi",
                  default_namespace: str = "default",
-                 app_name: str = "akeso"):
+                 app_name: str = "kubecuro"):
         """
         Initializes the pipeline with all healing components.
         Sets up Foundation (OSS) and attempts to link Enterprise (Pro) modules.

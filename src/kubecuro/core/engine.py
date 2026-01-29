@@ -53,7 +53,7 @@ class AkesoEngine:
     def __init__(self, 
                  workspace_path: str, 
                  catalog_path: str,
-                 app_name: str = "akeso",  # New: Configurable Identity
+                 app_name: str = "kubecuro",  # Default: CNCF Brand
                  cpu_limit: str = "500m", 
                  mem_limit: str = "512Mi",
                  default_namespace: str = "default",

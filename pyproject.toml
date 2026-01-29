@@ -35,12 +35,9 @@ dev = [
 # For creating the standalone binaries for Kubecuro
 build = ["pyinstaller>=6.4.0"]
 
-# --- DUAL ENTRY POINTS ---
-# Both commands launch the same logic. 
-# engine.py uses KubecuroBridge to detect which name was typed.
+# Standard Entry Point
 [project.scripts]
 kubecuro = "kubecuro.cli.main:main"
-akeso = "kubecuro.cli.main:main"
 
 [project.urls]
 Homepage = "https://kubecuro.io"

@@ -57,7 +57,7 @@ class AkesoScanner:
     def __init__(self, 
                  catalog: Optional[Dict[Any, Any]] = None,
                  schema_type: str = "kubernetes",
-                 app_name: str = "akeso",
+                 app_name: str = "kubecuro",
                  **schema_sources):
         """
         Initializes the scanner with schema catalog(s).
