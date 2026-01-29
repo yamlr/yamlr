@@ -34,3 +34,9 @@ verifier_output.txt
 # --- IDEs ---
 .vscode/
 .idea/
+
+# --- User Requested Ignores ---
+tests/*.yaml
+tests/*.txt
+tests/out.txt
+tests/debug_log.txt

@@ -17,7 +17,7 @@ from rich.table import Table
 # Add src to path so we can import Akeso modules
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../src')))
 
-from akeso.parsers.lexer import AkesoLexer
+from kubecuro.parsers.lexer import AkesoLexer
 
 console = Console()
 

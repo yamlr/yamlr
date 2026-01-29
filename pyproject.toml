@@ -3,16 +3,16 @@ requires = ["setuptools>=64.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "akeso"
+name = "kubecuro"
 version = "0.1.0"
-description = "Akeso OSS: High-fidelity Kubernetes manifest healing engine (Foundation for Kubecuro)."
+description = "Kubecuro: High-fidelity Kubernetes manifest healing engine (Akeso Core)."
 readme = "README.md"
 requires-python = ">=3.10"
 license = {text = "Apache-2.0"}
 authors = [
-    {name = "Nishar A Sunkesala", email = "akesoforge@outlook.com"}
+    {name = "Nishar A Sunkesala", email = "maintainers@kubecuro.io"}
 ]
-keywords = ["kubernetes", "yaml", "devops", "sre", "akeso", "kubecuro"]
+keywords = ["kubernetes", "yaml", "devops", "sre", "kubecuro", "cncf"]
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: Apache Software License",
@@ -32,20 +32,20 @@ dev = [
     "mypy>=1.0",
 ]
 
-# For creating the standalone binaries for Akeso OSS
+# For creating the standalone binaries for Kubecuro
 build = ["pyinstaller>=6.4.0"]
 
 # --- DUAL ENTRY POINTS ---
 # Both commands launch the same logic. 
-# engine.py uses AkesoBridge to detect which name was typed.
+# engine.py uses KubecuroBridge to detect which name was typed.
 [project.scripts]
-akeso = "akeso.cli.main:main"
-kubecuro = "akeso.cli.main:main"
+kubecuro = "kubecuro.cli.main:main"
+akeso = "kubecuro.cli.main:main"
 
 [project.urls]
-Homepage = "https://akeso.dev"
-Issues = "https://github.com/akeso-oss/akeso/issues"
-Repository = "https://github.com/akeso-oss/akeso.git"
+Homepage = "https://kubecuro.io"
+Issues = "https://github.com/kubecuro/kubecuro/issues"
+Repository = "https://github.com/kubecuro/kubecuro.git"
 
 # --- SETUPTOOLS CONFIGURATION ---
 [tool.setuptools]
@@ -54,12 +54,13 @@ package-dir = {"" = "src"}
 [tool.setuptools.packages.find]
 where = ["src"]
 # Explicitly exclude pro modules from OSS builds
-exclude = ["tests*", "catalog*", "akeso.pro*"]
+# This ensures "src/kubecuro/pro" is not packaged in the OSS wheel
+exclude = ["tests*", "catalog*", "kubecuro.pro*"]
 namespaces = true
 
 [tool.setuptools.package-data]
 # Include the K8s catalogs in the distribution
-akeso = ["catalog/*.json"]
+kubecuro = ["catalog/*.json"]
 
 [tool.pytest.ini_options]
 pythonpath = ["src"]

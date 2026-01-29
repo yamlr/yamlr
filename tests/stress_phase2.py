@@ -11,8 +11,8 @@ import sys
 import time
 import logging
 from pathlib import Path
-from akeso.core.engine import AkesoEngine
-from akeso.ui.formatter import AkesoFormatter
+from kubecuro.core.engine import AkesoEngine
+from kubecuro.ui.formatter import AkesoFormatter
 
 # Configure logging
 logging.basicConfig(level=logging.ERROR) # Only show errors to keep output clean
@@ -101,7 +101,7 @@ def test_healing_robustness(engine):
     # Check if healed content is valid YAML
     # validation using Akeso's own parser (if it parses cleanly, it's valid enough for us)
     try:
-        from akeso.parsers.lexer import AkesoLexer
+        from kubecuro.parsers.lexer import AkesoLexer
         
         # We use the internal Lexer to verify strict validity
         lexer = AkesoLexer()

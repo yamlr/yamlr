@@ -16,8 +16,8 @@ from rich.console import Console
 # Add src to path
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../src')))
 
-from akeso.core.pipeline import HealingPipeline
-from akeso.analyzers.registry import AnalyzerRegistry
+from kubecuro.core.pipeline import HealingPipeline
+from kubecuro.analyzers.registry import AnalyzerRegistry
 
 # Configure logging
 logging.basicConfig(level=logging.WARNING)

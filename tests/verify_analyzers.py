@@ -12,8 +12,8 @@ import sys
 import shutil
 import logging
 from pathlib import Path
-from akeso.core.engine import AkesoEngine
-from akeso.core.config import ConfigManager
+from kubecuro.core.engine import AkesoEngine
+from kubecuro.core.config import ConfigManager
 
 # Setup Logging
 logging.basicConfig(level=logging.INFO)
@@ -47,7 +47,7 @@ def test_analyzers():
     logger.info("TEST: Running Core Analyzers")
     
     # DEBUG: Inspect Registry
-    from akeso.analyzers.registry import AnalyzerRegistry
+    from kubecuro.analyzers.registry import AnalyzerRegistry
     AnalyzerRegistry.register_defaults() # Force registration to check
     all_analyzers = AnalyzerRegistry.get_all_analyzers()
     logger.info(f"DEBUG: Registry has {len(all_analyzers)} analyzers")

@@ -11,8 +11,8 @@ import sys
 import shutil
 import logging
 from pathlib import Path
-from akeso.core.config import ConfigManager
-from akeso.core.engine import AkesoEngine
+from kubecuro.core.config import ConfigManager
+from kubecuro.core.engine import AkesoEngine
 
 # Setup Logging
 logging.basicConfig(level=logging.INFO)

@@ -9,7 +9,7 @@ import sys
 import time
 import os
 from pathlib import Path
-from akeso.core.engine import AkesoEngine
+from kubecuro.core.engine import AkesoEngine
 
 # Constants
 TARGET_SIZE_MB = 10
