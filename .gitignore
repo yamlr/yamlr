@@ -63,3 +63,8 @@ error.log
 *.exe
 TECHNICAL_DEBT.md
 error.log
+
+.dockerignore
+.gitignore
+.claudeignore
+.agentignore

@@ -16,14 +16,15 @@ COPY catalog/ catalog/
 RUN pip install .
 
 # Build binary
-# Note: We use a simplified inline build command for Docker context
+# Build binary
+# Must match hack/build_binaries.py logic
 RUN pyinstaller --noconfirm --onefile --clean \
     --name yamlr \
-    --paths src \
-    --add-data "catalog:yamlr/catalog" \
+    --exclude-module yamlr.pro \
     --collect-all rich \
-    --strip \
-    src/yamlr/cli/main.py
+    --add-data "src/yamlr/core/data:yamlr/core/data" \
+    --add-data "catalog:Yamlr/catalog" \
+    src/yamlr/__main__.py
 
 # Stage 2: Runner
 # Uses Google Distroless for maximum security (CNCF Best Practice)
