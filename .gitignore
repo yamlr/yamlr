@@ -40,3 +40,15 @@ tests/*.yaml
 tests/*.txt
 tests/out.txt
 tests/debug_log.txt
+
+# --- md files ---
+GITHUB_STRUCTURE.md
+QA_SIGNOFF.md
+enterprise_roadmap.md
+implementation_plan.md
+
+# Log files ---
+*.log
+
+# Unwanted Txt files ---
+sim_log.txt
