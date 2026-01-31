@@ -136,12 +136,16 @@ class YamlrEngine:
         if opa_bundle_path:
             try:
                 from yamlr.pro.opa_adapter import OpaAnalyzer
+                from yamlr.pro.license import license_manager
                 from yamlr.analyzers.registry import AnalyzerRegistry
                 
-                opa_analyzer = OpaAnalyzer(policy_path=opa_bundle_path)
-                AnalyzerRegistry.register_instance(opa_analyzer)
-                logger.info(f"💎 OPA Policy Engine enabled (Bundle: {opa_bundle_path})")
-            except ImportError:
+                if license_manager.check_feature_access("opa"):
+                    opa_analyzer = OpaAnalyzer(policy_path=opa_bundle_path)
+                    AnalyzerRegistry.register_instance(opa_analyzer)
+                    logger.info(f"💎 OPA Policy Engine enabled (Bundle: {opa_bundle_path})")
+                else:
+                    logger.warning("⛔ OPA Feature requires Enterprise license. Please run 'yamlr auth login'.")
+            except ImportError as e:
                 logger.warning("OPA Bundle provided but 'yamlr.pro.opa_adapter' not found. Enterprise features disabled.")
             except Exception as e:
                 logger.error(f"Failed to initialize OPA Engine: {e}")
