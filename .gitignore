@@ -56,3 +56,6 @@ debug_backup.py
 debug_spec.py
 reproduce_match.py
 simulation_report.json
+
+VISA_STRATEGY.md
+error.log
