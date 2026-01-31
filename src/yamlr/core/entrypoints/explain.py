@@ -1,41 +1,30 @@
-
+import os
+import yaml
+import pkgutil
 from rich.panel import Panel
 from rich.markdown import Markdown
 
-# This would ideally load from the Analyzer Registry dynamic metadata
-# For MVP, we use a static lookup to demonstrate the UI
-RULE_DB = {
-    "rules/no-latest-tag": {
-        "name": "Avoid Latest Tag",
-        "severity": "Warning",
-        "description": "Container images should use specific version tags instead of 'latest'.",
-        "rationale": """
-        Using `latest` makes deployments non-deterministic. A new version of the image could break your application 
-        without any change to the manifest. Rollbacks become impossible because `latest` is a moving target.
-        """,
-        "remediation": "Pin the image to a specific SHA digest or version tag (e.g., `nginx:1.25.3`)."
-    },
-    "rules/resource-limits": {
-        "name": "Resource Limits Missing",
-        "severity": "Warning",
-        "description": "Containers should define resource requests and limits.",
-        "rationale": """
-        Without limits, a single container can consume all node resources (CPU/Memory), causing a Denial of Service 
-        for other pods. Without requests, the scheduler cannot make intelligent placement decisions.
-        """,
-        "remediation": "Add a `resources` block with `requests` and `limits` for cpu and memory."
-    },
-    "rules/run-as-root": {
-        "name": "Container Runs as Root",
-        "severity": "High",
-        "description": "Containers should run as a non-root user.",
-        "rationale": """
-        Running processes as root increases the attack surface. If the container is compromised, the attacker 
-        has root privileges inside the container, which facilitates container escape attacks.
-        """,
-        "remediation": "Set `securityContext.runAsNonRoot: true` and specify a `runAsUser` ID > 1000."
-    }
-}
+def load_rules():
+    """Loads rules from the data directory."""
+    try:
+        # Try finding the resource relative to the package first
+        # This handles both source and installed package cases
+        data = pkgutil.get_data("yamlr.core", "data/rules.yaml")
+        if data:
+            return yaml.safe_load(data)
+    except Exception:
+        pass
+        
+    # Fallback for direct execution/dev mode
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    data_path = os.path.join(current_dir, "../data/rules.yaml")
+    if os.path.exists(data_path):
+        with open(data_path, "r", encoding="utf-8") as f:
+            return yaml.safe_load(f)
+            
+    return {}
+
+RULE_DB = load_rules()
 
 def handle_explain_command(args, console):
     """
