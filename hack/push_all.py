@@ -33,7 +33,7 @@ REMOTES = {
             "tests", 
             "tools",
             # Confidential Specs
-            "VISA_STRATEGY.md", "error.log", "*.log"
+            "VISA*.md", "error.log", "*.log"
         ],
         "branch": "main"
     }
