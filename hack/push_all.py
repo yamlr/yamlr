@@ -82,11 +82,12 @@ def push_target(name, config):
     
     try:
         print("✂️  Pruning files...")
+        print("✂️  Pruning files...")
         exclusions = config["exclude"] + SCRIPTS_TO_HIDE
-        for path in exclusions:
-            if os.path.exists(path):
-                # --ignore-unmatch prevents failure if file is already gone
-                run_git(["rm", "-r", "--cached", "--ignore-unmatch", path], error_ok=True)
+        for path_pattern in exclusions:
+            # Always try to remove, let git handle existence checks via --ignore-unmatch
+            # We pass the pattern directly to git to handle globs (e.g. *.log)
+            run_git(["rm", "-r", "--cached", "--ignore-unmatch", path_pattern], error_ok=True)
         
         run_git(["commit", "-m", f"RELEASE: Automatic Sync to {name.upper()}"])
         
