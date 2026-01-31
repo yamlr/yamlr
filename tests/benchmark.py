@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-AKESO PERFORMANCE BENCHMARK
+YAMLR PERFORMANCE BENCHMARK
 ---------------------------
 Measures throughput and latency on large datasets.
 Target: Scan 50MB of YAML in reasonable time.
@@ -9,7 +9,7 @@ import sys
 import time
 import os
 from pathlib import Path
-from kubecuro.core.engine import AkesoEngine
+from yamlr.core.engine import YamlrEngine
 
 # Constants
 TARGET_SIZE_MB = 10
@@ -63,7 +63,7 @@ def run_benchmark():
     
     # Initialize Engine (exclude initiation time from benchmark)
     print("\nInitializing Engine...")
-    engine = AkesoEngine(workspace_path=".", catalog_path="catalog/k8s_v1_distilled.json")
+    engine = YamlrEngine(workspace_path=".", catalog_path="catalog/k8s_v1_distilled.json")
     
     print(f"Starting Scan on {OUTPUT_FILE}...")
     start_time = time.time()

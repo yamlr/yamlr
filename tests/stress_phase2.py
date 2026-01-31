@@ -11,8 +11,8 @@ import sys
 import time
 import logging
 from pathlib import Path
-from kubecuro.core.engine import AkesoEngine
-from kubecuro.ui.formatter import AkesoFormatter
+from yamlr.core.engine import YamlrEngine
+from yamlr.ui.formatter import YamlrFormatter
 
 # Configure logging
 logging.basicConfig(level=logging.ERROR) # Only show errors to keep output clean
@@ -99,17 +99,17 @@ def test_healing_robustness(engine):
     assert res.get('healed_content'), "Failed to generate healed content for broken file"
     
     # Check if healed content is valid YAML
-    # validation using Akeso's own parser (if it parses cleanly, it's valid enough for us)
+    # validation using Yamlr's own parser (if it parses cleanly, it's valid enough for us)
     try:
-        from kubecuro.parsers.lexer import AkesoLexer
+        from yamlr.parsers.lexer import YamlrLexer
         
         # We use the internal Lexer to verify strict validity
-        lexer = AkesoLexer()
+        lexer = YamlrLexer()
         shards = lexer.shard(res['healed_content'])
         assert len(shards) > 0, "Healed content is empty"
         
     except Exception as e:
-        raise AssertionError(f"Healed content is invalid according to Akeso Parser: {e}")
+        raise AssertionError(f"Healed content is invalid according to Yamlr Parser: {e}")
 
     print(f"✅ PASS (Healed Syntax)")
 
@@ -121,7 +121,7 @@ if __name__ == "__main__":
             
         print("Initializing Engine with Standard Catalog...")
         # Use bundled catalog to force 'Unknown' status for CRDs (simulating reality)
-        engine = AkesoEngine(workspace_path=".", catalog_path="catalog/k8s_v1_distilled.json")
+        engine = YamlrEngine(workspace_path=".", catalog_path="catalog/k8s_v1_distilled.json")
         
         test_helm_render(engine)
         test_crd_learning(engine)

@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-AKESO LEXER FUZZER
-------------------
-Stress-test the Akeso Lexer against a corpus of valid and broken YAML files.
+YAMLR LEXER FUZZER
+---------------------
+Stress-test the Yamlr Lexer against a corpus of valid and broken YAML files.
 Goal: Ensure NO CRASHES occur, regardless of input quality.
 """
 
@@ -14,15 +14,15 @@ from pathlib import Path
 from rich.console import Console
 from rich.table import Table
 
-# Add src to path so we can import Akeso modules
+# Add src to path so we can import Yamlr modules
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../src')))
 
-from kubecuro.parsers.lexer import AkesoLexer
+from yamlr.parsers.lexer import YamlrLexer
 
 console = Console()
 
 def run_fuzz():
-    corpus_dir = Path("d:/akeso/tests/corpus")
+    corpus_dir = Path("d:/kubecuro/tests/corpus")
     files = glob.glob(str(corpus_dir / "**/*.yaml"), recursive=True)
     
     if not files:
@@ -31,7 +31,7 @@ def run_fuzz():
     
     console.print(f"[bold cyan]🚀 Starting Fuzz Test on {len(files)} files...[/bold cyan]")
     
-    lexer = AkesoLexer()
+    lexer = YamlrLexer()
     results = []
     crashes = 0
     norway_issues = 0

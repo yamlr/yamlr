@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
 """
-AKESO BUILD SYSTEM (Cross-Platform)
------------------------------------
+3. YAMLR BUILD SYSTEM (Cross-Platform)
+---------------------------------------
 Zero-config build script for Windows, Linux, and macOS.
 Builds:
-1. Standalone Binary (dist/akeso[.exe])
-2. Kubecuro Alias (dist/kubecuro[.exe])
+1. Standalone Binary (dist/yamlr[.exe])
 
 Future-Proofing:
 - Auto-installs dependencies from pyproject.toml
@@ -22,16 +21,15 @@ from pathlib import Path
 import venv
 
 # Configuration
-APP_NAME = "akeso"
-ALIAS_NAME = "kubecuro"
-ENTRY_POINT = "src/akeso/cli/main.py"
+APP_NAME = "yamlr"
+ENTRY_POINT = "src/yamlr/cli/main.py"
 BUILD_DIR = Path("build")
 DIST_DIR = Path("dist")
 VENV_DIR = Path(".venv_build")
 
 def print_header():
     print(r"""
-    🧬 Akeso Forge Build System
+    🧬 Yamlr Build System
     --------------------------------------""")
 
 def print_step(msg):
@@ -152,7 +150,7 @@ def main():
     catalog_path = root_dir / "catalog"
     assets = []
     if catalog_path.exists():
-        assets.append(f"{catalog_path}{path_sep}akeso/catalog")
+        assets.append(f"{catalog_path}{path_sep}yamlr/catalog")
     
     # 5. Build Binary
     print_step(f"Compiling {APP_NAME}{bin_ext}")
@@ -166,9 +164,9 @@ def main():
         "--name", APP_NAME,
         "--strip",
         "--paths", str(root_dir / "src"),
-        "--hidden-import", "akeso.core.io",
-        "--hidden-import", "akeso.core.pipeline",
-        "--hidden-import", "akeso.analyzers.cross_resource",
+        "--hidden-import", "yamlr.core.io",
+        "--hidden-import", "yamlr.core.pipeline",
+        "--hidden-import", "yamlr.analyzers.cross_resource",
         "--collect-all", "rich",
     ]
     
@@ -180,27 +178,27 @@ def main():
     run_quiet(cmd)
     print_done()
 
-    # 6. Create Alias
-    print_step(f"Creating alias {ALIAS_NAME}{bin_ext}")
-    src_bin = DIST_DIR / f"{APP_NAME}{bin_ext}"
-    dest_bin = DIST_DIR / f"{ALIAS_NAME}{bin_ext}"
+    # 6. Create Alias (REMOVED for clean refactor)
+    # print_step(f"Creating alias {ALIAS_NAME}{bin_ext}")
+    # src_bin = DIST_DIR / f"{APP_NAME}{bin_ext}"
+    # dest_bin = DIST_DIR / f"{ALIAS_NAME}{bin_ext}"
     
-    if not src_bin.exists():
-         print("\n")
-         fail("Build failed - binary not found!")
+    # if not src_bin.exists():
+    #      print("\n")
+    #      fail("Build failed - binary not found!")
 
-    shutil.copy2(src_bin, dest_bin)
-    print_done()
+    # shutil.copy2(src_bin, dest_bin)
+    # print_done()
     
     # 7. Installation (Linux/Mac)
     installed_paths = []
     if sys.platform != "win32":
         print_step("Installing to System Path")
         p1 = install_binary(src_bin)
-        p2 = install_binary(dest_bin)
+        # p2 = install_binary(dest_bin)
         
-        if p1 and p2:
-            installed_paths = [p1, p2]
+        if p1:
+            installed_paths = [p1]
             print_done()
         else:
             print_skip()
@@ -213,9 +211,9 @@ def main():
     
     if installed_paths:
         print(f"🚀 Installed to: {installed_paths[0].parent}")
-        print(f"   Commands: {APP_NAME}, {ALIAS_NAME}")
+        print(f"   Commands: {APP_NAME}")
     else:
-        print(f"📍 Artifacts: {src_bin.relative_to(root_dir)} & {dest_bin.relative_to(root_dir)}")
+        print(f"📍 Artifacts: {src_bin.relative_to(root_dir)}")
     print("-" * 38)
 
 if __name__ == "__main__":

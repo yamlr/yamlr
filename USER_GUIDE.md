@@ -1,12 +1,12 @@
-# Akeso / Kubecuro User Guide
+# Yamlr / yamlr User Guide
 
-**Akeso** is a high-fidelity Kubernetes manifest healer and diagnostics tool.  
+**Yamlr** is a high-fidelity Kubernetes manifest healer and diagnostics tool.  
 It identifies logical errors, deprecated APIs, and security risks—then fixes them automatically.
 
 ## 🚀 Installation
 
 ### 1. Build & Install (Recommended)
-This method installs the binary to `~/.local/bin` (or `/usr/local/bin` if run with sudo) so you can run `akeso` from anywhere.
+This method installs the binary to `~/.local/bin` (or `/usr/local/bin` if run with sudo) so you can run `yamlr` from anywhere.
 
 ```bash
 # 1. Install dependencies
@@ -23,12 +23,12 @@ Enable tab-completion for commands and flags:
 **Bash / Zsh:**
 ```bash
 # Add to ~/.bashrc or ~/.zshrc
-source <(akeso completion bash)
+source <(yamlr completion bash)
 ```
 
 **PowerShell:**
 ```powershell
-akeso completion powershell | Out-String | Invoke-Expression
+yamlr completion powershell | Out-String | Invoke-Expression
 ```
 
 ---
@@ -38,8 +38,8 @@ This tool has two modes depending on how you call it:
 
 | Command | Identity | Description |
 | :--- | :--- | :--- |
-| **`akeso`** | **OSS Mode** | Free for life. Infinite scans. Best-effort healing. |
-| **`kubecuro`** | **Pro Mode** | Requires license. Unlocks security hardening & compliance reports. |
+| **`yamlr`** | **OSS Mode** | Free for life. Infinite scans. Best-effort healing. |
+| **`yamlr`** | **Pro Mode** | Requires license. Unlocks security hardening & compliance reports. |
 
 *Note: Both commands are aliases for the same underlying engine.*
 
@@ -54,16 +54,20 @@ Audit your manifests without making changes.
 
 ```bash
 # Scan current directory (Implicit recursive)
-akeso scan .
+yamlr scan .
 
 # Scan specific files
-akeso scan deployment.yaml service.yaml
+yamlr scan deployment.yaml service.yaml
 
 # Mixed mode (Files & Dirs) - Batch Reporting
-akeso scan ./prod-manifests/ ./new-service.yaml
+yamlr scan ./prod-manifests/ ./new-service.yaml
 
 # Scan from stdin (CI/CD pipeline)
-cat deployment.yaml | akeso scan -
+cat deployment.yaml | yamlr scan -
+
+# Preview fixes (Dry Run)
+yamlr scan . --dry-run
+# Alias: yamlr scan . --diff
 ```
 
 **Report Modes:**
@@ -75,13 +79,18 @@ Automatically repair syntax, logic, and style issues.
 
 ```bash
 # Interactive Mode (Single File) - Shows diff & asks for confirmation
-akeso heal deployment.yaml
+yamlr heal deployment.yaml
 
 # Batch Mode (Multi-Target) - Global Confirmation
-akeso heal ./manifests/ file1.yaml file2.yaml
+yamlr heal ./manifests/ file1.yaml file2.yaml
 
 # Dry Run (Preview changes without writing)
-akeso heal . --dry-run
+yamlr heal . --dry-run
+# Alias: yamlr heal . --diff
+
+# Auto-Approve (CI/CD)
+yamlr heal broken.yaml -y
+yamlr heal ./manifests --yes-all
 ```
 
 **Safety Interlocks:**
@@ -89,20 +98,20 @@ akeso heal . --dry-run
 *   **Batch Mode:** Used when healing multiple files or directories. Shows summary table. Requires typing `CONFIRM`.
 
 ### 3. Initialize Project
-Create a default configuration file (`.akeso.yaml`):
+Create a default configuration file (`.yamlr.yaml`):
 ```bash
-akeso init
+yamlr init
 ```
 
 ### 4. Explain Rules
 Get detailed documentation for any violation ID.
 ```bash
-akeso explain rules/no-latest-tag
+yamlr explain rules/no-latest-tag
 ```
 
 ---
 
-## ⚙️ Configuration (`.akeso.yaml`)
+## ⚙️ Configuration (`.yamlr.yaml`)
 Customize behavior globally or per-project.
 
 ```yaml
@@ -118,10 +127,10 @@ ignore:
 ## 🆘 Troubleshooting
 
 **Q: "Missing Required Argument: path"**
-A: `akeso scan` and `akeso heal` are strict. You must specify a target (e.g., `akeso scan .`).
+A: `yamlr scan` and `yamlr heal` are strict. You must specify a target (e.g., `yamlr scan .`).
 
 **Q: My CI pipeline passes even when files are broken?**
-A: Ensure you are using `akeso scan`, which returns Exit Code 1 on failure.
+A: Ensure you are using `yamlr scan`, which returns Exit Code 1 on failure.
 
 **Q: How do I upgrade to Pro?**
-A: Run `akeso auth --login <LICENSE_KEY>` to activate Kubecuro Enterprise features.
+A: Run `yamlr auth --login <LICENSE_KEY>` to activate yamlr Enterprise features.

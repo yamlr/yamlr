@@ -3,7 +3,7 @@
 VERIFY CONFIGURATION SYSTEM
 ---------------------------
 Tests the new Foundation Layer:
-1. Loading .akeso.yaml
+1. Loading .yamlr.yaml
 2. Ignoring files based on glob patterns
 3. Overriding health thresholds
 """
@@ -11,8 +11,8 @@ import sys
 import shutil
 import logging
 from pathlib import Path
-from kubecuro.core.config import ConfigManager
-from kubecuro.core.engine import AkesoEngine
+from yamlr.core.config import ConfigManager
+from yamlr.core.engine import YamlrEngine
 
 # Setup Logging
 logging.basicConfig(level=logging.INFO)
@@ -38,7 +38,7 @@ def test_default_config():
     logger.info("✅ Default config passed")
 
 def test_custom_config():
-    logger.info("TEST 2: Custom .akeso.yaml")
+    logger.info("TEST 2: Custom .yamlr.yaml")
     
     config_content = """
 rules:
@@ -47,7 +47,7 @@ rules:
     - "ignore_me.yaml"
     - "deep/*"
 """
-    (TEST_ROOT / ".akeso.yaml").write_text(config_content, encoding='utf-8')
+    (TEST_ROOT / ".yamlr.yaml").write_text(config_content, encoding='utf-8')
     
     # Reload Config
     config = ConfigManager(TEST_ROOT)
@@ -65,12 +65,12 @@ rules:
 def test_engine_integration():
     logger.info("TEST 3: Engine Integration")
     
-    # Engine should pick up the .akeso.yaml we created in TEST 2
+    # Engine should pick up the .yamlr.yaml we created in TEST 2
     # We use a dummy catalog path because we don't want to load real heavy schemas for this unit test
     # But Engine constructor forces load, so we point to the distilled one we know exists
     
     catalog_path = "catalog/k8s_v1_distilled.json"
-    engine = AkesoEngine(str(TEST_ROOT), catalog_path)
+    engine = YamlrEngine(str(TEST_ROOT), catalog_path)
     
     # Audit "ignore_me.yaml" -> Should be IGNORED
     res = engine.audit_and_heal_file("ignore_me.yaml")

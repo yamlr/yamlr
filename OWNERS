@@ -1,4 +1,6 @@
 approvers:
-  - nishar-sunkesala
+  - nishar
+  - kubecuro-maintainers
+
 reviewers:
-  - nishar-sunkesala
+  - kubecuro-community

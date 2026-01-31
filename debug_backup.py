@@ -7,18 +7,18 @@ from pathlib import Path
 # Add src to path
 sys.path.insert(0, os.path.abspath('src'))
 
-from kubecuro.core.engine import AkesoEngine
-from kubecuro.core.io import FileSystemManager
+from yamlr.core.engine import YamlrEngine
+from yamlr.core.io import FileSystemManager
 
 def test_backup_location():
     cwd = Path.cwd()
     print(f"DEBUG: CWD = {cwd}")
     
     # 1. Initialize Engine
-    engine = AkesoEngine(
+    engine = YamlrEngine(
         workspace_path=".", 
-        catalog_path="d:/akeso/catalog/k8s_v1_distilled.json",
-        app_name="kubecuro"
+        catalog_path="d:/yamlr/catalog/k8s_v1_distilled.json",
+        app_name="yamlr"
     )
     
     print(f"DEBUG: Engine app_name = {engine.app_name}")

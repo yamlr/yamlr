@@ -6,8 +6,8 @@ from pathlib import Path
 # Add src to path
 sys.path.insert(0, os.path.abspath('src'))
 
-from kubecuro.parsers.lexer import AkesoLexer
-from kubecuro.parsers.structurer import AkesoStructurer
+from yamlr.parsers.lexer import YamlrLexer
+from yamlr.parsers.structurer import YamlrStructurer
 
 def debug_structure():
     content = """apiVersion: v1
@@ -24,7 +24,7 @@ spec
     print(content)
     
     # 1. Lex
-    lexer = AkesoLexer()
+    lexer = YamlrLexer()
     shards = lexer.shard(content)
     
     print("\n--- TOKENS (SHARDS) ---")
@@ -38,7 +38,7 @@ spec
         
     # 2. Structure
     mock_catalog = {"Service": {"fields": {}}}
-    structurer = AkesoStructurer(catalog=mock_catalog)
+    structurer = YamlrStructurer(catalog=mock_catalog)
     # _build_tree is internal but accessible for debugging
     result = structurer._build_tree(shards, default_kind="Service")
     

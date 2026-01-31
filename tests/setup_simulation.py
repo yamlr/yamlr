@@ -2,7 +2,7 @@
 """
 SETUP SIMULATION
 ----------------
-Generates a "Real World" messy cluster dump for testing Akeso's batch processing,
+Generates a "Real World" messy cluster dump for testing Yamlr's batch processing,
 UI reporting, and safety mechanisms.
 
 Output Structure:

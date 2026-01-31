@@ -1,5 +1,5 @@
 #!/bin/bash
-# [2026-01-21] Akeso Forge Production Build System
+# [2026-01-21] Kubecuro Production Build System
 # Version: 4.2 (Production-Hardened, Self-Registering Identity)
 # Restores: Cleanup, Pre-flight checks, and Size Analytics.
 
@@ -46,7 +46,7 @@ spinner() {
     return "$?"
 }
 
-echo -e "\033[1;35m🧬 Akeso Forge Build System\033[0m"
+echo -e "\033[1;35m🧬 Kubecuro Build System\033[0m"
 echo "--------------------------------------"
 
 # 1. Pre-flight Checks (RESTORED)
@@ -94,16 +94,16 @@ echo -n "🐍 Compiling 'kubecuro' (Identity-Aware)..."
     
     "$VP_PYINSTALLER" --onefile --clean --name kubecuro \
                 --paths "$SCRIPT_DIR/src" \
-                --add-data "$SCRIPT_DIR/catalog${PYINSTALLER_SEPARATOR}akeso/catalog" \
+                --add-data "$SCRIPT_DIR/catalog${PYINSTALLER_SEPARATOR}kubecuro/catalog" \
                 --collect-all rich \
                 --collect-all ruamel.yaml \
-                --hidden-import akeso.models \
-                --hidden-import akeso.core.models \
-                --hidden-import akeso.core.pipeline \
-                --hidden-import akeso.parsers.lexer \
-                --hidden-import akeso.ui.formatter \
+                --hidden-import kubecuro.models \
+                --hidden-import kubecuro.core.models \
+                --hidden-import kubecuro.core.pipeline \
+                --hidden-import kubecuro.parsers.lexer \
+                --hidden-import kubecuro.ui.formatter \
                 --strip \
-                "$SCRIPT_DIR/src/akeso/cli/main.py"
+                "$SCRIPT_DIR/src/kubecuro/cli/main.py"
 } > "$LOG_FILE" 2>&1 &
 spinner "$!" || { echo -e "[\033[31mFAIL\033[0m]"; cat "$LOG_FILE"; exit 1; }
 echo -e "[DONE]"
@@ -122,7 +122,7 @@ fi
 echo -n "🚚 Installing to /usr/local/bin..."
 if sudo cp dist/kubecuro /usr/local/bin/kubecuro && sudo chmod +x /usr/local/bin/kubecuro; then
     # Manually create the symlink via sudo so the binary doesn't have to fight permissions
-    sudo ln -sf /usr/local/bin/kubecuro /usr/local/bin/akeso
+    # sudo ln -sf /usr/local/bin/kubecuro /usr/local/bin/akeso
     INSTALLED=true
     echo -e "[DONE]"
 else
@@ -136,6 +136,6 @@ echo "--------------------------------------"
 echo -e "✅ \033[1;32mBuild & Deployment Complete!\033[0m"
 echo -e "📦 Final Size: \033[1;33m$FINAL_SIZE_HUMAN\033[0m"
 if [ "$INSTALLED" = true ]; then
-    echo -e "🚀 Commands: \033[1;32mkubecuro, akeso\033[0m"
+    echo -e "🚀 Commands: \033[1;32mkubecuro\033[0m"
 fi
 echo "--------------------------------------"

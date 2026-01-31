@@ -12,8 +12,8 @@ import sys
 import shutil
 import logging
 from pathlib import Path
-from kubecuro.core.engine import AkesoEngine
-from kubecuro.core.config import ConfigManager
+from yamlr.core.engine import YamlrEngine
+from yamlr.core.config import ConfigManager
 
 # Setup Logging
 logging.basicConfig(level=logging.INFO)
@@ -47,7 +47,7 @@ def test_analyzers():
     logger.info("TEST: Running Core Analyzers")
     
     # DEBUG: Inspect Registry
-    from kubecuro.analyzers.registry import AnalyzerRegistry
+    from yamlr.analyzers.registry import AnalyzerRegistry
     AnalyzerRegistry.register_defaults() # Force registration to check
     all_analyzers = AnalyzerRegistry.get_all_analyzers()
     logger.info(f"DEBUG: Registry has {len(all_analyzers)} analyzers")
@@ -55,7 +55,7 @@ def test_analyzers():
         logger.info(f"  - {a.name} (type: {getattr(a, 'analyzer_type', 'UNKNOWN')})")
 
     # Init Engine
-    engine = AkesoEngine(str(TEST_ROOT), "catalog/k8s_v1_distilled.json")
+    engine = YamlrEngine(str(TEST_ROOT), "catalog/k8s_v1_distilled.json")
     
     # Run Audit
     res = engine.audit_and_heal_file("bad.yaml")

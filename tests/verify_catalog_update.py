@@ -17,7 +17,7 @@ from rich.console import Console
 # Add src to path
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../src')))
 
-from kubecuro.core.catalog_manager import CatalogManager
+from yamlr.core.catalog_manager import CatalogManager
 
 # Configure logging
 logging.basicConfig(level=logging.WARNING)
