@@ -3,6 +3,8 @@
 *.yamlr.backup
 *.yamlr.tmp
 
+legacy_monolith/
+
 # --- Python Environment ---
 __pycache__/
 *.py[cod]
