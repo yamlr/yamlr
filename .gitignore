@@ -52,3 +52,7 @@ implementation_plan.md
 
 # Unwanted Txt files ---
 sim_log.txt
+debug_backup.py
+debug_spec.py
+reproduce_match.py
+simulation_report.json
