@@ -54,7 +54,16 @@ It is technically capable of feats other tools cannot do (Healing), but it lacks
 **For L1A Visa:** This is perfect. It shows you built something novel (Healing Engine) rather than a derivative wrapper.
 **For Adoption:** We need to make it easier to install and run without Python knowledge.
 
-## 5. Strategic Defenses (Overcoming Threats)
+## 5. Financial Objective (The Exit Strategy)
+**Target:** Tier 2 "Strategic Asset" Exit
+**Minimum Valuation:** **$15,000,000 (15M USD)**
+**Timeline:** 18-24 Months
+
+*   **The Play:** Build the "OPA Remediation Engine" (Universal Adapter).
+*   **The Buyer:** Security/Policy vendors (Snyk, Palo Alto, Styra) who have excellent *detection* but zero *remediation*.
+*   **Rationale:** We are not trying to build a $100M standalone platform (high risk). We are building the "Missing Piece" for an existing giant (high probability).
+
+## 6. Strategic Defenses (Overcoming Threats)
 
 ### Threat 1: AI Coding Assistants (Copilot / ChatGPT)
 *   **The Fear:** "If AI writes perfect YAML, nobody needs a healer."
