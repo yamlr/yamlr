@@ -148,7 +148,9 @@ class OpaAnalyzer(BaseAnalyzer):
                     resource_kind=v.get("kind", "Unknown"),
                     file_path=v.get("file_path", "unknown"), # OPA needs to pass this back
                     rule_id=v.get("rule_id", "custom-policy"),
-                    suggestion=v.get("fix", None)
+                    suggestion=v.get("fix", None),
+                    fix_available=bool(v.get("fix_id")),
+                    fix_id=v.get("fix_id")
                 ))
                 
         except Exception as e:
