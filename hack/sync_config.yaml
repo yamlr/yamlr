@@ -1,0 +1,34 @@
+remotes:
+  enterprise:
+    url: "https://github.com/yamlr/yamlr-enterprise.git"
+    branch: "main"
+    exclude: []
+  
+  core:
+    url: "https://github.com/yamlr/yamlr-core.git"
+    branch: "main"
+    exclude:
+      - "src/yamlr/pro"
+      - "VISA*.md"
+      - "error.log"
+      - "*.log"
+
+  public:
+    url: "https://github.com/yamlr/yamlr.git"
+    branch: "main"
+    exclude:
+      - "src/yamlr/pro"
+      - "src/yamlr/core"
+      - "src/yamlr/parsers"
+      - "src/yamlr/analyzers"
+      - "src/yamlr/ui"
+      - "src/yamlr/models.py"
+      - "tests"
+      - "tools"
+      - "VISA*.md"
+      - "error.log"
+      - "*.log"
+
+items_to_hide:
+  - "hack/push_all.py"
+  - "hack/sync_config.yaml"

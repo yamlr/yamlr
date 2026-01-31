@@ -1,45 +1,19 @@
 import os
 import subprocess
 import sys
+import yaml
 from pathlib import Path
 
 # --- Configuration ---
-REMOTES = {
-    "enterprise": {
-        "url": "https://github.com/yamlr/yamlr-enterprise.git",
-        "exclude": [], # Full Repo
-        "branch": "main"
-    },
-    "core": {
-        "url": "https://github.com/yamlr/yamlr-core.git",
-        "exclude": [
-            "src/yamlr/pro",            # OSS Core
-            "VISA_STRATEGY.md", "error.log", "*.log"
-        ], 
-        "branch": "main"
-    },
-    "public": {
-        "url": "https://github.com/yamlr/yamlr.git",
-        "exclude": [
-            # Enterprise
-            "src/yamlr/pro", 
-            # Core Logic (The Engine)
-            "src/yamlr/core", 
-            "src/yamlr/parsers",
-            "src/yamlr/analyzers",
-            "src/yamlr/ui", 
-            "src/yamlr/models.py",
-            # Dev Tools
-            "tests", 
-            "tools",
-            # Confidential Specs
-            "VISA*.md", "error.log", "*.log"
-        ],
-        "branch": "main"
-    }
-}
+CONFIG_FILE = Path(__file__).parent / "sync_config.yaml"
 
-SCRIPTS_TO_HIDE = ["hack/push_all.py"]
+def load_config():
+    if not CONFIG_FILE.exists():
+        print(f"❌ Config file not found: {CONFIG_FILE}")
+        sys.exit(1)
+    
+    with open(CONFIG_FILE, "r") as f:
+        return yaml.safe_load(f)
 
 def run_git(args, cwd=None, error_ok=False):
     cmd = ["git"] + args
@@ -50,15 +24,15 @@ def run_git(args, cwd=None, error_ok=False):
         sys.exit(1)
     return res.stdout.strip()
 
-def setup_remotes():
+def setup_remotes(remotes):
     """Ensures local git has the correct remotes defined."""
     current_remotes = run_git(["remote"]).splitlines()
-    for name, config in REMOTES.items():
+    for name, config in remotes.items():
         if name not in current_remotes:
             print(f"⚠️ Remote '{name}' missing. Adding...")
             run_git(["remote", "add", name, config["url"]])
 
-def push_target(name, config):
+def push_target(name, config, items_to_hide):
     print(f"\n🚀 Processing: {name.upper()}")
     
     # Check dirty
@@ -67,7 +41,7 @@ def push_target(name, config):
         sys.exit(1)
 
     # 1. If Enterprise (Full), just push
-    if not config["exclude"]:
+    if not config.get("exclude"):
         print("📦 Pushing Full Repo...")
         run_git(["push", name, f"HEAD:{config['branch']}"])
         print("✅ Done.")
@@ -77,13 +51,15 @@ def push_target(name, config):
     current_branch = run_git(["rev-parse", "--abbrev-ref", "HEAD"])
     temp_branch = f"temp-release-{name}"
     
+    # Clean up previous runs if any
     run_git(["branch", "-D", temp_branch], error_ok=True)
+    
+    # Create temp branch
     run_git(["checkout", "-b", temp_branch])
     
     try:
         print("✂️  Pruning files...")
-        print("✂️  Pruning files...")
-        exclusions = config["exclude"] + SCRIPTS_TO_HIDE
+        exclusions = config.get("exclude", []) + items_to_hide
         for path_pattern in exclusions:
             # Always try to remove, let git handle existence checks via --ignore-unmatch
             # We pass the pattern directly to git to handle globs (e.g. *.log)
@@ -104,12 +80,20 @@ def main():
     os.chdir(root_dir)
     
     print("🔄 Yamlr Multi-Repo Sync")
-    setup_remotes()
+    
+    config = load_config()
+    remotes = config.get("remotes", {})
+    items_to_hide = config.get("items_to_hide", [])
+
+    setup_remotes(remotes)
     
     # Push in order of importance/completeness
-    push_target("enterprise", REMOTES["enterprise"])
-    push_target("core", REMOTES["core"])
-    push_target("public", REMOTES["public"])
+    # We explicitly define order to ensure Enterprise is first
+    priority_order = ["enterprise", "core", "public"]
+    
+    for key in priority_order:
+        if key in remotes:
+            push_target(key, remotes[key], items_to_hide)
     
     print("\n✨ All repos synced!")
 
