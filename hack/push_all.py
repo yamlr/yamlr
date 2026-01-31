@@ -12,7 +12,10 @@ REMOTES = {
     },
     "core": {
         "url": "https://github.com/yamlr/yamlr-core.git",
-        "exclude": ["src/yamlr/pro"], # OSS Core
+        "exclude": [
+            "src/yamlr/pro",            # OSS Core
+            "VISA_STRATEGY.md", "error.log", "*.log"
+        ], 
         "branch": "main"
     },
     "public": {
@@ -28,7 +31,9 @@ REMOTES = {
             "src/yamlr/models.py",
             # Dev Tools
             "tests", 
-            "tools"
+            "tools",
+            # Confidential Specs
+            "VISA_STRATEGY.md", "error.log", "*.log"
         ],
         "branch": "main"
     }
