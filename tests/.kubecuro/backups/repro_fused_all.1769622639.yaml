@@ -1,9 +1,0 @@
-apiVersion: V1
-kind: Service
-metadata:
-  name: fused-test
-specPorts:
-  port:
-    - port: 80
-selectorApp:
-  app: test
