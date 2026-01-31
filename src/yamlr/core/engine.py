@@ -63,7 +63,10 @@ class YamlrEngine:
                  deep_array_validation: bool = False,
                  custom_key_order: Optional[List[str]] = None,
                  health_threshold: int = 70,
-                 cluster_version: Optional[str] = None):
+                 custom_key_order: Optional[List[str]] = None,
+                 health_threshold: int = 70,
+                 cluster_version: Optional[str] = None,
+                 opa_bundle_path: Optional[str] = None):
         """
         Initializes the Yamlr Engine with workspace and catalog.
         
@@ -131,6 +134,20 @@ class YamlrEngine:
             logger.error(f"Failed to initialize HealingPipeline: {e}")
             raise RuntimeError(f"Pipeline initialization failed: {str(e)}")
 
+        # --- OPA ANALYZER WIRING (ENTERPRISE) ---
+        if opa_bundle_path:
+            try:
+                from yamlr.pro.opa_adapter import OpaAnalyzer
+                from yamlr.analyzers.registry import AnalyzerRegistry
+                
+                opa_analyzer = OpaAnalyzer(policy_path=opa_bundle_path)
+                AnalyzerRegistry.register_instance(opa_analyzer)
+                logger.info(f"💎 OPA Policy Engine enabled (Bundle: {opa_bundle_path})")
+            except ImportError:
+                logger.warning("OPA Bundle provided but 'yamlr.pro.opa_adapter' not found. Enterprise features disabled.")
+            except Exception as e:
+                logger.error(f"Failed to initialize OPA Engine: {e}")
+
     def audit_and_heal_file(self, 
                             relative_path: str, 
                             dry_run: bool = True, 
@@ -183,12 +200,13 @@ class YamlrEngine:
             if not raw_text.strip():
                 return self._file_error(relative_path, "EMPTY_FILE", "File contains no content")
             
-            # Pass cluster_version to pipeline
+            # Pass cluster_version and file_path to pipeline
             healed_text, pipeline_logs, health_score, identities, findings = self.pipeline.heal(
                 raw_text, 
                 strict_validation=strict_validation,
                 compact=compact,
-                cluster_version=self.cluster_version 
+                cluster_version=self.cluster_version,
+                file_path=relative_path 
             )
             
             # Serialize findings with Rule Filtering

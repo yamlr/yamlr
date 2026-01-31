@@ -236,7 +236,8 @@ class HealingPipeline:
     def heal(self, 
              raw_yaml: str, 
              strict_validation: bool = False, compact: bool = False,
-             cluster_version: Optional[str] = None) -> Tuple[str, List[str], int, List[ManifestIdentity]]:
+             cluster_version: Optional[str] = None,
+             file_path: str = "unknown") -> Tuple[str, List[str], int, List[ManifestIdentity]]:
         """
         Executes the complete 9-stage healing sequence.
         
@@ -244,9 +245,9 @@ class HealingPipeline:
             raw_yaml: The potentially malformed input string.
             strict_validation: If True, fails on schema mismatches.
             compact: If True, uses 2-space indents and minimizes whitespace.
-            cluster_version: Target K8s version for deprecation checks (e.g., "v1.28")  
-            # If None, uses context's default detection logic.
-            
+            cluster_version: Target K8s version for deprecation checks (e.g., "v1.28")
+            file_path: Origin path of the manifest (for debugging/finding lineage).
+             
         Returns:
             Tuple: (Healed YAML string, Audit Logs, Confidence Score, Identities, List[AnalysisResult])
         """
@@ -299,6 +300,10 @@ class HealingPipeline:
             if primary:
                 audit_log.append(f"Stage 3: Identified {primary.api_version}/{primary.kind}")
                 kind, api_version = primary.kind, primary.api_version
+                
+                # [2026-01-31] Threading: Inject file_path into identities for Analyzers
+                for ident in identities:
+                    ident.file_path = file_path
             else:
                 audit_log.append("Stage 3: No valid K8s identity found")
                 kind, api_version = None, None

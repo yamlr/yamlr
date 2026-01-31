@@ -134,6 +134,7 @@ def main():
     # SCAN
     scan_parser = subparsers.add_parser("scan", add_help=False)
     add_standard_flags(scan_parser)
+    scan_parser.add_argument("--opa-bundle", metavar="PATH", help="Path to OPA policy bundle (enables Enterprise Policy Engine)")
     scan_parser.add_argument("--output", choices=["text", "json", "sarif"], default="text", help="Output format")
     scan_parser.add_argument("--diff", action="store_true", help="Show proposed fixes (like heal --dry-run)")
     scan_parser.add_argument("--dry-run", dest="diff", action="store_true", help="Alias for --diff")
@@ -142,6 +143,8 @@ def main():
     heal_parser = subparsers.add_parser("heal", add_help=False)
     add_standard_flags(heal_parser)
     heal_parser.add_argument("--dry-run", action="store_true")
+    heal_parser.add_argument("--diff", dest="dry_run", action="store_true", help="Alias for --dry-run")
+    heal_parser.add_argument("--opa-bundle", metavar="PATH", help="Path to OPA policy bundle")
     heal_parser.add_argument("--diff", dest="dry_run", action="store_true", help="Alias for --dry-run")
     heal_parser.add_argument("-y", "--yes", action="store_true", help="Auto-confirm")
     heal_parser.add_argument("--yes-all", action="store_true", help="Auto-confirm all in batch")
@@ -357,7 +360,8 @@ def main():
             workspace_path=".", 
             catalog_path=final_catalog_path,
             app_name="Yamlr",
-            cluster_version=target_cluster_version 
+            cluster_version=target_cluster_version,
+            opa_bundle_path=getattr(args, 'opa_bundle', None)
         )
 
         if args.command == "scan":

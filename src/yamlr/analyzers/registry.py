@@ -60,6 +60,18 @@ class AnalyzerRegistry:
         return analyzer_cls
 
     @classmethod
+    def register_instance(cls, analyzer_instance: BaseAnalyzer):
+        """
+        Registers a pre-instantiated analyzer (e.g., loaded with config).
+        Useful for plugins like OPA that need runtime parameters.
+        """
+        name = analyzer_instance.__class__.__name__
+        cls._instances[name] = analyzer_instance
+        # Also register class key to prevent duplicate instantiation attempts
+        cls._analyzers[name] = analyzer_instance.__class__
+        logger.debug(f"Registered analyzer instance: {name}")
+
+    @classmethod
     def register_defaults(cls):
         """
         Explicitly loads and registers the core standard analyzers.
