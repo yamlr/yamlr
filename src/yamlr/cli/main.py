@@ -260,6 +260,14 @@ def main():
             
         else:
             print_kubectl_help(invoked_as)
+            
+        # [UX Fix] If running as exe on Windows without args (Double Click), pause so user can read help
+        if getattr(sys, 'frozen', False) and platform.system() == "Windows" and len(sys.argv) == 1:
+            try:
+                input("\n[PRESS ENTER TO EXIT]")
+            except:
+                pass
+
         sys.exit(0)
 
     # 6. Dispatch
