@@ -63,8 +63,6 @@ class YamlrEngine:
                  deep_array_validation: bool = False,
                  custom_key_order: Optional[List[str]] = None,
                  health_threshold: int = 70,
-                 custom_key_order: Optional[List[str]] = None,
-                 health_threshold: int = 70,
                  cluster_version: Optional[str] = None,
                  opa_bundle_path: Optional[str] = None):
         """
