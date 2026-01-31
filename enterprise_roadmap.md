@@ -46,7 +46,7 @@ The goal of OSS is to make `yamlr scan .` the default first step for any K8s dev
 
 ## 4. Enterprise Roadmap: "The Control Plane"
 
-The goal of Enterprise (Emplatix) is to give Platform Teams control over `yamlr` usage and cluster state.
+The goal of Enterprise (Yamlr Enterprise) is to give Platform Teams control over `yamlr` usage and cluster state.
 
 ### 🚀 Phase 1: The Drift Doctor (Smart Limits & Autoscaling)
 *   **Objective:** Reconcile Git State with Cluster State.

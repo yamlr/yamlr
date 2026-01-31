@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-EMPLATIX ENTERPRISE – ADVANCED DEPRECATION ENGINE
+YAMLR ENTERPRISE – ADVANCED DEPRECATION ENGINE
 -----------------------------------------
 Enterprise-grade API lifecycle intelligence.
 
@@ -23,7 +23,7 @@ try:
     from yamlr.core.deprecations import DeprecationChecker, DeprecationInfo
 except ImportError as e:
     raise RuntimeError(
-        "Emplatix Enterprise requires Yamlr OSS foundation. "
+        "Yamlr Enterprise requires Yamlr foundation. "
         "Install Yamlr first: pip install Yamlr"
     ) from e
 

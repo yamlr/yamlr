@@ -68,7 +68,7 @@ class HealingPipeline:
                  mem_limit: str = "512Mi",
                  default_namespace: str = "default",
                  app_name: str = "Yamlr",
-                 pro_brand: str = "Emplatix"):
+                 pro_brand: str = "Yamlr Enterprise"):
         """
         Initializes the pipeline with all healing components.
         Sets up Foundation (OSS) and attempts to link Enterprise (Pro) modules.

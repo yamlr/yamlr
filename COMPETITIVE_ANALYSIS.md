@@ -1,7 +1,7 @@
 # yamlr Competitive Landscape & Feature Matrix
 
 ## 1. Overview
-This document provides a detailed breakdown of how yamlr (OSS) and Emplatix (Enterprise) compare against the current market leaders in Kubernetes validation. 
+This document provides a detailed breakdown of how Yamlr and Yamlr Enterprise compare against the current market leaders in Kubernetes validation. 
 
 **The Core Differentiator:** While competitors focus on *Reporting* (finding issues), yamlr focuses on *Healing* (fixing issues).
 

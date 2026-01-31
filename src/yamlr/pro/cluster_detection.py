@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Emplatix Enterprise - Intelligent Cluster Version Detection
+Yamlr Enterprise - Intelligent Cluster Version Detection
 """
 import os
 import subprocess

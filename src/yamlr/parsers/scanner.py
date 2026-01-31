@@ -59,7 +59,7 @@ class KubeScanner:
                  catalog: Optional[Dict[Any, Any]] = None,
                  schema_type: str = "kubernetes",
                  app_name: str = "Yamlr",
-                 pro_brand: str = "Emplatix", 
+                 pro_brand: str = "Yamlr Enterprise", 
                  **schema_sources):
         """
         Initializes the scanner with schema catalog(s).

@@ -92,12 +92,12 @@ def print_custom_header(invoked_as: str, is_pro: bool):
     console.print("")
     # Decoupled Branding:
     # OSS Project = Yamlr
-    # Commercial Product = Emplatix
+    # Commercial Product = Yamlr Enterprise
     
     if invoked_as == "Yamlr":
         # If running as the main binary, we present the Platform identity if Pro matches
         if is_pro:
-            title = "💎 Emplatix Enterprise"
+            title = "💎 Yamlr Enterprise"
             subtitle = "Powered by Yamlr Engine"
             border = "magenta"
         else:
@@ -153,7 +153,7 @@ def print_version(invoked_as: str, is_pro: bool, cluster_version: str = None):
     """
     if is_pro:
         tier = "Enterprise"
-        identity = "Emplatix"
+        identity = "Yamlr Enterprise"
         border_color = "magenta"
     else:
         tier = "OSS" 

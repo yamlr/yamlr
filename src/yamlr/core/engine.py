@@ -56,7 +56,7 @@ class YamlrEngine:
                  workspace_path: str, 
                  catalog_path: str,
                  app_name: str = "Yamlr",  # Default: CNCF Brand
-                 pro_brand: str = "Emplatix",    # Commercial Brand
+                 pro_brand: str = "Yamlr Enterprise",    # Commercial Brand
                  cpu_limit: str = "500m", 
                  mem_limit: str = "512Mi",
                  default_namespace: str = "default",

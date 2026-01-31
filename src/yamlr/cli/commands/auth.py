@@ -33,7 +33,7 @@ def handle_auth_command(args, console):
 
     # 2. Status Mode (Default)
     status, message = YamlrBridge.check_pro_status()
-    console.print("\n[bold]Emplatix Enterprise Status[/bold]")
+    console.print("\n[bold]Yamlr Enterprise Status[/bold]")
     console.print("--------------------------")
     
     badge, msg, color = YamlrBridge.get_pro_status_display()

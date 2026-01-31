@@ -3,7 +3,7 @@
 Yamlr UNIFIED CLI
 --------------------------
 High-fidelity manifest healing and diagnostics.
-Maintains 1:1 parity between OSS (Yamlr) and Enterprise (Emplatix).
+Maintains 1:1 parity between Yamlr and Yamlr Enterprise.
 
 Refactored (2026-01-27):
 - Modularized command handling (src/Yamlr/cli/commands/)
