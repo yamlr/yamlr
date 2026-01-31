@@ -59,5 +59,7 @@ simulation_report.json
 
 VISA_STRATEGY.md
 VISA_REPO_STRATEGY.md
+error.log
+*.exe
 TECHNICAL_DEBT.md
 error.log
