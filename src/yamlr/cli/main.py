@@ -145,7 +145,6 @@ def main():
     heal_parser.add_argument("--dry-run", action="store_true")
     heal_parser.add_argument("--diff", dest="dry_run", action="store_true", help="Alias for --dry-run")
     heal_parser.add_argument("--opa-bundle", metavar="PATH", help="Path to OPA policy bundle")
-    heal_parser.add_argument("--diff", dest="dry_run", action="store_true", help="Alias for --dry-run")
     heal_parser.add_argument("-y", "--yes", action="store_true", help="Auto-confirm")
     heal_parser.add_argument("--yes-all", action="store_true", help="Auto-confirm all in batch")
     heal_parser.add_argument("--harden", action="store_true")
@@ -175,7 +174,11 @@ def main():
     # UTILS
     subparsers.add_parser("version", add_help=False)
     auth_parser = subparsers.add_parser("auth", add_help=False)
-    auth_parser.add_argument("--login", metavar="TOKEN")
+    auth_sub = auth_parser.add_subparsers(dest="auth_action")
+    auth_sub.add_parser("login", help="Authenticate with Yamlr Enterprise")
+    auth_sub.add_parser("logout", help="Clear local credentials")
+    auth_sub.add_parser("status", help="Check authentication status")
+    auth_sub.add_parser("whoami", help="Alias for status")
 
     # 3. Parse Args
     args, unknown = parser.parse_known_args()
