@@ -39,6 +39,14 @@ To move from "Cool Tech" to "Market Standard", we need to address the friction p
 *   We cannot manually write 100 checks in Python.
 *   **Strategy:** Import/Adapter for **OPA/Rego** policies? Or simply double down on the *Syntax/Structure* healing and let OPA handle the semantic policy. **Stick to your niche: Syntax & Structure.**
 
+### Phase 3: The Universal Adapter (Enterprise OPA)
+*   **The Strategy:** "We don't compete with the standard; we make it actionable."
+*   **Implementation:** 
+    *   Integrate **OPA via WASM** (WebAssembly) to run Rego policies inside Yamlr without requiring a Go runtime/binary.
+    *   Build the **Validation-to-Remediation Bridge**: Map OPA error messages (e.g., "Replica count too low") to Yamlr repair functions.
+*   **Value Prop:** "Bring your existing Rego rules. Yamlr will auto-fix violations that OPA only complains about."
+*   **Business Case:** This makes Yamlr an immediate acquisition target for Policy vendors (Styra/Snyk) who lack remediation capabilities.
+
 ## 4. The Verdict
 **Yamlr OSS is a Lamborghini engine in a garage.**
 It is technically capable of feats other tools cannot do (Healing), but it lacks the "showroom" polish (Distribution, easy installs, massive rule library) to capture the mass market *yet*.
@@ -65,11 +73,12 @@ It is technically capable of feats other tools cannot do (Healing), but it lacks
     *   *Integration:* "Kyverno says 'Missing Label'? Yamlr auto-injects it."
 
 ### Threat 3: Rule Anemia (Competitors have more rules)
-*   **The Strategy:** Don't compete on volume of static rules.
-*   **The Pivot:** **"Structural Repair Specialist."**
-    *   Let Checkov/Datree handle the 500 security CVE checks.
-    *   Yamlr focuses exclusively on **Syntax, Indentation, Encoding, and Schema Validity**.
-    *   Become the *pre-processor* that cleans the file before Checkov scans it.
+*   **The Strategy:** Don't compete on volume of static rules. Don't copy-paste Python code (IP Risk).
+*   **The Pivot:** **"The Universal Adapter (OPA Integration)."**
+    *   *Concept:* Build a generic "Policy Loader" that ingests standard **Rego** files.
+    *   *Citation/Rationale:* **Open Policy Agent (OPA)** is a **CNCF Graduated Project** and the de-facto industry standard for policy.
+    *   *Advantage:* By supporting Rego, Yamlr instantly inherits thousands of existing rules from the community without maintaining them.
+    *   *Differentiation:* We add the "Fixer" layer on top. "OPA detects; Yamlr corrects."
 
 ## 6. Feature Gap Matrix (Yamlr vs. Leaders)
 
@@ -81,11 +90,10 @@ It is technically capable of feats other tools cannot do (Healing), but it lacks
 | **Rule Count** | ~5 (Basic) | ~20 (Linting) | 1,000+ (Security/Compliance) | N/A (framework) |
 | **CRD Support** | ❌ Limited (Static Catalog) | ✅ Dynamic | ✅ Extensive | ✅ Dynamic |
 | **Integration** | ❌ CLI Only | ✅ CI/CD, IDE, Docker | ✅ CI/CD, Dashboard, IDE | ✅ K8s Admission |
-| **Output Formats** | JSON, Text | JSON, JUnit, TAP | SARIF, JSON, CLI | JSON, Events |
+| **Output Formats** | ✅ JSON, Text, SARIF | JSON, JUnit, TAP | SARIF, JSON, CLI | JSON, Events |
 | **Language** | Python (Slow start) | Go (Instant) | Python (Slow) | Go (Instant) |
 
 ### Critical Missing Features (The "Must Haves"):
 1.  **CRD Support:** We currently only support standard K8s objects (v1.27 catalog). If a user has an `IstioVirtualService`, Yamlr ignores it or flags it as unknown. *Competitors handle CRDs dynamically.*
 2.  **Custom Rule Engine:** Users cannot write their own checks (e.g., "All labels must include 'cost-center'"). *Checkov/Datree allow this easily.*
-3.  **CI/CD Outputs:** We don't output **JUnit/SARIF** natively for GitHub Actions to visualize failures. (Added JSON recently, but SARIF is the standard).
-4.  **Multi-File Context:** We scan files individually. We miss "Service references a Deployment that doesn't exist" (Integrity checks), although `graph_test.py` suggests we have the *capability*, it's not fully exposed.
+3.  **Multi-File Context:** We scan files individually. We miss "Service references a Deployment that doesn't exist" (Integrity checks), although `graph_test.py` suggests we have the *capability*, it's not fully exposed.
