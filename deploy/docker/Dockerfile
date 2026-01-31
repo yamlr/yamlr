@@ -18,12 +18,12 @@ RUN pip install .
 # Build binary
 # Note: We use a simplified inline build command for Docker context
 RUN pyinstaller --noconfirm --onefile --clean \
-    --name akeso \
+    --name yamlr \
     --paths src \
-    --add-data "catalog:akeso/catalog" \
+    --add-data "catalog:yamlr/catalog" \
     --collect-all rich \
     --strip \
-    src/akeso/cli/main.py
+    src/yamlr/cli/main.py
 
 # Stage 2: Runner
 # Uses Google Distroless for maximum security (CNCF Best Practice)
@@ -33,11 +33,7 @@ FROM gcr.io/distroless/cc-debian12
 WORKDIR /app
 
 # Copy binary from builder
-COPY --from=builder /app/dist/akeso /usr/local/bin/akeso
-
-# Create alias symlink
-# Distroless shell is limited, so we copy instead
-COPY --from=builder /app/dist/akeso /usr/local/bin/kubecuro
+COPY --from=builder /app/dist/yamlr /usr/local/bin/yamlr
 
 # Verify
-ENTRYPOINT ["/usr/local/bin/akeso"]
+ENTRYPOINT ["/usr/local/bin/yamlr"]

@@ -1,9 +1,7 @@
-# --- Akeso / Kubecuro Artifacts ---
-*.akeso.backup
-*.akeso.tmp
-*.kubecuro.backup
-*.kubecuro.tmp
-.kubecuro/
+# --- Yamlr Artifacts ---
+.yamlr/
+*.yamlr.backup
+*.yamlr.tmp
 
 # --- Python Environment ---
 __pycache__/

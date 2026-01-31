@@ -1,5 +1,5 @@
 #!/bin/bash
-# [2026-01-21] Kubecuro Production Build System
+# [2026-01-21] Yamlr Production Build System
 # Version: 4.2 (Production-Hardened, Self-Registering Identity)
 # Restores: Cleanup, Pre-flight checks, and Size Analytics.
 
@@ -46,7 +46,7 @@ spinner() {
     return "$?"
 }
 
-echo -e "\033[1;35m🧬 Kubecuro Build System\033[0m"
+echo -e "\033[1;35m🧬 Yamlr Build System\033[0m"
 echo "--------------------------------------"
 
 # 1. Pre-flight Checks (RESTORED)
@@ -86,24 +86,24 @@ spinner "$!" || { echo -e "[\033[31mFAIL\033[0m]"; cat "$LOG_FILE"; exit 1; }
 echo -e "[DONE]"
 
 # 4. Build Primary Binary
-echo -n "🐍 Compiling 'kubecuro' (Identity-Aware)..."
+echo -n "🐍 Compiling 'yamlr' (Identity-Aware)..."
 {
     source "$VENV_DIR/$VENV_BIN/activate"
-    # We explicitly include the 'src' path and the 'akeso' package root
+    # We explicitly include the 'src' path and the 'yamlr' package root
     export PYTHONPATH="$SCRIPT_DIR/src"
     
-    "$VP_PYINSTALLER" --onefile --clean --name kubecuro \
+    "$VP_PYINSTALLER" --onefile --clean --name yamlr \
                 --paths "$SCRIPT_DIR/src" \
-                --add-data "$SCRIPT_DIR/catalog${PYINSTALLER_SEPARATOR}kubecuro/catalog" \
+                --add-data "$SCRIPT_DIR/catalog${PYINSTALLER_SEPARATOR}yamlr/catalog" \
                 --collect-all rich \
                 --collect-all ruamel.yaml \
-                --hidden-import kubecuro.models \
-                --hidden-import kubecuro.core.models \
-                --hidden-import kubecuro.core.pipeline \
-                --hidden-import kubecuro.parsers.lexer \
-                --hidden-import kubecuro.ui.formatter \
+                --hidden-import yamlr.models \
+                --hidden-import yamlr.core.models \
+                --hidden-import yamlr.core.pipeline \
+                --hidden-import yamlr.parsers.lexer \
+                --hidden-import yamlr.ui.formatter \
                 --strip \
-                "$SCRIPT_DIR/src/kubecuro/cli/main.py"
+                "$SCRIPT_DIR/src/yamlr/cli/main.py"
 } > "$LOG_FILE" 2>&1 &
 spinner "$!" || { echo -e "[\033[31mFAIL\033[0m]"; cat "$LOG_FILE"; exit 1; }
 echo -e "[DONE]"
@@ -112,17 +112,15 @@ echo -e "[DONE]"
 if [ -f "$VP_STATICX" ]; then
     echo -n "🛡️  Hardening to Static Binary..."
     {
-        "$VP_STATICX" --strip --tmpdir /tmp dist/kubecuro dist/kubecuro_static
-        mv dist/kubecuro_static dist/kubecuro
+        "$VP_STATICX" --strip --tmpdir /tmp dist/yamlr dist/yamlr_static
+        mv dist/yamlr_static dist/yamlr
     } > "$LOG_FILE" 2>&1 &
     spinner "$!" && echo -e "[DONE]" || echo -e "[SKIPPED]"
 fi
 
 # 6. Global Deployment & Self-Registration
 echo -n "🚚 Installing to /usr/local/bin..."
-if sudo cp dist/kubecuro /usr/local/bin/kubecuro && sudo chmod +x /usr/local/bin/kubecuro; then
-    # Manually create the symlink via sudo so the binary doesn't have to fight permissions
-    # sudo ln -sf /usr/local/bin/kubecuro /usr/local/bin/akeso
+if sudo cp dist/yamlr /usr/local/bin/yamlr && sudo chmod +x /usr/local/bin/yamlr; then
     INSTALLED=true
     echo -e "[DONE]"
 else
@@ -130,12 +128,12 @@ else
 fi
 
 # 7. Size Analytics (RESTORED)
-FINAL_SIZE_HUMAN=$(du -h "dist/kubecuro" | cut -f1)
+FINAL_SIZE_HUMAN=$(du -h "dist/yamlr" | cut -f1)
 
 echo "--------------------------------------"
 echo -e "✅ \033[1;32mBuild & Deployment Complete!\033[0m"
 echo -e "📦 Final Size: \033[1;33m$FINAL_SIZE_HUMAN\033[0m"
 if [ "$INSTALLED" = true ]; then
-    echo -e "🚀 Commands: \033[1;32mkubecuro\033[0m"
+    echo -e "🚀 Commands: \033[1;32myamlr\033[0m"
 fi
 echo "--------------------------------------"

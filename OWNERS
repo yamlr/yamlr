@@ -1,6 +1,6 @@
 approvers:
   - nishar
-  - kubecuro-maintainers
+  - yamlr-maintainers
 
 reviewers:
-  - kubecuro-community
+  - yamlr-community

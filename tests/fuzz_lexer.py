@@ -22,7 +22,7 @@ from yamlr.parsers.lexer import YamlrLexer
 console = Console()
 
 def run_fuzz():
-    corpus_dir = Path("d:/kubecuro/tests/corpus")
+    corpus_dir = Path("d:/yamlr/tests/corpus")
     files = glob.glob(str(corpus_dir / "**/*.yaml"), recursive=True)
     
     if not files:

@@ -63,7 +63,7 @@ def run_cli_scan(path: Path):
     env = os.environ.copy()
     env["PYTHONIOENCODING"] = "utf-8"
     
-    result = subprocess.run(cmd, capture_output=True, text=True, cwd="d:/kubecuro", encoding='utf-8', env=env)
+    result = subprocess.run(cmd, capture_output=True, text=True, cwd="d:/yamlr", encoding='utf-8', env=env)
     duration = time.time() - start
     
     print(f"Exit Code: {result.returncode}")
@@ -77,7 +77,7 @@ def run_cli_scan(path: Path):
     return True
 
 def main():
-    base_dir = Path("d:/kubecuro/tests/stress_out")
+    base_dir = Path("d:/yamlr/tests/stress_out")
     base_dir.mkdir(exist_ok=True)
     
     # Test 1: Edge Cases
