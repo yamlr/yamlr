@@ -76,6 +76,7 @@ The goal of Enterprise (Yamlr Enterprise) is to give Platform Teams control over
 
 ### 🤖 Phase 3: The AI Surgeon
 *   **Objective:** Complex Refactoring & Explanation.
+*   **See Strategy:** [The Safe AI Architecture](./AI_SAFETY_STRATEGY.md)
 *   **Features:**
     -   **Explainability:** "Why did Yamlr change this?" (LLM generated PR descriptions).
     -   **Complex Refactoring:** "Split this giant Manifest into Microservices."

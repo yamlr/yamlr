@@ -1,14 +1,14 @@
-# yamlr Competitive Landscape & Feature Matrix
+# Yamlr Competitive Landscape & Feature Matrix
 
 ## 1. Overview
 This document provides a detailed breakdown of how Yamlr and Yamlr Enterprise compare against the current market leaders in Kubernetes validation. 
 
-**The Core Differentiator:** While competitors focus on *Reporting* (finding issues), yamlr focuses on *Healing* (fixing issues).
+**The Core Differentiator:** While competitors focus on *Reporting* (finding issues), Yamlr focuses on *Healing* (fixing issues).
 
 ## 2. Feature Comparison Matrix
 
-| Feature Category | Feature | **Kubeval** / **Kubeconform** | **Polaris** | **Pluto** | **yamlr OSS** | **yamlr Enterprise** |
-| :--- | :--- | :---: | :---: | :---: | :---: | :---: |
+| Feature Category | Feature | **Kubeval** / **Kubeconform** | **Polaris** | **Pluto** | **Yamlr** | **Yamlr Enterprise** |
+| :--- | :--- | :---: | :---: | :---: | :--- | :--- |
 | **Foundational** | **Schema Validation** | ✅ | ✅ | ❌ | **✅ (Strict)** | **✅ (Deep)** |
 | | **Automatic Repairs** | ❌ | ❌ | ❌ | **✅ (Syntax/Indent)** | **✅ (AI Enhanced)** |
 | **Best Practices** | **Policy Checks (Linter)** | ❌ | ✅ | ❌ | **✅ (Built-in)** | **✅ (Custom Rego)** |
@@ -33,7 +33,7 @@ This document provides a detailed breakdown of how Yamlr and Yamlr Enterprise co
 *   **Pluto:** Focused solely on deprecated APIs. "Are you using old versions?"
     *   *Weakness:* Tells you the problem but forces you to manually edit 100 files.
 
-### B. yamlr OSS (The "Local Fixer")
+### B. Yamlr (The "Local Fixer")
 *   **Target:** The Individual Developer & DevOps Engineer.
 *   **Philosophy:** "runs on my machine".
 *   **Key Capabilities:**
@@ -42,7 +42,7 @@ This document provides a detailed breakdown of how Yamlr and Yamlr Enterprise co
     *   **The Migrator:** Automatically upgrades `v1beta1` to `v1`.
     *   **Zero Config:** Works out of the box with standard K8s catalog.
 
-### C. yamlr Enterprise (The "Platform Control Plane")
+### C. Yamlr Enterprise (The "Platform Control Plane")
 *   **Target:** Platform Teams & SRE Managers.
 *   **Philosophy:** "runs on the cluster".
 *   **Key Capabilities:**
