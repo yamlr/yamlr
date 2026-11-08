@@ -23,7 +23,7 @@ class Yamlr < Formula
   on_linux do
     if Hardware::CPU.intel?
       url "https://get.yamlr.dev/v#{version}/yamlr-linux-x86_64.tar.gz"
-      sha256 "e342fe5cc5f49e2798df346515ac8b87f936cbccf3553b71821be12f818638b9"
+      sha256 "a601c2b05bb3000161104b095c4728b75a9986fe7c7ef722bad6c7dede90c875"
     end
   end
 
