@@ -4,10 +4,10 @@
 
 set -e
 
-REPO="${YAMLR_REPO:-yamlr/releases}"
+REPO="${YAMLR_REPO:-yamlr/yamlr}"
 INSTALL_DIR="${YAMLR_INSTALL_DIR:-/usr/local/bin}"
 USER_INSTALL_DIR="${HOME}/.local/bin"
-VERSION="${YAMLR_VERSION:-}"
+VERSION="${YAMLR_VERSION:-v0.1.0}"
 
 if [ -z "${VERSION}" ]; then
     echo "[ERROR] A pinned release is required. Set YAMLR_VERSION (e.g., YAMLR_VERSION=v0.1.0)." >&2
