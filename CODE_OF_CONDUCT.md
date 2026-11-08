@@ -11,4 +11,4 @@ Examples of behavior that contributes to a positive environment:
 * Focusing on what is best not just for us as individuals, but for the overall community
 
 ## Enforcement & Reporting
-Instances of abusive, harassing, or otherwise unacceptable behavior may be reported to the project leaders at conduct@yamlr.dev. All complaints will be reviewed and investigated promptly and fairly.
+Instances of abusive, harassing, or otherwise unacceptable behavior may be reported to the project leaders at contact@yamlr.dev. All complaints will be reviewed and investigated promptly and fairly.
