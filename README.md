@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/yamlr/yamlr/main/assets/branding/yamlr_logo_dark_mode.png" alt="Yamlr Logo" width="480" />
+  <img src="assets/branding/yamlr_logo_dark_mode.png" alt="Yamlr Logo" width="480" />
 </p>
 
 <p align="center">
@@ -99,4 +99,4 @@ Comprehensive developer and operator guides:
 
 ## ⚖️ License
 
-Yamlr CLI is distributed under the Yamlr Software License. The engine is free for individual developers, local evaluation, and open-source workflows. Automated multi-user CI/CD organizational enforcement requires an Enterprise License. See [yamlr.dev/pricing](https://yamlr.dev/pricing) for details.
+Yamlr CLI is distributed under the Yamlr Software License. The engine is free for individual developers, local evaluation, and open-source workflows. Automated multi-user CI/CD organizational enforcement requires an Enterprise License. See [yamlr.dev/pricing](https://yamlr.dev/pro) for details.
