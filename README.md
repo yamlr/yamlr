@@ -87,7 +87,7 @@ Comprehensive developer and operator guides:
 - 🏁 **[Getting Started](docs/getting-started/GETTING_STARTED.md)**: 5-minute interactive onboarding walkthrough.
 - 📖 **[CLI Reference](docs/reference/CLI_REFERENCE.md)**: Exhaustive flag specifications and command manuals.
 - 🔌 **[Integrations](docs/integrations/)**:
-  - [Pre-Commit Hooks](docs/guides/PRE_COMMIT_GUIDE.md)
+  - [Pre-Commit Hooks Hub](https://github.com/yamlr/pre-commit-hooks)
   - [CI/CD & GitHub Actions](docs/integrations/CI_CD_INTEGRATION.md)
   - [ArgoCD Integration](docs/integrations/INTEGRATION_ARGO.md)
   - [Flux GitOps Integration](docs/integrations/INTEGRATION_FLUX.md)
