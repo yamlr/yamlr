@@ -1,0 +1,24 @@
+name: 💡 Feature Request or Integration Idea
+description: Suggest a new CLI capability, healing stage, or developer workflow integration.
+title: "[FEATURE]: "
+labels: ["kind/feature", "status/triage"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Is your feature request related to a specific problem?
+      description: A clear and concise description of the friction or problem you are encountering.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed Solution or Workflow
+      description: How should yamlr behave? Include command line flags or workflow examples if applicable.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternative Workarounds Considered
+      description: Any other tools, linters, or manual approaches you currently use.

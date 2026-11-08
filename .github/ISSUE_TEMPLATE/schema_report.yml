@@ -1,0 +1,24 @@
+name: 📐 Schema Deviation or Missing Field
+description: Report a schema validation false positive, outdated Kubernetes API deprecation, or missing CRD support.
+title: "[SCHEMA]: "
+labels: ["area/schema", "status/triage"]
+body:
+  - type: input
+    id: api-version-kind
+    attributes:
+      label: Resource APIVersion and Kind
+      placeholder: "e.g., apps/v1 Deployment, gateway.networking.k8s.io/v1 HTTPRoute"
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Description of Schema Deviation
+      description: Explain why Yamlr flagged this field incorrectly according to the official Kubernetes OpenAPI specification.
+    validations:
+      required: true
+  - type: input
+    id: upstream-reference
+    attributes:
+      label: Upstream Kubernetes Documentation Reference
+      placeholder: "https://kubernetes.io/docs/reference/kubernetes-api/..."

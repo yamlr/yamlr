@@ -1,0 +1,12 @@
+Yamlr Community & Evaluation License
+
+Copyright (c) 2026 Yamlr Team <team@yamlr.dev>. All rights reserved.
+
+Redistribution and use in binary forms, without modification, are permitted provided that the following conditions are met:
+
+1. Free Individual Use: The binary distribution of the Yamlr CLI is free for individual developers, local evaluation, academic research, and non-commercial open-source development workflows.
+2. Attribution: Any redistribution of the binary or public integration documentation must retain the above copyright notice, this list of conditions, and the following disclaimer.
+3. Commercial & Automated Enterprise Use: Automated multi-user organizational use, automated CI/CD gating across commercial development teams, and enterprise GitOps controller deployments require an active Enterprise Subscription license from Yamlr. See https://yamlr.dev/pricing for licensing terms.
+
+DISCLAIMER:
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES.
