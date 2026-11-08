@@ -14,7 +14,7 @@ The Yamlr team takes the security and integrity of Kubernetes infrastructure con
 If you discover a potential security vulnerability in Yamlr, please **do NOT report it via public GitHub issues**.
 
 Instead, please send a responsible disclosure report to:
-- **Email**: security@yamlr.dev
+- **Email**: contact@yamlr.dev
 
 Please include:
 1. Description of the vulnerability and potential attack vector / blast radius.
