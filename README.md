@@ -1,5 +1,6 @@
 <p align="center">
-  <img src="assets/branding/yamlr_logo_dark_mode.png" alt="Yamlr Logo" width="480" />
+  <img src="assets/branding/yamlr_logo_dark_mode.png#gh-dark-mode-only" alt="Yamlr Logo" width="480" />
+  <img src="assets/branding/yamlr_logo_white_bg.png#gh-light-mode-only" alt="Yamlr Logo" width="480" />
 </p>
 
 <p align="center">
@@ -23,6 +24,14 @@ Unlike traditional linters that only print warnings, Yamlr:
 - ⚡ Runs **local-first** with sub-millisecond native Rust execution.
 - 🔒 **Zero telemetry or manifest egress**: your infrastructure code never leaves your workstation or CI runner.
 - 🤖 Built-in **Model Context Protocol (MCP)** server for AI coding assistants (Claude Code, Cursor, Windsurf).
+
+---
+
+## 🖥 Terminal Walkthrough
+
+<p align="center">
+  <img src="assets/branding/terminal-walkthrough.svg" alt="Yamlr Terminal Walkthrough" width="100%" />
+</p>
 
 ---
 
@@ -99,4 +108,4 @@ Comprehensive developer and operator guides:
 
 ## ⚖️ License
 
-Yamlr CLI is distributed under the Yamlr Software License. The engine is free for individual developers, local evaluation, and open-source workflows. Automated multi-user CI/CD organizational enforcement requires an Enterprise License. See [yamlr.dev/pricing](https://yamlr.dev/pro) for details.
+Yamlr CLI is distributed under the Yamlr Software License. The engine is free for individual developers, local evaluation, and open-source workflows. Automated multi-user CI/CD organizational enforcement requires an Enterprise License. See [yamlr.dev/pro](https://yamlr.dev/pro) for details.
