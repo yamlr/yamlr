@@ -1,9 +1,5 @@
 <p align="center">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/yamlr/yamlr/main/assets/branding/yamlr_logo_dark_mode.png">
-    <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/yamlr/yamlr/main/assets/branding/yamlr_logo_white_bg.png">
-    <img alt="Yamlr Logo" src="https://raw.githubusercontent.com/yamlr/yamlr/main/assets/branding/yamlr_logo_dark_mode.png" width="480">
-  </picture>
+  <img src="https://github.com/yamlr/yamlr/raw/main/assets/branding/yamlr_logo_dark_mode.png" alt="Yamlr Logo" width="480" />
 </p>
 
 <p align="center">
