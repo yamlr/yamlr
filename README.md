@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/yamlr/yamlr/main/assets/branding/yamlr_logo_dark_mode.png" alt="Yamlr Logo" width="480" />
+  <img src="./assets/branding/yamlr_logo_dark_mode.png" alt="Yamlr Logo" width="480" />
 </p>
 
 <p align="center">
