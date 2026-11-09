@@ -1,6 +1,9 @@
 <p align="center">
-  <img src="assets/branding/yamlr_logo_dark_mode.png#gh-dark-mode-only" alt="Yamlr Logo" width="480" />
-  <img src="assets/branding/yamlr_logo_white_bg.png#gh-light-mode-only" alt="Yamlr Logo" width="480" />
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/yamlr/yamlr/main/assets/branding/yamlr_logo_dark_mode.png">
+    <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/yamlr/yamlr/main/assets/branding/yamlr_logo_white_bg.png">
+    <img alt="Yamlr Logo" src="https://raw.githubusercontent.com/yamlr/yamlr/main/assets/branding/yamlr_logo_dark_mode.png" width="480">
+  </picture>
 </p>
 
 <p align="center">
@@ -30,7 +33,7 @@ Unlike traditional linters that only print warnings, Yamlr:
 ## 🖥 Terminal Walkthrough
 
 <p align="center">
-  <img src="assets/branding/terminal-walkthrough.svg" alt="Yamlr Terminal Walkthrough" width="100%" />
+  <img src="https://raw.githubusercontent.com/yamlr/yamlr/main/assets/branding/terminal-walkthrough.svg" alt="Yamlr Terminal Walkthrough" width="100%" />
 </p>
 
 ---
