@@ -1,6 +1,6 @@
 # 🏛️ Yamlr Engine Definitive Architectural Mental Model & Connective Tissue
 
-**Version:** v0.1.3 / v1.2 Planning  
+**Version:** v0.1.4 / v1.2 Planning  
 **Status:** Validated against 859/859 native unit & integration tests  
 **Core Mission:** Safe, zero-assumption, comment-preserving cross-resource auto-repair for Kubernetes manifests.
 

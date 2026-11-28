@@ -2,7 +2,7 @@
 
 **Effective Date:** Upon Execution / Incorporation  
 **Assignor (Founder):** Nishar A Sunkesala  
-**Assignee (Company):** Timonel Labs Inc. (or designated corporate entity)
+**Assignee (Company):** Yamlr Inc. (or designated corporate entity)
 
 ---
 
@@ -56,7 +56,7 @@ _________________________________________
 **Nishar A Sunkesala**  
 Date: ________________________  
 
-**ASSIGNEE (TIMONEL LABS INC. / YAMLR INC.):**  
+**ASSIGNEE (Yamlr Inc. / YAMLR INC.):**  
 By: _____________________________________  
 Name: Nishar A Sunkesala  
 Title: Founder & Chief Executive Officer  

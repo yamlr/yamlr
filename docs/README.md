@@ -1,6 +1,6 @@
 # yamlr — Kubernetes Manifest Safety & Healing Engine
 
-![Version](https://img.shields.io/badge/version-0.1.3-blue?style=flat-square)
+![Version](https://img.shields.io/badge/version-0.1.4-blue?style=flat-square)
 ![Platform](https://img.shields.io/badge/platform-Kubernetes-lightgrey?style=flat-square)
 ![Engine](https://img.shields.io/badge/core-Rust--Native-orange?style=flat-square)
 ![License](https://img.shields.io/badge/license-Proprietary-blue?style=flat-square)
@@ -71,4 +71,4 @@ Yamlr is built with strict systems engineering principles:
 
 **yamlr** — Kubernetes manifest safety & healing engine.  
 Documentation: https://yamlr.dev  
-Copyright (c) 2026 Timonel Labs. All Rights Reserved.
+Copyright (c) 2026 Yamlr Inc. All Rights Reserved.

@@ -27,7 +27,7 @@ irm https://get.yamlr.dev/install.ps1 | iex
 Verify installation:
 ```bash
 yamlr --version
-# Output: yamlr 0.1.3 (or latest)
+# Output: yamlr 0.1.4 (or latest)
 ```
 
 ---

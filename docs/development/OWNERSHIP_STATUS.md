@@ -16,8 +16,8 @@ reported facts and intentions, not verified legal ownership or assignment record
 - The founder confirms sole human contribution to first-party code,
   documentation, designs, and assets. Tool-assisted development is recorded below.
   The founder separately confirms that no signed rights assignment exists.
-- Yamlr is a solo-founder startup and a product of Timonel Labs.
-- Timonel Labs has not been registered or incorporated; incorporation is being considered.
+- Yamlr is a solo-founder startup and a product of Yamlr Inc.
+- Yamlr Inc has not been registered or incorporated; incorporation is being considered.
 - A co-founder may be added in the future; none is identified as a current contributor.
 - The founder previously reported no employees, contractors, or collaborators.
 - The founder clarified that development used Codex and other tools. The earlier
@@ -30,13 +30,13 @@ reported facts and intentions, not verified legal ownership or assignment record
 
 ## Clarifications pending
 
-1. Whether Timonel Labs is currently used as a trading name. No registration
+1. Whether Yamlr Inc is currently used as a trading name. No registration
    has been completed and no signed IP assignment exists; intended future
    company ownership remains unimplemented.
 2. Sources of copied/adapted code and third-party schemas, catalogs, rules,
    templates, images, logos, and fonts beyond declared package dependencies.
 
-The root LICENSE currently names Timonel Labs as licensor and rights holder.
+The root LICENSE currently names Yamlr Inc as licensor and rights holder.
 A formal Founder Intellectual Property Assignment Agreement template has been
 prepared at `docs/development/FOUNDER_IP_ASSIGNMENT.md` ready for signature
 upon entity registration/incorporation, providing an airtight legal mechanism

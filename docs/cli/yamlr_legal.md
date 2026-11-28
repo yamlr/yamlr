@@ -11,13 +11,13 @@ yamlr terms
 ```
 
 ## Description
-Provides the legal terms for using Yamlr software, developed by Timonel Labs. This includes the distinction between Yamlr Community Edition and Yamlr Enterprise (Pro Edition).
+Provides the legal terms for using Yamlr software, developed by Yamlr Inc. This includes the distinction between Yamlr Community Edition and Yamlr Enterprise (Pro Edition).
 
 ## Key Terms
 *   **Community Tier**: Licensed under the Yamlr Proprietary & Commercial Software License for local developer evaluation and non-commercial workflows.
 *   **Enterprise Tier**: Licensed under the Yamlr Commercial EULA for automated CI/CD pipelines, multi-node infrastructure, and enterprise deployment.
 *   **Privacy**: Yamlr is "Private by Design". No manifest content or PII is ever transmitted to external servers. 100% local-first execution.
-*   **Copyright**: Copyright (c) 2026 Timonel Labs. All Rights Reserved.
+*   **Copyright**: Copyright (c) 2026 Yamlr Inc. All Rights Reserved.
 
 ## Examples
 ```bash
