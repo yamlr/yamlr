@@ -1,0 +1,52 @@
+.TH "YAMLR-RESTORE" "1" "November 2026" "Yamlr Manual" "User Commands"
+\fBRestore Manifests via Atomic WAL Remediation Journal\fR
+.PP
+The \fByamlr restore\fR command (canonical alias for \fByamlr rollback\fR) restores Kubernetes manifests to their exact pre-remediation state using the Write-Ahead Log (WAL) forensic journal.
+.PP
+Whenever \fByamlr heal --apply\fR modifies files on disk, Yamlr captures an atomic pre-mutation snapshot and logs a transaction record in the remediation journal (\fB.yamlr/journal.jsonl\fR). \fByamlr restore\fR lets you list past transactions and roll back any change deterministically.
+.PP
+.SH "USAGE"
+.nf
+.RS
+# List all recorded remediation transactions
+yamlr restore --list
+
+# Roll back a specific transaction by its ID
+yamlr restore <TRANSACTION_ID>
+
+# Specify a custom journal file path
+yamlr restore --journal /path/to/journal.jsonl --list
+.RE
+.fi
+.SH "OPTIONS & FLAGS"
+.SS "Positional Arguments"
+.IP "\(bu" 2
+\fB[TRANSACTION]\fR: The unique transaction ID (UUID) to roll back. If omitted and \fB--list\fR is not specified, Yamlr lists recent transactions and provides rollback guidance.
+.SS "Journal Controls"
+.IP "\(bu" 2
+\fB-l, --list\fR: List recent remediation transactions recorded in the journal.
+.IP "\(bu" 2
+\fB-j, --journal <PATH>\fR: Custom path to the remediation journal file. Defaults to \fB.yamlr/journal.jsonl\fR.
+.SH "HOW IT WORKS"
+1. \fBTransactional WAL Journal\fR: Before modifying any manifest on disk, Yamlr writes a journal record containing the file path, timestamp, and pre-remediation byte contents.
+.PP
+2. \fBDeterministic Reversion\fR: Passing \fB<TRANSACTION_ID>\fR reads the journal entry and atomically restores the original file content with bit-for-bit fidelity, preserving original timestamps and permissions.
+.PP
+3. \fBAudit Trail\fR: Rolled-back transactions are marked as \fBROLLED_BACK\fR in the journal for forensic compliance tracking.
+.PP
+.SH "EXIT CODES"
+.IP "\(bu" 2
+\fB0\fR (\fBEXIT_SUCCESS\fR): Transaction listed or manifest successfully restored.
+.IP "\(bu" 2
+\fB2\fR (\fBEXIT_USAGE\fR): Invalid arguments passed.
+.IP "\(bu" 2
+\fB3\fR (\fBEXIT_CONFIG_ERROR\fR): Specified transaction ID not found in journal.
+.IP "\(bu" 2
+\fB124\fR (\fBEXIT_SYSTEM_ERROR\fR): Journal unreadable or filesystem write error.
+.SH "RELATED COMMANDS"
+.IP "\(bu" 2
+[\fByamlr rollback\fR](yamlr_rollback.md) — Canonical rollback command.
+.IP "\(bu" 2
+[\fByamlr heal\fR](yamlr_heal.md) — Autonomous remediation engine.
+.IP "\(bu" 2
+[\fByamlr evidence\fR](yamlr_evidence.md) — Export compliance audit evidence bundle.

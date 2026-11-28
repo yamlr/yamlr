@@ -1,0 +1,86 @@
+.TH "YAMLR-MCP" "1" "November 2026" "Yamlr Manual" "User Commands"
+Start the Yamlr Model Context Protocol (MCP) server.
+.PP
+.SH "WHY"
+MCP is an open protocol for connecting development environments and developer tools to precision language engines. By running Yamlr as an MCP server, you enable editor integrations (such as VS Code, Neovim, JetBrains, or automated dev tools) to perform surgical Kubernetes manifest analysis and healing with 100% deterministic safety.
+.PP
+.SH "USAGE"
+.nf
+.RS
+yamlr mcp [OPTIONS]
+.RE
+.fi
+.SH "OPTIONS"
+.SS "`--transport` (default: `stdio`)"
+The transport protocol to use for communication.
+.PP
+.IP "\(bu" 2
+\fBstdio\fR: standard input/output (recommended for IDE integrations).
+.IP "\(bu" 2
+\fBhttp\fR: (Not yet implemented in v1.1).
+.SS "`--port` (default: `8000`)"
+The port to listen on when using HTTP transport.
+.PP
+.SH "MCP TOOLS EXPOSED"
+.SS "🔍 `scan_manifest`"
+Performs a deep safety audit of a directory or single manifest.
+.PP
+.IP "\(bu" 2
+**Input**: \fBpath\fR (string)
+.IP "\(bu" 2
+**Output**: A safety report containing:
+.IP "\(bu" 2
+**Rule ID**: Unique identifier for the violation.
+.IP "\(bu" 2
+**Rationale**: An architectural explanation of why the fix is necessary.
+.IP "\(bu" 2
+**Impact Description**: The real-world consequence of ignoring the issue.
+.IP "\(bu" 2
+**Risk Level**: High/Medium/Low assessment.
+.SS "🔧 `heal_manifest`"
+Applies surgical repairs to Kubernetes manifests.
+.PP
+.IP "\(bu" 2
+**Input**: \fBpath\fR (string), \fBrules\fR (optional list of Rule IDs to filter).
+.IP "\(bu" 2
+**Output**: A transaction receipt showing exactly what was changed and a SHA-256 DNA proof of intent preservation.
+.SS "❓ `why`"
+Provides deep architectural context for any Yamlr Rule ID.
+.PP
+.IP "\(bu" 2
+**Input**: \fBrule_id\fR (string)
+.IP "\(bu" 2
+**Output**: A comprehensive explanation of the security or operational logic behind the rule.
+.SH "IDE INTEGRATION CONFIGURATION EXAMPLE"
+To connect Yamlr to your IDE or MCP client, add the following to your MCP client configuration:
+.PP
+.nf
+.RS
+{
+  "mcpServers": {
+    "yamlr": {
+      "command": "yamlr",
+      "args": ["mcp"]
+    }
+  }
+}
+.RE
+.fi
+.SH "SAFETY GUARDRAILS"
+.IP "\(bu" 2
+**Read-Only by Default**: The \fBscan_manifest\fR tool never modifies files.
+.IP "\(bu" 2
+**DNA Receipts**: Every \fBheal_manifest\fR call generates a cryptographic proof that nothing outside the intended fix was altered.
+.IP "\(bu" 2
+**Deterministic**: Unlike raw LLM suggestions, Yamlr's MCP tools are strictly deterministic and schema-validated.
+.SS "Universal Expert Flags"
+Available across primary commands:
+.PP
+.IP "\(bu" 2
+  **\fB--timing\fR**: [PERFORMANCE] Output surgical execution timing breakdown.
+.IP "\(bu" 2
+  **\fB--timing-file <FILE>\fR**: [PERFORMANCE] Save performance profiling data to a JSON file.
+.IP "\(bu" 2
+  **\fB--verbose\fR**: Full audit logs and engine stages.
+.IP "\(bu" 2
+  \fB-q\fR, \fB--quiet\fR: Minimal output mode (exit codes only).

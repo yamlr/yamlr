@@ -1,0 +1,41 @@
+.TH "YAMLR-SECURE" "1" "November 2026" "Yamlr Manual" "User Commands"
+\fBSynthesize Least-Privilege Network Policies\fR
+.PP
+The \fByamlr secure\fR command analyzes Service definitions, workload selectors, and active ingress topologies to automatically synthesize least-privilege Kubernetes \fBNetworkPolicy\fR manifests, establishing zero-trust network boundaries across namespaces.
+.PP
+.SH "USAGE"
+.nf
+.RS
+# Analyze services in current directory and generate network policies
+yamlr secure .
+
+# Generate policies for specific directory and save to file
+yamlr secure ./k8s -o ./k8s/network-policies.yaml
+.RE
+.fi
+.SH "OPTIONS & FLAGS"
+.SS "Positional Arguments"
+.IP "\(bu" 2
+\fB[PATH]\fR: Manifest directory or file containing Kubernetes Services and workloads (defaults to \fB.\fR).
+.SS "Output Controls"
+.IP "\(bu" 2
+\fB-o, --output <PATH>\fR: File path where generated \fBNetworkPolicy\fR manifests should be written. If omitted, generated policies are printed to stdout.
+.SH "SECURITY ARCHITECTURE"
+1. \fBService Topology Discovery\fR: Discovers all \fBService\fR resources, their target ports, protocols (TCP/UDP), and selector labels.
+.PP
+2. \fBNamespace Isolation\fR: Scopes policies to workload namespaces to restrict lateral cluster movement.
+.PP
+3. \fBLeast-Privilege Ingress\fR: Generates ingress rules permitting only explicit traffic matching defined Service endpoints.
+.PP
+.SH "EXIT CODES"
+.IP "\(bu" 2
+\fB0\fR (\fBEXIT_SUCCESS\fR): Policies synthesized successfully.
+.IP "\(bu" 2
+\fB1\fR (\fBEXIT_VIOLATIONS\fR): Specified target path does not exist.
+.IP "\(bu" 2
+\fB124\fR (\fBEXIT_SYSTEM_ERROR\fR): Manifest discovery or file read failure.
+.SH "RELATED COMMANDS"
+.IP "\(bu" 2
+[\fByamlr audit\fR](yamlr_audit.md) — CIS benchmark and compliance audit.
+.IP "\(bu" 2
+[\fByamlr graph\fR](yamlr_graph.md) — Inspect relational topology dependency graph.

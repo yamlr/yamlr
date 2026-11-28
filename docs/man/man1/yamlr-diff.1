@@ -1,0 +1,36 @@
+.TH "YAMLR-DIFF" "1" "November 2026" "Yamlr Manual" "User Commands"
+Preview the changes the native healer would make to YAML manifests. The command does not modify files.
+.PP
+.SH "USAGE"
+.nf
+.RS
+yamlr diff [PATH] [-u|--unified]
+.RE
+.fi
+\fBPATH\fR may be a YAML file or a directory. It defaults to the current directory. Directories are traversed recursively for \fB.yaml\fR and \fB.yml\fR files.
+.PP
+.SH "OPTIONS"
+.IP "\(bu" 2
+\fB-u\fR, \fB--unified\fR: Render changes in unified diff form. Without this option, show an inline word diff.
+The target path and \fB-u\fR may appear in either order. Other options are currently unsupported and return a usage error; this command does not accept \fB--output-file\fR, \fB--exit-zero\fR, \fB--helm\fR, \fB--kustomize\fR, \fB--crd\fR, or Kubernetes-version flags.
+.PP
+.SH "EXAMPLES"
+.nf
+.RS
+yamlr diff
+yamlr diff ./manifests
+yamlr diff ./deployment.yaml --unified
+yamlr diff --unified ./manifests
+.RE
+.fi
+.SH "EXIT STATUS"
+.IP "\(bu" 2
+\fB0\fR: The preview completed and no changes were proposed.
+.IP "\(bu" 2
+\fB1\fR: At least one file has proposed changes.
+.IP "\(bu" 2
+\fB3\fR: The target path does not exist.
+.IP "\(bu" 2
+\fB4\fR: A manifest could not be read or directory traversal failed.
+.IP "\(bu" 2
+\fB3\fR: An unsupported option or extra target path was supplied.

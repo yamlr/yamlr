@@ -1,0 +1,43 @@
+.TH "YAMLR-COMPLETION" "1" "November 2026" "Yamlr Manual" "User Commands"
+\fBShell Autocomplete Generator\fR
+.PP
+Generates shell completion scripts for Bash, Zsh, Fish, and PowerShell.
+.PP
+.SH "USAGE"
+.nf
+.RS
+yamlr completion [SHELL] [--install]
+.RE
+.fi
+.SH "OPTIONS"
+.IP "\(bu" 2
+  \fB--install\fR: Automatically install the completion script to your shell profile (e.g., \fB.bashrc\fR, \fB.zshrc\fR).
+.IP "\(bu" 2
+  \fB--word TEXT\fR: (Internal) The current word being completed.
+.IP "\(bu" 2
+  \fB--position INT\fR: (Internal) The cursor position in the line.
+.SH "DESCRIPTION"
+Outputs the completion script to stdout. You should source this script in your shell profile.
+.PP
+.SH "EXAMPLES"
+\fBBash:\fR
+.PP
+.nf
+.RS
+source <(yamlr completion bash)
+.RE
+.fi
+\fBZsh:\fR
+.PP
+.nf
+.RS
+source <(yamlr completion zsh)
+.RE
+.fi
+\fBPowerShell:\fR
+.PP
+.nf
+.RS
+yamlr completion powershell | Out-String | Invoke-Expression
+.RE
+.fi

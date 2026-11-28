@@ -1,0 +1,32 @@
+.TH "YAMLR-VERSION" "1" "November 2026" "Yamlr Manual" "User Commands"
+Display the version information for the Yamlr CLI and Core Engine.
+.PP
+.SH "USAGE"
+.nf
+.RS
+yamlr version
+# OR
+yamlr --version
+.RE
+.fi
+.SH "DESCRIPTION"
+The \fBversion\fR command provides detailed information about the current installation, including:
+.PP
+.IP "\(bu" 2
+**CLI Version**: The version of the command-line interface.
+.IP "\(bu" 2
+**Engine Version**: The version of the underlying healing engine.
+.IP "\(bu" 2
+**Build Hash**: The Git commit hash or build identifier.
+.IP "\(bu" 2
+**Native Target**: The platform architectures (e.g., windows-amd64).
+.SH "EXAMPLES"
+.nf
+.RS
+$ yamlr version
+Yamlr v1.1.0-hardened
+Core Engine: v1.0.4
+Build: 20260213.1
+Target: windows-amd64 (Native)
+.RE
+.fi

@@ -1,0 +1,48 @@
+.TH "YAMLR-SUBSCRIBE" "1" "November 2026" "Yamlr Manual" "User Commands"
+\fBYamlr Pro Subscription & License Management\fR
+.PP
+The \fByamlr subscribe\fR command opens the secure upgrade portal to manage or activate a Yamlr Pro / Enterprise workspace subscription.
+.PP
+---
+.PP
+.SH "SYNOPSIS"
+.nf
+.RS
+yamlr subscribe
+.RE
+.fi
+---
+.PP
+.SH "DESCRIPTION"
+Yamlr Core (\fBscan\fR, \fBdiff\fR, \fBfmt\fR, \fBcatalog\fR, \fBdoctor\fR) is 100% free and unlimited forever.
+.PP
+Yamlr Pro unlocks advanced capabilities:
+.PP
+.IP "\(bu" 2
+  Multi-resource automated relational repairs (\fByamlr heal --apply\fR).
+.IP "\(bu" 2
+  Fleet-wide GitOps Pull Request batching (\fByamlr fleet\fR).
+.IP "\(bu" 2
+  Cryptographic manifest signing & verification (\fByamlr sign\fR, \fByamlr verify\fR).
+.IP "\(bu" 2
+  Cross-resource topological blast radius analysis (\fByamlr graph\fR).
+.IP "\(bu" 2
+  Floating team licenses for CI/CD runners and platform engineering teams.
+Once you obtain your license key, activate it instantly on any workstation or air-gapped CI runner with:
+.PP
+.nf
+.RS
+yamlr auth activate <LICENSE_KEY>
+.RE
+.fi
+Team entitlement renewal does not contact a licensing service by default. To opt in to automatic renewal before a Team token expires, set \fBYAMLR_LICENSE_AUTO_RENEW=1\fR. The renewal request sends the stored signed entitlement token to the HTTPS licensing gateway. You can override the gateway origin with \fBYAMLR_LICENSE_GATEWAY_URL\fR. Without automatic renewal, activate a renewed token explicitly before the current token expires.
+.PP
+---
+.PP
+.SH "EXAMPLES"
+.nf
+.RS
+# Open the Pro subscription portal
+yamlr subscribe
+.RE
+.fi

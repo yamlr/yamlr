@@ -1,0 +1,58 @@
+.TH "YAMLR-CHECK" "1" "November 2026" "Yamlr Manual" "User Commands"
+\fBStrict Read-Only Manifest Validation Gate\fR
+.PP
+The \fByamlr check\fR command is a strict, read-only validation gate engineered for CI/CD pipelines and pre-commit hooks. It guarantees zero filesystem mutations and produces deterministic process exit codes: \fB0\fR for clean manifests, \fB1\fR for schema or policy violations meeting the threshold, and \fB2\fR for malformed arguments or syntax errors.
+.PP
+.SH "USAGE"
+.nf
+.RS
+# Check current directory with default strict gate
+yamlr check .
+
+# Check a single file
+yamlr check ./k8s/deployment.yaml
+
+# Fail on warnings as well as errors
+yamlr check ./manifests --fail-on warning
+
+# Run quietly in CI pipelines
+yamlr check ./k8s -q --fail-on error
+.RE
+.fi
+.SH "OPTIONS & FLAGS"
+.SS "Positional Arguments"
+.IP "\(bu" 2
+\fB[PATH]\fR: Manifest file or directory to check (defaults to \fB.\fR).
+.SS "Schema & Severity Gates"
+.IP "\(bu" 2
+\fB-k, --k8s-version <VERSION>\fR: Target Kubernetes OpenAPI schema version (e.g. \fB1.28\fR, \fB1.30\fR, \fB1.36\fR). Visible alias: \fB--kube-version\fR. Defaults to \fB1.36\fR.
+.IP "\(bu" 2
+\fB--fail-on <SEVERITY>\fR: Minimum violation severity that triggers a failure exit code (\fB1\fR). Allowed values: \fBerror\fR (or \fBhigh\fR), \fBwarning\fR (or \fBmedium\fR), \fBnote\fR (or \fBlow\fR, \fBinfo\fR, \fBany\fR), or \fBnone\fR. Defaults to \fBerror\fR.
+.IP "\(bu" 2
+\fB-q, --quiet\fR: Suppress informational headers, ASCII banners, and progress metrics. Emits only errors.
+.SH "EXIT CODES"
+.IP "\(bu" 2
+\fB0\fR (\fBEXIT_SUCCESS\fR): All manifests strictly conform to Kubernetes OpenAPI schemas and safety rules.
+.IP "\(bu" 2
+\fB1\fR (\fBEXIT_VIOLATIONS\fR): Manifest violations detected meeting or exceeding the \fB--fail-on\fR threshold.
+.IP "\(bu" 2
+\fB2\fR (\fBEXIT_USAGE\fR): Unsupported \fB--fail-on\fR value or invalid Kubernetes version.
+.IP "\(bu" 2
+\fB4\fR (\fBEXIT_SYNTAX_ERROR\fR): Specified file or directory does not exist.
+.IP "\(bu" 2
+\fB124\fR (\fBEXIT_SYSTEM_ERROR\fR): Schema bundle validation or manifest processing error.
+.SH "EXAMPLES"
+\fBUse in Git Pre-Commit Hook:\fR
+.PP
+.nf
+.RS
+yamlr check . --fail-on error --quiet
+.RE
+.fi
+\fBVerify upcoming Kubernetes 1.32 compatibility in CI:\fR
+.PP
+.nf
+.RS
+yamlr check ./k8s -k 1.32 --fail-on warning
+.RE
+.fi

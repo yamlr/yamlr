@@ -1,0 +1,22 @@
+.TH "YAMLR-EXPLAIN" "1" "November 2026" "Yamlr Manual" "User Commands"
+\fBRule & Remediation Documentation\fR
+.PP
+Provides detailed explanations for specific Rule IDs or configuration topics.
+.PP
+.SH "USAGE"
+.nf
+.RS
+yamlr explain [RULE_ID]
+.RE
+.fi
+.SH "DESCRIPTION"
+Yamlr findings include a Rule ID (e.g., \fBrules/no-latest-tag\fR). Use \fBexplain\fR to get a full description, the rationale (Why?), and the remediation steps (How?).
+.PP
+.SH "EXAMPLES"
+.nf
+.RS
+yamlr explain rules/no-latest-tag
+yamlr explain config/security
+yamlr explain config/discovery   # New: Guide to finding features
+.RE
+.fi

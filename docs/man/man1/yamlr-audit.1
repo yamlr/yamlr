@@ -1,0 +1,55 @@
+.TH "YAMLR-AUDIT" "1" "November 2026" "Yamlr Manual" "User Commands"
+\fBForensic Compliance, CIS Benchmark & Security Audit\fR
+.PP
+The \fByamlr audit\fR command conducts deep forensic compliance audits on Kubernetes manifests. It audits workloads against the Center for Internet Security (CIS) Kubernetes benchmarks, an embedded deprecation database, and high-entropy secret leakage detectors.
+.PP
+Execution is strictly read-only and local: manifests are analyzed in memory without modifying files on disk.
+.PP
+.SH "USAGE"
+.nf
+.RS
+# Audit manifests in the current directory
+yamlr audit .
+
+# Audit a specific manifest file
+yamlr audit ./deploy/production.yaml
+
+# Output audit findings in JSON
+yamlr audit ./manifests -o json
+
+# Export SARIF for GitHub Security code scanning
+yamlr audit ./k8s -o sarif
+.RE
+.fi
+.SH "OPTIONS & FLAGS"
+.SS "Positional Arguments"
+.IP "\(bu" 2
+\fB[PATH]\fR: Manifest file or directory to audit (defaults to \fB.\fR).
+.SS "Output Formatting"
+.IP "\(bu" 2
+\fB-o, --output <FORMAT>\fR: Output format (\fBtext\fR, \fBjson\fR, \fBsarif\fR). Defaults to \fBtext\fR.
+.SH "AUDIT SCOPE & SECURITY RULES"
+The audit engine inspects:
+.PP
+1. \fBCIS Kubernetes Benchmarks\fR: Checks for privileged containers, missing security contexts, host namespace sharing (\fBhostPID\fR, \fBhostIPC\fR, \fBhostNetwork\fR), and root execution (\fBrunAsNonRoot\fR).
+.PP
+2. \fBKubernetes API Deprecations\fR: Detects retired or deprecated API groups across Kubernetes releases.
+.PP
+3. \fBSecret Leakage Detection\fR: Scans manifests for plain-text credentials, high-entropy API tokens, private keys, and hardcoded connection strings.
+.PP
+.SH "EXIT CODES"
+.IP "\(bu" 2
+\fB0\fR (\fBEXIT_SUCCESS\fR): Zero compliance findings or policy violations detected.
+.IP "\(bu" 2
+\fB1\fR (\fBEXIT_VIOLATIONS\fR): One or more audit violations or security findings were identified.
+.IP "\(bu" 2
+\fB2\fR (\fBEXIT_USAGE\fR): Invalid arguments or unsupported output format.
+.IP "\(bu" 2
+\fB124\fR (\fBEXIT_SYSTEM_ERROR\fR): Target unreadable or I/O failure.
+.SH "RELATED COMMANDS"
+.IP "\(bu" 2
+[\fByamlr catalog\fR](yamlr_catalog.md) — Browse the built-in forensic security and deprecation rule catalog.
+.IP "\(bu" 2
+[\fByamlr scan\fR](yamlr_scan.md) — General schema and topological integrity validation.
+.IP "\(bu" 2
+[\fByamlr secure\fR](yamlr_secure.md) — Synthesize least-privilege network policies.

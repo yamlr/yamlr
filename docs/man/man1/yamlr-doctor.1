@@ -1,0 +1,39 @@
+.TH "YAMLR-DOCTOR" "1" "November 2026" "Yamlr Manual" "User Commands"
+\fBEnvironment Health & Diagnostics\fR
+.PP
+The \fBdoctor\fR command runs a suite of diagnostic checks to ensure the Yamlr Engine, native PyO3 core, cluster toolchain (\fBkubectl\fR), and local Kubernetes schema caches are healthy and functioning correctly.
+.PP
+.SH "USAGE"
+.nf
+.RS
+yamlr doctor [OPTIONS]
+.RE
+.fi
+.SH "ARGUMENT GROUPS"
+.SS "Diagnostic Options"
+.IP "\(bu" 2
+  \fB--fix\fR: Automatically repair local environment drift (e.g., initialize local schema cache).
+.SS "Targeting & Environment"
+.IP "\(bu" 2
+  \fB--k8s-version <VERSION>\fR: Target Kubernetes schema version to diagnose (e.g., \fB1.30\fR, \fB1.31\fR).
+.IP "\(bu" 2
+  \fB--crd <PATH>\fR: Path to CustomResourceDefinition manifests to validate against the engine parser.
+.SH "VERIFICATION CHECKLIST"
+.IP "\(bu" 2
+  **Native Core**: Linkage status and AVX2/NEON SIMD vector optimization.
+.IP "\(bu" 2
+  **Cluster CLI**: Verification of \fBkubectl\fR binary presence in system \fBPATH\fR.
+.IP "\(bu" 2
+  **Schema Cache**: Integrity and presence of offline schema definitions in \fB~/.yamlr/schemas\fR.
+.IP "\(bu" 2
+  **Environment & Runtime**: Host operating system, architecture, and Python runtime version.
+.SH "EXAMPLES"
+.nf
+.RS
+# Run diagnostics
+yamlr doctor
+
+# Automatically provision missing local schema cache
+yamlr doctor --fix
+.RE
+.fi

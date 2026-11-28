@@ -1,0 +1,25 @@
+.TH "YAMLR-AUTH" "1" "November 2026" "Yamlr Manual" "User Commands"
+\fBEnterprise Authentication\fR
+.PP
+Manages authentication for Yamlr Enterprise features (Pro).
+.PP
+.SH "USAGE"
+.nf
+.RS
+yamlr auth [COMMAND]
+.RE
+.fi
+.SH "COMMANDS"
+.IP "\(bu" 2
+  \fBlogin\fR: Initiates a Device Flow login to Yamlr Cloud. Unlocks Pro features like OPA integration and Remote Bundles on this machine.
+.IP "\(bu" 2
+  \fBlogout\fR: Clears local credentials.
+.IP "\(bu" 2
+  \fBstatus\fR / \fBwhoami\fR: Checks current authentication state.
+.SH "EXAMPLES"
+.nf
+.RS
+yamlr auth login
+# Follow the prompts to authenticate via browser
+.RE
+.fi

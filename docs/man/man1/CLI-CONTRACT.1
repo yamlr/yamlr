@@ -1,0 +1,140 @@
+.TH "CLI-CONTRACT" "1" "November 2026" "Yamlr Manual" "User Commands"
+Every routed command is validated with Clap before entitlement renewal, reads,
+.PP
+writes, or service startup. Execution uses the same argument definitions. Run
+.PP
+\fByamlr <command> --help\fR for that command's complete flags, aliases, value types,
+.PP
+and defaults. Help succeeds without activating paid capabilities.
+.PP
+.SH "RULES"
+.IP "\(bu" 2
+Options may precede or follow the positional argument. Compact short values
+  and \fB--option=value\fR are accepted for value options.
+.PP
+.IP "\(bu" 2
+\fB--\fR ends options. A subsequent path such as \fB--apply\fR is a literal path and
+  cannot enable writing. Commands that do not accept a path reject it.
+.PP
+.IP "\(bu" 2
+Unknown flags, extra paths, missing values, duplicate aliases, unsupported
+  output formats, invalid versions, and invalid ports are usage errors.
+.PP
+.IP "\(bu" 2
+Scan report selectors (\fB--output\fR, \fB--json\fR, \fB--sarif\fR) are mutually exclusive.
+  Helm, Kustomize, and local OCI source adapters are mutually exclusive.
+.PP
+.IP "\(bu" 2
+\fBheal --dry-run --apply\fR remains a preview: dry run wins and cannot create
+  generated stubs. \fBfix --dry-run\fR also remains a preview.
+.PP
+.IP "\(bu" 2
+Baseline create/check and rollback list/transaction modes are mutually exclusive.
+.IP "\(bu" 2
+Paid execution requires the normal entitlement checks. Help and argument
+  validation never bypass execution licensing.
+.PP
+.SH "COMMAND FAMILIES"
+| Commands and aliases | Contract |
+.PP
+| --- | --- |
+.PP
+| scan, lint | One target; typed Kubernetes version, severity threshold, text/JSON/SARIF output; source adapter and report selectors; scan help lists additional switches. |
+.PP
+| heal, fix | One target; typed Kubernetes version and text/JSON/SARIF output; preview/apply/dry-run, policy inputs, stubs, metrics, and source adapters. Fix inserts implicit apply before \fB--\fR; dry run still wins. |
+.PP
+| check | One target, typed version and severity threshold, quiet output. |
+.PP
+| diff | One target and unified/plain preview options. |
+.PP
+| fmt | One target or stdin \fB-\fR; optional explicit write. |
+.PP
+| audit | One target and text/JSON/SARIF output. |
+.PP
+| catalog | Optional nonempty category and JSON switch. |
+.PP
+| baseline | One target, snapshot filename, exclusive create/check modes. |
+.PP
+| schema | ingest, fetch, list, clean subcommands; fetch version/offline options. |
+.PP
+| explain | Optional rule ID. |
+.PP
+| sign, verify | One target, explicit key or signing-key environment fallback; sign optionally writes. Key values after the option terminator are not options. |
+.PP
+| graph, drift | One target; graph optionally accepts a nonempty focus. |
+.PP
+| rollback, restore | Optional transaction, journal path, or exclusive list mode. |
+.PP
+| roi, impact, pulse, metrics, stats | One target; text/JSON output or JSON switch. |
+.PP
+| secure | One target and optional output filename. |
+.PP
+| evidence | One target, output filename, optional JSON switch. |
+.PP
+| idp-export | One target, output filename, explicit backstage/port/prometheus/metrics/otel format. |
+.PP
+| fleet | One target, typed version, branch, explicit apply, JSON, PR, and Git dry-run switches. |
+.PP
+| watch | One target; unknown options cannot start a watch loop. |
+.PP
+| webhook | Typed port from 1 to 65535, optional dry run. Mutation only; TLS must terminate at a trusted proxy. Unsupported TLS/validation flags are rejected. |
+.PP
+| rpc, service, daemon | Typed loopback port and dry-run/test alias. A network listener is not implemented: execution returns an error rather than claiming to serve requests. |
+.PP
+| auth | Default status; status and activate subcommands. Activation requires exactly one positional token or key option. |
+.PP
+| subscribe, upgrade | Subscribe optionally accepts a key; upgrade shows offline instructions and accepts no extra arguments. |
+.PP
+| admin | Required cache-clear, journal-prune, or config-reset subcommand. Extra arguments are rejected before maintenance. |
+.PP
+| vap, export-vap | Default export with name/output; ingest requires an input and rejects export settings. Legacy flag mode uses \fB--ingest --file <path>\fR. |
+.PP
+| init | One target and optional force switch. |
+.PP
+| dna | One target, JSON and full-fingerprint switches. |
+.PP
+| doctor, diagnose | Optional verbose switch. |
+.PP
+| install | Instructions by default; explicit git-hook switch. |
+.PP
+| guide | Optional nonempty topic. |
+.PP
+| completion | Exactly one supported shell: bash, zsh, fish, powershell, pwsh. |
+.PP
+| version, --version, -v | Optional JSON switch. |
+.PP
+| help, --help, -h | Top-level reference; no extra arguments. |
+.PP
+| legal, manual, man, migrate, rules, welcome, features, status, demo, lsp, mcp | No command arguments beyond help. Invalid arguments cannot start a stdio daemon. |
+.PP
+.SH "EXIT CODES AND VERIFICATION"
+| Code | Meaning |
+.PP
+| --- | --- |
+.PP
+| 0 | Success or help; explicit supported preview/exit-zero behavior applies. |
+.PP
+| 1 | Findings/policy failure or missing entitlement. |
+.PP
+| 2 | Syntax failure where the command distinguishes it. |
+.PP
+| 3 | Invalid command arguments or configuration. |
+.PP
+| 4 | System or input/output failure. |
+.PP
+\fBtests/test_cli_contract_registration.py\fR checks that every dispatch name appears
+.PP
+in the parity matrix. \fBtests/verify_rust_parity.py\fR compares exact help, stderr,
+.PP
+exit codes, and reports for the standalone binary and isolated Python bridge.
+.PP
+The latest installed-wheel run on 2026-10-02 passed 202 cases across all 62 routed names,
+.PP
+including failure reports for unsupported supplied CRD constraints.
+.PP
+Native tests additionally exercise parser values, option terminators, conflicts,
+.PP
+and no-write behavior. This is implementation evidence; platform release results
+.PP
+and paid executable report acceptance remain separate requirements.
+.PP

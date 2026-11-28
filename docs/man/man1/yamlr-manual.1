@@ -1,0 +1,50 @@
+.TH "YAMLR-MANUAL" "1" "November 2026" "Yamlr Manual" "User Commands"
+\fBThe Terminal User Guide & Reference\fR
+.PP
+The \fBmanual\fR command renders high-fidelity documentation directly in your terminal. This allows for a 100% offline-first experience where you never have to leave the shell to master the engine.
+.PP
+.SH "USAGE"
+.nf
+.RS
+yamlr manual [TOPIC]
+.RE
+.fi
+.SH "DESCRIPTION"
+.IP "\(bu" 2
+  **The Big Book**: Running \fByamlr manual\fR with no arguments opens the full **Yamlr User Guide**.
+.IP "\(bu" 2
+  **Targeted Reference**: Pass a command name (e.g., \fBscan\fR, \fBheal\fR, \fBrules\fR) to view the specific manual for that subcommand.
+.IP "\(bu" 2
+  **Specialized Topics**:
+.IP "\(bu" 2
+  \fBconfig\fR: Opens the full **Yamlr Configuration Guide** (\fBCONFIGURATION.md\fR).
+.IP "\(bu" 2
+  **Rich Rendering**: Uses the engine's internal markdown processor for a premium, formatted reading experience.
+.IP "\(bu" 2
+  **Offline-First**: Bundled directly into the binary; no internet connection required.
+.SH "EXAMPLES"
+\fBOpen the main User Guide:\fR
+.PP
+.nf
+.RS
+yamlr manual
+.RE
+.fi
+\fBView the Scan command manual:\fR
+.PP
+.nf
+.RS
+yamlr manual scan
+.RE
+.fi
+\fBView the Configuration Guide:\fR
+.PP
+.nf
+.RS
+yamlr manual config
+.RE
+.fi
+---
+.PP
+[back to User Guide](../USER_GUIDE.md)
+.PP

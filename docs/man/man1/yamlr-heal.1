@@ -1,0 +1,106 @@
+.TH "YAMLR-HEAL" "1" "November 2026" "Yamlr Manual" "User Commands"
+\fBAutonomous Kubernetes Manifest Reconciler & Auto-Repair Engine\fR
+.PP
+The \fByamlr heal\fR command safely auto-remediates Kubernetes manifests, repairing schema violations, selector mismatches, deprecated API versions, and broken references while strictly preserving original comments, key ordering, and formatting layout.
+.PP
+Safe by default: running \fByamlr heal\fR without \fB--apply\fR runs in preview mode (\fB--dry-run\fR/\fB--diff\fR), ensuring zero unsolicited disk modifications.
+.PP
+.SH "USAGE"
+.nf
+.RS
+# Preview proposed repairs with unified color diff (safe preview default)
+yamlr heal ./k8s --diff
+
+# Apply all safe remediations in-place with atomic WAL snapshot
+yamlr heal ./k8s --apply
+
+# Synthesize missing referenced ConfigMaps/Secrets during healing
+yamlr heal ./manifests --apply --generate-stubs
+
+# Upgrade manifests to a target Kubernetes version
+yamlr heal ./manifests --apply -k 1.30
+
+# Output remediation summary count table
+yamlr heal ./k8s --summary
+.RE
+.fi
+.SH "OPTIONS & FLAGS"
+.SS "Positional Arguments"
+.IP "\(bu" 2
+\fB[PATH]\fR: Manifest file or directory to heal (defaults to \fB.\fR).
+.SS "Execution & Safety Controls"
+.IP "\(bu" 2
+\fB-a, --apply\fR: Atomically commit healed changes to disk and record a Write-Ahead Log (WAL) transaction entry.
+.IP "\(bu" 2
+\fB-d, --dry-run\fR: Preview healed manifests without modifying files on disk. Exits with code \fB1\fR if changes are needed.
+.IP "\(bu" 2
+\fB--diff\fR: Display a unified, colorized diff comparing original file content with proposed repairs.
+.IP "\(bu" 2
+\fB--explain-gate\fR: Print detailed diagnostic explanations if a pre-write safety gate blocks an in-place write.
+.IP "\(bu" 2
+\fB--summary\fR: Output a condensed remediation count summary instead of individual document diffs.
+.IP "\(bu" 2
+\fB--exit-zero\fR: Always exit with code \fB0\fR, even when changes are pending in dry-run mode.
+.SS "Schema & Workspace"
+.IP "\(bu" 2
+\fB-k, --k8s-version <VERSION>\fR: Target Kubernetes OpenAPI release version (e.g. \fB1.28\fR, \fB1.30\fR, \fB1.36\fR). Visible alias: \fB--kube-version\fR. Defaults to \fB1.36\fR.
+.IP "\(bu" 2
+\fB--workspace <DIR>\fR: Explicit workspace root directory for cross-resource identity indexing. Visible alias: \fB--workspace-dir\fR.
+.SS "Policy & Topology Synthesis"
+.IP "\(bu" 2
+\fB--generate-stubs\fR: Automatically synthesize placeholder definitions for missing referenced resources (such as missing \fBSecret\fR or \fBConfigMap\fR objects). Visible alias: \fB--create-stubs\fR.
+.IP "\(bu" 2
+\fB--ingest-opa <PATH>\fR: Ingest an external JSON policy constraint report file and synthesize matching auto-remediation rules.
+.IP "\(bu" 2
+\fB--ingest-kyverno <PATH>\fR: Ingest a Kyverno admission policy report and synthesize matching auto-remediations.
+.IP "\(bu" 2
+\fB--verify-kubectl\fR: Pipe candidate healed manifests through local \fBkubectl --dry-run=client\fR to provide secondary kernel validation before writing.
+.SS "Source Adapters"
+.IP "\(bu" 2
+\fB--helm\fR: Adapt and heal Helm chart manifests in-memory.
+.IP "\(bu" 2
+\fB--kustomize\fR: Adapt and heal Kustomize overlays in-memory.
+.IP "\(bu" 2
+\fB--reconcile-kustomize\fR: Perform cross-resource relational reconciliation across Kustomize overlays.
+.SS "Output & Telemetry"
+.IP "\(bu" 2
+\fB-o, --output <FORMAT>\fR: Output format (\fBtext\fR, \fBjson\fR, \fBsarif\fR). Defaults to \fBtext\fR.
+.IP "\(bu" 2
+\fB--otel\fR: Export OpenTelemetry Prometheus exposition metrics. Visible alias: \fB--export-metrics\fR.
+.SH "PRE-WRITE SAFETY GATES"
+Before committing any modification to disk under \fB--apply\fR, the native engine enforces 6 mandatory in-memory safety gates:
+.PP
+1. \fBYAML Syntax Gate\fR: Ensures healed output parses cleanly without errors.
+.PP
+2. \fBNon-Empty AST Gate\fR: Rejects empty shards, preventing file truncation.
+.PP
+3. \fBComment Preservation Gate\fR: Verifies zero comment loss (\fBhealed_comments >= orig_comments\fR).
+.PP
+4. \fBData Immutability Gate\fR: ConfigMap and Secret payloads are 100% byte-for-byte immutable.
+.PP
+5. \fBIdempotency Gate\fR: Second in-memory pass must yield zero further mutations (\fBheal(heal(M)) == heal(M)\fR).
+.PP
+6. \fBFilesystem Concurrency Guard\fR: Aborts write if the file was modified on disk between read and commit.
+.PP
+.SH "EXAMPLES"
+\fBPreview remediations with color diff:\fR
+.PP
+.nf
+.RS
+yamlr heal ./manifests --diff
+.RE
+.fi
+\fBApply remediations safely with stub generation:\fR
+.PP
+.nf
+.RS
+yamlr heal ./deploy --apply --generate-stubs
+.RE
+.fi
+\fBVerify changes against local kubectl before committing:\fR
+.PP
+.nf
+.RS
+yamlr heal ./k8s --apply --verify-kubectl
+.RE
+.fi

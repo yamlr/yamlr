@@ -1,0 +1,37 @@
+.TH "YAMLR-STATUS" "1" "November 2026" "Yamlr Manual" "User Commands"
+\fBHealth Dashboard\fR
+.PP
+Displays an SRE-focused dashboard of the current workspace and system health.
+.PP
+.SH "USAGE"
+.nf
+.RS
+yamlr status [FLAGS]
+.RE
+.fi
+.SH "FLAGS"
+.IP "\(bu" 2
+  \fB--kube-version\fR: Force a specific Kubernetes version (e.g., \fB1.31\fR).
+.IP "\(bu" 2
+  \fB--output=json\fR: Output dashboard as structured JSON.
+.SH "OUTPUT"
+.IP "\(bu" 2
+  **Configuration**: Path to \fB.yamlr.yaml\fR, active rules count.
+.IP "\(bu" 2
+  **Catalog**: Active Kubernetes schema version and path.
+.IP "\(bu" 2
+  **Backups**: Disk usage and file count in \fB.yamlr/backups\fR.
+.IP "\(bu" 2
+  **Scientific HAS**: Health-as-a-Service scores (Lexical, Schema, Semantic).
+.IP "\(bu" 2
+  **System Vitality Index**: Enterprise-grade trust aggregation (Shield Engine).
+.IP "\(bu" 2
+  **Onboarding Checklist**: Dynamic status of project setup and completion.
+.IP "\(bu" 2
+  **Authentication**: Current User/Pro identity and license status.
+.SH "EXAMPLES"
+.nf
+.RS
+yamlr status
+.RE
+.fi

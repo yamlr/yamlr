@@ -1,0 +1,66 @@
+.TH "YAMLR-SCHEMA" "1" "November 2026" "Yamlr Manual" "User Commands"
+\fBCustom Resource Definition (CRD) Schema Management\fR
+.PP
+The \fByamlr schema\fR command manages and compiles custom Kubernetes schemas and CRD definitions into Yamlr's offline validation cache.
+.PP
+---
+.PP
+.SH "SYNOPSIS"
+.nf
+.RS
+yamlr schema [ingest|list|clean] [flags]
+.RE
+.fi
+---
+.PP
+.SH "SUBCOMMANDS"
+.SS "1. `ingest`"
+Compiles and registers CRD YAML manifests into the local schema cache.
+.PP
+.nf
+.RS
+yamlr schema ingest <path> [--out <dir>]
+.RE
+.fi
+.IP "\(bu" 2
+  **\fBpath\fR** *(required)*: Path to a CRD YAML manifest file or directory of CRDs.
+.IP "\(bu" 2
+  **\fB--out, -o <DIR>\fR**: Output directory for compiled schema cache. Defaults to \fB.yamlr/schemas\fR.
+.SS "2. `list`"
+Lists all active custom schemas compiled in the schema cache.
+.PP
+.nf
+.RS
+yamlr schema list [--dir <dir>]
+.RE
+.fi
+.IP "\(bu" 2
+  **\fB--dir <DIR>\fR**: Schema cache directory to inspect. Defaults to \fB.yamlr/schemas\fR.
+.SS "3. `clean`"
+Clears the local CRD schema cache.
+.PP
+.nf
+.RS
+yamlr schema clean [--dir <dir>]
+.RE
+.fi
+.IP "\(bu" 2
+  **\fB--dir <DIR>\fR**: Schema cache directory to purge. Defaults to \fB.yamlr/schemas\fR.
+---
+.PP
+.SH "EXAMPLES"
+.nf
+.RS
+# Ingest Cert-Manager CRDs into workspace schema cache
+yamlr schema ingest ./crds/cert-manager.yaml
+
+# Ingest all CRDs from a directory into .yamlr/schemas
+yamlr schema ingest ./manifests/crds/
+
+# List all ingested custom CRD schemas
+yamlr schema list
+
+# Clear local CRD schema cache
+yamlr schema clean
+.RE
+.fi

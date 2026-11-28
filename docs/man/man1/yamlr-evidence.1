@@ -1,0 +1,54 @@
+.TH "YAMLR-EVIDENCE" "1" "November 2026" "Yamlr Manual" "User Commands"
+\fBExport Cryptographic Compliance Audit Evidence Bundle\fR
+.PP
+The \fByamlr evidence\fR command aggregates cryptographic manifest DNA fingerprints, Write-Ahead Log (WAL) remediation receipts, and engine environment states into a verifiable, auditor-ready evidence bundle archive.
+.PP
+This enterprise feature provides mathematical proof of manifest provenance, tamper-detection, and change tracking for SOC2, HIPAA, and CIS compliance audits.
+.PP
+.SH "USAGE"
+.nf
+.RS
+# Export evidence bundle for current workspace
+yamlr evidence .
+
+# Export bundle to custom tarball path
+yamlr evidence ./k8s -o compliance-evidence.tar.gz
+
+# Export evidence summary as structured JSON
+yamlr evidence ./manifests --json
+.RE
+.fi
+.SH "OPTIONS & FLAGS"
+.SS "Positional Arguments"
+.IP "\(bu" 2
+\fB[PATH]\fR: Workspace root or directory containing manifests and journals (defaults to \fB.\fR).
+.SS "Output Controls"
+.IP "\(bu" 2
+\fB-o, --output <PATH>\fR: Destination archive file path. Defaults to \fByamlr-evidence.tar.gz\fR.
+.IP "\(bu" 2
+\fB-j, --json\fR: Emit evidence summary as structured JSON to stdout instead of packaging an archive.
+.SH "EVIDENCE BUNDLE CONTENTS"
+The exported bundle (\fB.tar.gz\fR) contains:
+.PP
+1. \fBRemediation WAL Journal\fR: Immutable event logs of every automated change applied by \fByamlr heal\fR.
+.PP
+2. \fBCryptographic DNA Fingerprints\fR: SHA-256 structural DNA records for before-and-after manifest states.
+.PP
+3. \fBAudit Results\fR: Findings from CIS benchmark and schema conformity checks.
+.PP
+4. \fBAttestation Metadata\fR: Timestamp, binary version, architecture, and operator identity.
+.PP
+.SH "EXIT CODES"
+.IP "\(bu" 2
+\fB0\fR (\fBEXIT_SUCCESS\fR): Evidence bundle generated and exported successfully.
+.IP "\(bu" 2
+\fB1\fR (\fBEXIT_VIOLATIONS\fR): Violations or integrity discrepancies encountered during bundle assembly.
+.IP "\(bu" 2
+\fB124\fR (\fBEXIT_SYSTEM_ERROR\fR): File I/O or archive creation failure.
+.SH "RELATED COMMANDS"
+.IP "\(bu" 2
+[\fByamlr dna\fR](yamlr_dna.md) — Generate structural DNA fingerprints of manifests.
+.IP "\(bu" 2
+[\fByamlr sign\fR](yamlr_sign.md) — Cryptographically sign manifests with HMAC-SHA256.
+.IP "\(bu" 2
+[\fByamlr verify\fR](yamlr_verify.md) — Forensically verify manifest signatures against tampering.

@@ -1,0 +1,40 @@
+# Yamlr Demo: The "Magic Moment"
+# 1. Selector Mismatch (Ghost Service)
+# 2. Latest Tag Usage (Security Risk)
+# 3. Missing Resource Limits (Reliability Risk)
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: web-service
+spec:
+  selector:
+    app: web-frontend  # Expects 'app=web'
+  ports:
+  - port: 80
+    targetPort: 8080
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-frontend
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: web
+  template:
+    metadata:
+      labels:
+        app: web  # Typo: 'web' != 'web-frontend'
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:latest  # ERROR: Latest tag is non-deterministic
+        ports:
+        - containerPort: 8080
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits: {} # WARNING: No memory/cpu limits defined

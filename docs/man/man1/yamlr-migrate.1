@@ -1,0 +1,103 @@
+.TH "YAMLR-MIGRATE" "1" "November 2026" "Yamlr Manual" "User Commands"
+\fBStandalone Kubernetes API Migration Engine\fR
+.PP
+The \fBmigrate\fR command performs safe, surgical modernization of deprecated and retired Kubernetes API versions (such as \fBextensions/v1beta1\fR, \fBnetworking.k8s.io/v1beta1\fR, \fBpolicy/v1beta1\fR, \fBautoscaling/v2beta1\fR, \fBbatch/v1beta1\fR) across single files or large repository directory trees.
+.PP
+Unlike full healing, \fBmigrate\fR enforces a strict \fBzero-side-effect mandate\fR: it \fIonly\fR upgrades deprecated API versions and required companion schema shifts (such as Ingress \fBpathType: Prefix\fR and Deployment \fBspec.selector.matchLabels\fR synthesis), strictly refusing to inject unrequested resource limits, probes, or security contexts.
+.PP
+---
+.PP
+.SH "USAGE"
+.nf
+.RS
+# Preview proposed API migrations in colored unified diff (default safe preview)
+yamlr migrate ./k8s --to 1.30 --diff
+
+# Apply migrations in-place across manifests
+yamlr migrate ./k8s --to 1.30 --apply
+
+# Apply migrations in CI without generating .bak backup files
+yamlr migrate ./k8s --to 1.30 --apply --no-backup
+
+# Process multi-document streams and preserve document boundaries (---)
+yamlr migrate ./manifests/bundle.yaml --to 1.32 --diff
+.RE
+.fi
+---
+.PP
+.SH "OPTIONS"
+| Flag | Short | Description |
+.PP
+|:---|:---:|:---|
+.PP
+| \fB[PATH]\fR | | Manifest file or directory tree to migrate (defaults to \fB.\fR). |
+.PP
+| \fB--to <VERSION>\fR | | Target Kubernetes version for modern APIs (e.g. \fB1.30\fR, \fB1.35\fR). |
+.PP
+| \fB--k8s-version <V>\fR | | Alias for \fB--to\fR. |
+.PP
+| \fB--apply\fR | \fB-a\fR | Apply migrations in-place to disk with pre-write safety verification. |
+.PP
+| \fB--diff\fR | \fB-d\fR | Display colored unified diff showing exact proposed line changes. |
+.PP
+| \fB--dry-run\fR | | Preview proposed migrations without writing to disk (default). |
+.PP
+| \fB--no-backup\fR | | Disable creation of \fB.bak\fR safety backup files (recommended in CI/CD). |
+.PP
+| \fB--quiet\fR | \fB-q\fR | Suppress banners and progress; print only migrated file records. |
+.PP
+---
+.PP
+.SH "SUPPORTED API MIGRATIONS"
+The engine contains an authoritative catalog of Kubernetes API removals and migrations across Kubernetes releases:
+.PP
+| Kind | Deprecated API | Modern Replacement API | Removed In | Companion Schema Shifts |
+.PP
+|:---|:---|:---|:---:|:---|
+.PP
+| \fBDeployment\fR, \fBDaemonSet\fR, \fBReplicaSet\fR, \fBStatefulSet\fR | \fBextensions/v1beta1\fR, \fBapps/v1beta1\fR, \fBapps/v1beta2\fR | \fBapps/v1\fR | v1.16 | Synthesizes \fBspec.selector.matchLabels\fR from template labels when missing |
+.PP
+| \fBNetworkPolicy\fR | \fBextensions/v1beta1\fR | \fBnetworking.k8s.io/v1\fR | v1.16 | In-place version upgrade |
+.PP
+| \fBIngress\fR | \fBextensions/v1beta1\fR, \fBnetworking.k8s.io/v1beta1\fR | \fBnetworking.k8s.io/v1\fR | v1.22 | Migrates \fBserviceName\fR/\fBservicePort\fR to \fBservice.name\fR/\fBservice.port\fR, \fBspec.backend\fR to \fBdefaultBackend\fR, and injects required \fBpathType: Prefix\fR |
+.PP
+| \fBCustomResourceDefinition\fR | \fBapiextensions.k8s.io/v1beta1\fR | \fBapiextensions.k8s.io/v1\fR | v1.22 | Structural schema conformance |
+.PP
+| \fBValidatingWebhookConfiguration\fR, \fBMutatingWebhookConfiguration\fR | \fBadmissionregistration.k8s.io/v1beta1\fR | \fBadmissionregistration.k8s.io/v1\fR | v1.22 | In-place version upgrade |
+.PP
+| \fBRole\fR, \fBClusterRole\fR, \fBRoleBinding\fR, \fBClusterRoleBinding\fR | \fBrbac.authorization.k8s.io/v1beta1\fR | \fBrbac.authorization.k8s.io/v1\fR | v1.22 | In-place version upgrade |
+.PP
+| \fBCertificateSigningRequest\fR | \fBcertificates.k8s.io/v1beta1\fR | \fBcertificates.k8s.io/v1\fR | v1.22 | Validates signerName |
+.PP
+| \fBCSINode\fR, \fBStorageClass\fR, \fBVolumeAttachment\fR | \fBstorage.k8s.io/v1beta1\fR | \fBstorage.k8s.io/v1\fR | v1.24 | In-place version upgrade |
+.PP
+| \fBCronJob\fR | \fBbatch/v1beta1\fR, \fBbatch/v2alpha1\fR | \fBbatch/v1\fR | v1.25 | In-place version upgrade |
+.PP
+| \fBEndpointSlice\fR | \fBdiscovery.k8s.io/v1beta1\fR | \fBdiscovery.k8s.io/v1\fR | v1.25 | In-place version upgrade |
+.PP
+| \fBHorizontalPodAutoscaler\fR | \fBautoscaling/v2beta1\fR, \fBautoscaling/v2beta2\fR | \fBautoscaling/v2\fR | v1.25/1.26 | In-place version upgrade |
+.PP
+| \fBFlowSchema\fR, \fBPriorityLevelConfiguration\fR | \fBflowcontrol.apiserver.k8s.io/v1beta1\fR, \fBv1beta2\fR, \fBv1beta3\fR | \fBflowcontrol.apiserver.k8s.io/v1\fR | v1.29/1.32 | In-place version upgrade |
+.PP
+| \fBPodSecurityPolicy\fR | \fBpolicy/v1beta1\fR | \fIRemoved in v1.25\fR | v1.25 | Emits advisory [PRO-001] guiding PSA migration without blind mutation |
+.PP
+---
+.PP
+.SH "SAFETY GUARANTEES & CONTRACT"
+1. \fBSurgical API Upgrades Only:\fR Only retired and deprecated Kubernetes API groups are upgraded to their stable successors (\fBapps/v1\fR, \fBnetworking.k8s.io/v1\fR, \fBbatch/v1\fR).
+.PP
+2. \fBZero Unsolicited Mutation:\fR No automated probe injection, container limits alteration, or label mutator runs during \fBmigrate\fR.
+.PP
+3. \fBMulti-Document & CRLF Preservation:\fR Multi-document YAML streams separated by \fB---\fR are migrated document-by-document, preserving document boundaries, comments, and Windows (\fB\r\n\fR) or Unix (\fB\n\fR) line endings.
+.PP
+4. \fBPre-Write Verification Gates:\fR Every migrated manifest must pass syntax validation, comment invariance, non-empty AST check, and OpenAPI schema verification before disk mutation.
+.PP
+---
+.PP
+.SH "BACKUP & VERSION CONTROL BEST PRACTICES"
+.IP "\(bu" 2
+**Explicit \fB.bak\fR Safety Suffix:** When \fB--apply\fR runs without \fB--no-backup\fR, yamlr creates a safety snapshot named \fB<filename>.bak\fR (for example, \fBdeploy.yaml.bak\fR, never \fBdeploy.bak.yaml\fR). This intentional suffix naming ensures directory-level Kubernetes tools (e.g., \fBkubectl apply -f .\fR) will not parse or deploy the backup copy.
+.IP "\(bu" 2
+**Recommended \fB.gitignore\fR:** Add \fB*.bak\fR to your project's \fB.gitignore\fR to prevent accidentally committing local backup snapshots.
+.IP "\(bu" 2
+**CI/CD & GitOps Workflows:** In continuous integration and automated GitOps pipelines where full version history is maintained in Git, pass \fB--no-backup\fR to keep workspaces clean without generating snapshot files.

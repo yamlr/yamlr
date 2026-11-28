@@ -1,0 +1,59 @@
+- id: yamlr-heal
+  name: Yamlr Manifest Reconciler (Preview)
+  description: Reconcile dependencies and preview proposed repairs with color diff without modifying files.
+  entry: yamlr heal
+  args: ["--diff"]
+  language: system
+  files: \.(yaml|yml)$
+  pass_filenames: true
+  require_serial: false
+
+- id: yamlr-heal-apply
+  name: Yamlr Manifest Reconciler (Auto-Apply)
+  description: Automatically reconcile dependencies and heal Kubernetes configurations in-place with comment preservation.
+  entry: yamlr heal
+  args: ["--apply"]
+  language: system
+  files: \.(yaml|yml)$
+  pass_filenames: true
+  require_serial: false
+
+- id: yamlr-scan
+  name: Yamlr Manifest Scanner
+  description: Validates and audits Kubernetes manifests against OpenAPI schemas and forensic rules.
+  entry: yamlr scan
+  args: ["--fail-on", "error"]
+  language: system
+  files: \.(yaml|yml)$
+  pass_filenames: true
+  require_serial: false
+
+- id: yamlr-fmt
+  name: Yamlr Manifest Formatter
+  description: Canonical Kubernetes manifest formatter. Normalizes indentation and reorders keys according to official schema hierarchy.
+  entry: yamlr fmt
+  args: ["-w"]
+  language: system
+  files: \.(yaml|yml)$
+  pass_filenames: true
+  require_serial: false
+
+- id: yamlr-fix
+  name: Yamlr Manifest Auto-Fix
+  description: Automatically heals and remediates broken Kubernetes manifests in-place.
+  entry: yamlr fix
+  args: ["-w"]
+  language: system
+  files: \.(yaml|yml)$
+  pass_filenames: true
+  require_serial: false
+
+- id: yamlr-diff
+  name: Yamlr Manifest Diff Preview
+  description: Previews unified diff of proposed auto-remediations without modifying files.
+  entry: yamlr diff
+  args: ["--unified"]
+  language: system
+  files: \.(yaml|yml)$
+  pass_filenames: true
+  require_serial: false

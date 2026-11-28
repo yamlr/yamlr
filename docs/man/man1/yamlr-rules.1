@@ -1,0 +1,32 @@
+.TH "YAMLR-RULES" "1" "November 2026" "Yamlr Manual" "User Commands"
+\fBRule Catalog Dashboard\fR
+.PP
+Displays a comprehensive table of all active semantic rules, checkers, and healers available in the current version.
+.PP
+.SH "USAGE"
+.nf
+.RS
+yamlr rules [FLAGS]
+.RE
+.fi
+.SH "FLAGS"
+.IP "\(bu" 2
+  \fB-v, --verbose\fR: Show full rationale for every rule in an extra column.
+.IP "\(bu" 2
+  \fB--output=json\fR: Export rule database as structured JSON.
+.SH "COLUMNS"
+.IP "\(bu" 2
+  **ID**: The unique Rule ID (e.g., \fBrules/no-latest-tag\fR).
+.IP "\(bu" 2
+  **Name**: Human-readable name.
+.IP "\(bu" 2
+  **Severity**: ERROR, WARNING, or INFO.
+.IP "\(bu" 2
+  **Description**: Brief summary of what the rule detects.
+.SH "EXAMPLES"
+.nf
+.RS
+yamlr rules
+# Lists all 50+ active rules
+.RE
+.fi

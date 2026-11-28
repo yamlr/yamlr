@@ -1,0 +1,17 @@
+# Yamlr CI Integration Template
+# Drop this into your .gitlab-ci.yml to enable automatic Kubernetes manifest validation.
+
+.yamlr-audit:
+  image: python:3.12-slim
+  stage: test
+  before_script:
+    - pip install yamlr
+  script:
+    - echo "Running Yamlr Manifest Scan..."
+    - yamlr scan . --fail-on error
+  artifacts:
+    when: always
+    paths:
+      - yamlr-report.sarif
+    reports:
+      sast: yamlr-report.sarif

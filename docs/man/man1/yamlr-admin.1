@@ -1,0 +1,47 @@
+.TH "YAMLR-ADMIN" "1" "November 2026" "Yamlr Manual" "User Commands"
+\fBSystem & Engine Diagnostics\fR
+.PP
+The \fBadmin\fR command provides local operational diagnostics, runtime verification, and machine identity inspection for the Yamlr engine.
+.PP
+.SH "USAGE"
+.nf
+.RS
+yamlr admin [health|stats|users]
+.RE
+.fi
+.SH "DESCRIPTION"
+Performs local diagnostic inspections of the Yamlr execution environment, verifying native core bindings, local schema caches, and machine fingerprint identification.
+.PP
+.SH "ACTIONS"
+.IP "\(bu" 2
+  **\fBhealth\fR**: Verify local telemetry gateway connectivity, native engine core linkage, and active schema engine coverage.
+.IP "\(bu" 2
+  **\fBstats\fR**: Display local workspace defect metrics, supported Kubernetes schema versions, and zero-egress validation state.
+.IP "\(bu" 2
+  **\fBusers\fR**: Display local host machine fingerprint and active licensing tier.
+.SH "EXAMPLES"
+\fBRun engine health diagnostic:\fR
+.PP
+.nf
+.RS
+yamlr admin health
+.RE
+.fi
+\fBView workspace engine stats:\fR
+.PP
+.nf
+.RS
+yamlr admin stats
+.RE
+.fi
+\fBInspect local machine identity:\fR
+.PP
+.nf
+.RS
+yamlr admin users
+.RE
+.fi
+---
+.PP
+\fINote: All admin commands operate 100% locally on the host machine with zero external modification capabilities.\fR
+.PP

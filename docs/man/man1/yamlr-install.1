@@ -1,0 +1,48 @@
+.TH "YAMLR-INSTALL" "1" "November 2026" "Yamlr Manual" "User Commands"
+\fBAutomated CI/CD Workflow & Git Hook Installer\fR
+.PP
+The \fByamlr install\fR command installs automated Yamlr enforcement integrations directly into your Git workspace.
+.PP
+---
+.PP
+.SH "SYNOPSIS"
+.nf
+.RS
+yamlr install {hook|action} [flags]
+.RE
+.fi
+---
+.PP
+.SH "TARGETS"
+.SS "1. `hook`"
+Installs a zero-latency Git pre-commit hook into \fB.git/hooks/pre-commit\fR.
+.PP
+.nf
+.RS
+yamlr install hook
+.RE
+.fi
+Every commit will automatically trigger a sub-50ms audit across staged manifests, preventing invalid YAML and schema regressions from entering git history.
+.PP
+.SS "2. `action`"
+Generates an official GitHub Actions workflow template at \fB.github/workflows/yamlr-safety.yml\fR.
+.PP
+.nf
+.RS
+yamlr install action
+.RE
+.fi
+Automatically audits pull requests, generates SARIF reports for the GitHub Code Scanning tab, and blocks merges on critical defect thresholds.
+.PP
+---
+.PP
+.SH "EXAMPLES"
+.nf
+.RS
+# Protect every local commit with a pre-commit guard
+yamlr install hook
+
+# Add Yamlr auditing to your GitHub Actions CI pipeline
+yamlr install action
+.RE
+.fi

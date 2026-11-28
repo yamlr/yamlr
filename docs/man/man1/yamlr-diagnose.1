@@ -1,0 +1,41 @@
+.TH "YAMLR-DIAGNOSE" "1" "November 2026" "Yamlr Manual" "User Commands"
+\fBValidate Native Engine Integrity & Environment Health\fR
+.PP
+The \fByamlr diagnose\fR command (canonical alias for \fByamlr doctor\fR) validates native engine integrity, embedded schema availability, license tier state, and local workspace health.
+.PP
+It performs self-tests on the borrowed document slice streaming parser, verifies OpenAPI v3 schema caches, and ensures the runtime environment is properly configured.
+.PP
+.SH "USAGE"
+.nf
+.RS
+# Standard engine diagnostics
+yamlr diagnose
+
+# Verbose system check
+yamlr diagnose --verbose
+.RE
+.fi
+.SH "OPTIONS & FLAGS"
+.IP "\(bu" 2
+\fB-v, --verbose\fR: Show detailed health check output, schema counts, and engine subsystem statuses.
+.IP "\(bu" 2
+\fB-h, --help\fR: Display help information.
+.SH "DIAGNOSTICS PERFORMED"
+1. \fBNative Engine Integrity\fR: Verifies the compiled standalone binary status, CST/AST models, and memory limits.
+.PP
+2. \fBSchema Cache Health\fR: Checks embedded Kubernetes OpenAPI v3 schemas (v1.21 through v1.37+) and local CRD caches.
+.PP
+3. \fBLicensing & Entitlements\fR: Validates license public keys, air-gapped activation status, and active tier capabilities.
+.PP
+4. \fBEnvironment Check\fR: Verifies read/write permissions for temporary directories and Write-Ahead Log (WAL) journal paths.
+.PP
+.SH "EXIT CODES"
+.IP "\(bu" 2
+\fB0\fR (\fBEXIT_SUCCESS\fR): All diagnostic checks passed; engine is healthy.
+.IP "\(bu" 2
+\fB1\fR (\fBEXIT_VIOLATIONS\fR): One or more diagnostic self-tests failed or an issue was detected.
+.SH "RELATED COMMANDS"
+.IP "\(bu" 2
+[\fByamlr doctor\fR](yamlr_doctor.md) — Canonical doctor command.
+.IP "\(bu" 2
+[\fByamlr status\fR](yamlr_status.md) — Inspect workspace and license status.

@@ -1,0 +1,60 @@
+.TH "YAMLR-SIGN" "1" "November 2026" "Yamlr Manual" "User Commands"
+\fBCryptographic Manifest Signing & DNA Receipt Embedding\fR
+.PP
+The \fByamlr sign\fR command signs Kubernetes manifests with cryptographic non-repudiation signatures embedded directly into the manifest metadata annotations \fB[Pro]\fR.
+.PP
+---
+.PP
+.SH "SYNOPSIS"
+.nf
+.RS
+yamlr sign [path] [flags]
+.RE
+.fi
+---
+.PP
+.SH "DESCRIPTION"
+\fByamlr sign\fR guarantees supply-chain provenance. It computes the deterministic Semantic DNA hash of the Kubernetes resource AST, signs the digest using local private keys, and records the signature in \fBmetadata.annotations['yamlr.dev/signature']\fR.
+.PP
+Downstream CI/CD pipelines, GitOps sync processes, and admission webhooks can verify the signature using \fByamlr verify\fR to ensure zero unauthorized alterations occurred.
+.PP
+---
+.PP
+.SH "EXAMPLES"
+.nf
+.RS
+# Sign all manifests in the current directory
+yamlr sign .
+
+# Sign a specific deployment manifest
+yamlr sign ./k8s/deployment.yaml
+.RE
+.fi
+---
+.PP
+.SH "OPTIONS & FLAGS"
+.IP "\(bu" 2
+  **\fBpath\fR** *(positional, optional)*:
+    Path to manifest file or directory to sign. Defaults to \fB.\fR.
+.PP
+.IP "\(bu" 2
+  **\fB--k8s-version <VERSION>\fR**:
+    Target Kubernetes schema version context.
+.PP
+.IP "\(bu" 2
+  **\fB-f, --output-file <PATH>\fR**:
+    Path to write signature report (JSON).
+.PP
+.IP "\(bu" 2
+  **\fB--exit-zero\fR**:
+    Always exit with code \fB0\fR.
+.PP
+---
+.PP
+.SH "SEE ALSO"
+.IP "\(bu" 2
+  [\fByamlr verify\fR](yamlr_verify.md) — Cryptographically verify signed manifests.
+.IP "\(bu" 2
+  [\fByamlr dna\fR](yamlr_dna.md) — Inspect raw semantic AST fingerprints.
+.IP "\(bu" 2
+  [\fByamlr evidence\fR](yamlr_evidence.md) — Package cryptographic audit bundles.

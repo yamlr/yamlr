@@ -1,0 +1,36 @@
+.TH "YAMLR-CATALOG" "1" "November 2026" "Yamlr Manual" "User Commands"
+Yamlr validates your manifests against official Kubernetes JSON schemas. These schemas are distilled for performance and cached locally in \fB~/.Yamlr/catalogs\fR.
+.PP
+The \fByamlr catalog\fR command allows you to manage this local cache.
+.PP
+.SH "USAGE"
+.nf
+.RS
+# Check status of local catalog
+yamlr catalog
+.RE
+.fi
+.SS "Update Catalog"
+Download the latest schemas from the upstream repository.
+.PP
+.nf
+.RS
+yamlr catalog update
+.RE
+.fi
+.SS "List Versions"
+See which Kubernetes versions are currently available in your local cache.
+.PP
+.nf
+.RS
+yamlr catalog list
+.RE
+.fi
+.SH "OPTIONS"
+.IP "\(bu" 2
+  **\fB--kube-version V\fR**: Target version for catalog operations (alias: **\fB--k8s-version\fR**).
+.SH "LAZY FETCHING"
+As of Yamlr v1.0, you rarely need to run \fByamlr catalog update\fR manually.
+.PP
+If you run \fByamlr upgrade --to 1.32\fR and the v1.32 schema is missing, Yamlr will \fBautomatically download it\fR for you in the background.
+.PP

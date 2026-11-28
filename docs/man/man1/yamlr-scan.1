@@ -1,0 +1,102 @@
+.TH "YAMLR-SCAN" "1" "November 2026" "Yamlr Manual" "User Commands"
+\fBManifest Audit & Schema Validation Gate\fR
+.PP
+The \fByamlr scan\fR command audits Kubernetes manifests, Helm templates, Kustomize overlays, and directory trees for schema violations, deprecated APIs, security misconfigurations, and cross-resource topological integrity faults.
+.PP
+Execution is \fB100% local and read-only\fR: \fByamlr scan\fR never modifies files on disk.
+.PP
+.SH "USAGE"
+.nf
+.RS
+# Audit manifests in the current directory
+yamlr scan .
+
+# Audit a specific manifest or subdirectory
+yamlr scan ./manifests/deployment.yaml
+
+# Validate against specific Kubernetes release schema
+yamlr scan ./k8s --k8s-version 1.30
+
+# CI/CD Quality Gate: fail on errors
+yamlr scan ./deploy --fail-on error
+
+# Output SARIF directly for GitHub Code Scanning
+yamlr scan ./manifests --sarif -f results.sarif
+.RE
+.fi
+.SH "OPTIONS & FLAGS"
+.SS "Positional Arguments"
+.IP "\(bu" 2
+\fB[PATH]\fR: Manifest file or directory to scan (defaults to \fB.\fR).
+.SS "Schema & Versions"
+.IP "\(bu" 2
+\fB-k, --k8s-version <VERSION>\fR: Target Kubernetes OpenAPI schema version (e.g. \fB1.28\fR, \fB1.30\fR, \fB1.36\fR). Visible alias: \fB--kube-version\fR. Defaults to \fB1.36\fR.
+.IP "\(bu" 2
+\fB--crd <PATH>\fR: Path to custom CRD definitions file or directory to extend schema validation.
+.SS "Output Formatting"
+.IP "\(bu" 2
+\fB-o, --output <FORMAT>\fR: Output format (\fBtext\fR, \fBjson\fR, \fBsarif\fR). Defaults to \fBtext\fR.
+.IP "\(bu" 2
+\fB-f, --output-file <PATH>\fR: Write output directly to specified file path instead of stdout.
+.IP "\(bu" 2
+\fB-j, --json\fR: Shorthand for \fB--output json\fR.
+.IP "\(bu" 2
+\fB--sarif\fR: Shorthand for \fB--output sarif\fR (OASIS SARIF v2.1.0 standard for GitHub Security code scanning).
+.IP "\(bu" 2
+\fB-q, --quiet\fR: Minimal output mode; suppresses banners and informational progress.
+.SS "CI/CD Quality Gates & Monitoring"
+.IP "\(bu" 2
+\fB--fail-on <SEVERITY>\fR: Minimum violation severity that triggers non-zero exit code (\fB1\fR). Allowed values: \fBerror\fR (or \fBhigh\fR), \fBwarning\fR (or \fBmedium\fR), \fBnote\fR (or \fBlow\fR, \fBinfo\fR, \fBany\fR), or \fBnone\fR. Defaults to \fBerror\fR.
+.IP "\(bu" 2
+\fB--exit-zero\fR: Force exit code \fB0\fR even when policy violations are detected (useful for non-blocking advisory runs in CI).
+.IP "\(bu" 2
+\fB-w, --watch\fR: Continuous filesystem watcher mode; automatically triggers instant scans whenever files change on disk.
+.IP "\(bu" 2
+\fB--workspace <DIR>\fR: Explicit workspace root directory for cross-resource identity indexing. Visible alias: \fB--workspace-dir\fR.
+.SS "Ingestion Adapters"
+.IP "\(bu" 2
+\fB--helm\fR: Render Helm charts into flat manifests in-memory before scanning.
+.IP "\(bu" 2
+\fB--kustomize\fR: Execute Kustomize overlays in-memory before scanning.
+.IP "\(bu" 2
+\fB--oci-layer <PATH>\fR: Scan Kubernetes manifests extracted from an OCI container layer tarball.
+.SS "Telemetry & Observability"
+.IP "\(bu" 2
+\fB--otel\fR: Export OpenTelemetry Prometheus exposition metrics. Visible alias: \fB--export-metrics\fR.
+.IP "\(bu" 2
+\fB--push-telemetry\fR: Explicitly send an Enterprise scan-completion event.
+.IP "\(bu" 2
+\fB--no-telemetry\fR: Disable all telemetry collection (air-gapped compliance). Visible alias: \fB--disable-telemetry\fR.
+.SH "EXIT CODES"
+.IP "\(bu" 2
+\fB0\fR (\fBEXIT_SUCCESS\fR): Manifests conform to schema and policy rules, or \fB--exit-zero\fR was passed.
+.IP "\(bu" 2
+\fB1\fR (\fBEXIT_VIOLATIONS\fR): Violations found meeting or exceeding the \fB--fail-on\fR threshold.
+.IP "\(bu" 2
+\fB2\fR (\fBEXIT_USAGE\fR): Invalid arguments or unknown option passed.
+.IP "\(bu" 2
+\fB4\fR (\fBEXIT_SYNTAX_ERROR\fR): Malformed YAML syntax or non-existent target path.
+.IP "\(bu" 2
+\fB124\fR (\fBEXIT_SYSTEM_ERROR\fR): I/O or filesystem error.
+.SH "EXAMPLES"
+\fBRun in GitHub Actions with SARIF upload:\fR
+.PP
+.nf
+.RS
+yamlr scan ./manifests --sarif -f results.sarif
+.RE
+.fi
+\fBValidate Helm chart templates in-memory:\fR
+.PP
+.nf
+.RS
+yamlr scan ./charts/my-app --helm --fail-on warning
+.RE
+.fi
+\fBContinuous live validation while editing:\fR
+.PP
+.nf
+.RS
+yamlr scan ./manifests --watch
+.RE
+.fi

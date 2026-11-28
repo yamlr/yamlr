@@ -1,0 +1,32 @@
+[
+  {
+    "total_files": 300,
+    "files_per_sec": 194.4,
+    "peak_mem_gb": 0.066,
+    "duration_sec": 1.54
+  },
+  {
+    "total_files": 3000,
+    "files_per_sec": 1946.4,
+    "peak_mem_gb": 0.061,
+    "duration_sec": 1.54
+  },
+  {
+    "total_files": 15000,
+    "files_per_sec": 7291.5,
+    "peak_mem_gb": 0.064,
+    "duration_sec": 2.06
+  },
+  {
+    "total_files": 30000,
+    "files_per_sec": 14500.0,
+    "peak_mem_gb": 0.065,
+    "duration_sec": 2.07
+  },
+  {
+    "total_files": 60000,
+    "files_per_sec": 23141.7,
+    "peak_mem_gb": 0.065,
+    "duration_sec": 2.59
+  }
+]

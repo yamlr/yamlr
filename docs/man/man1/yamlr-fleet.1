@@ -1,0 +1,83 @@
+.TH "YAMLR-FLEET" "1" "November 2026" "Yamlr Manual" "User Commands"
+\fB[PRO] Fleet Intelligence & Multi-Repo GitOps PR Batching\fR
+.PP
+The \fByamlr fleet\fR command orchestrates manifest audits and automated remediation Pull Requests across fleets of Git repositories.
+.PP
+---
+.PP
+.SH "SYNOPSIS"
+.nf
+.RS
+yamlr fleet [status|pr-batch] [flags]
+.RE
+.fi
+---
+.PP
+.SH "DESCRIPTION"
+In enterprise GitOps environments, platform engineering teams manage hundreds of Kubernetes service repositories.
+.PP
+\fByamlr fleet\fR enables platform teams to:
+.PP
+1. Audit defect posture across multiple Git repositories simultaneously.
+.PP
+2. Apply automated schema upgrades and relational repairs across entire fleets.
+.PP
+3. Automatically branch, commit, push, and open Pull Requests via \fBgh\fR or \fBglab\fR CLI with audit reports attached.
+.PP
+---
+.PP
+.SH "SUBCOMMANDS"
+.IP "\(bu" 2
+  **\fBstatus\fR** *(default)*:
+    Inspect the fleet health and defect score across configured repositories.
+.PP
+.IP "\(bu" 2
+  **\fBpr-batch\fR**:
+    Execute fleet remediation and batch-generate Pull Requests across target repositories.
+.PP
+---
+.PP
+.SH "OPTIONS & FLAGS"
+.IP "\(bu" 2
+  **\fB--repos <PATH>\fR**:
+    Path to repository manifest file (JSON/YAML listing repos), a single repository path, or a directory containing cloned repositories.
+.PP
+.IP "\(bu" 2
+  **\fB--branch <BRANCH>\fR**:
+    Target git branch name for fleet PRs. Defaults to \fByamlr/fleet-upgrade\fR.
+.PP
+.IP "\(bu" 2
+  **\fB--title <STRING>\fR**:
+    PR title and commit message. Defaults to \fBfix(k8s): automated fleet manifest remediation\fR.
+.PP
+.IP "\(bu" 2
+  **\fB--apply\fR**:
+    Apply fixes directly to repositories on disk.
+.PP
+.IP "\(bu" 2
+  **\fB--dry-run\fR**:
+    Simulate fleet upgrades without modifying files or committing.
+.PP
+.IP "\(bu" 2
+  **\fB--create-pr\fR**:
+    Automatically push branches and open Pull Requests via GitHub CLI (\fBgh\fR) or GitLab CLI (\fBglab\fR).
+.PP
+.IP "\(bu" 2
+  **\fB--report <FILE>\fR**:
+    Path to write markdown fleet audit summary. Defaults to \fBfleet-report.md\fR.
+.PP
+---
+.PP
+.SH "EXAMPLES"
+.nf
+.RS
+# Check status across all repositories listed in repos.yaml
+yamlr fleet status --repos ./repos.yaml
+
+# Simulate fleet upgrades across multiple repositories (dry-run)
+yamlr fleet pr-batch --repos ./repos/ --dry-run
+
+# Apply upgrades and automatically open Pull Requests on GitHub
+yamlr fleet pr-batch --repos ./repos.yaml --apply --create-pr --branch "fix/k8s-1.31-upgrade"
+.RE
+.fi

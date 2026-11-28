@@ -1,0 +1,29 @@
+.TH "YAMLR-DEMO" "1" "November 2026" "Yamlr Manual" "User Commands"
+\fBInteractive Demo Generator\fR
+.PP
+Scaffolds a \fByamlr-demo/\fR directory containing intentionally broken manifests. This is designed for first-time users to safely test \fByamlr scan\fR and \fByamlr heal\fR without risking their own files.
+.PP
+.SH "USAGE"
+.nf
+.RS
+yamlr demo
+.RE
+.fi
+.SH "DESCRIPTION"
+Creates:
+.PP
+.IP "\(bu" 2
+  \fByamlr-demo/broken-deployment.yaml\fR: Syntax errors, missing selectors.
+.IP "\(bu" 2
+  \fByamlr-demo/legacy-ingress.yaml\fR: Deprecated APIs.
+.IP "\(bu" 2
+  \fByamlr-demo/.yamlr.yaml\fR: Sample config.
+.SH "EXAMPLES"
+.nf
+.RS
+yamlr demo
+cd yamlr-demo
+yamlr scan .
+yamlr heal .
+.RE
+.fi

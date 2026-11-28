@@ -1,0 +1,30 @@
+.TH "YAMLR-INIT" "1" "November 2026" "Yamlr Manual" "User Commands"
+\fBProject Initialization\fR
+.PP
+Scaffolds a new \fB.yamlr.yaml\fR configuration file in the current directory.
+.PP
+.SH "USAGE"
+.nf
+.RS
+yamlr init
+.RE
+.fi
+.SH "OPTIONS"
+.IP "\(bu" 2
+  \fB--force\fR: Overwrite existing \fB.yamlr.yaml\fR file.
+.IP "\(bu" 2
+  \fB--output FORMAT\fR: Report format (text, json).
+.SH "DESCRIPTION"
+.IP "\(bu" 2
+  Detects if a \fB.yamlr.yaml\fR already exists.
+.IP "\(bu" 2
+  Detects connected Kubernetes cluster version (if \fBkubectl\fR is available) and presets \fBcluster_version\fR.
+.IP "\(bu" 2
+  Writes a commented default configuration file.
+.SH "EXAMPLES"
+.nf
+.RS
+cd my-repo
+yamlr init
+.RE
+.fi

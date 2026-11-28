@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 850 480" width="850" height="480">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a"/>
+      <stop offset="100%" stop-color="#020617"/>
+    </linearGradient>
+    <style>
+      .txt { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; font-size: 13px; }
+      .prompt { fill: #38bdf8; font-weight: bold; }
+      .cmd { fill: #f8fafc; font-weight: bold; }
+      .comment { fill: #64748b; }
+      .err { fill: #f43f5e; font-weight: bold; }
+      .fix { fill: #10b981; font-weight: bold; }
+      .dim { fill: #94a3b8; }
+      .cyan { fill: #06b6d4; }
+      .yellow { fill: #eab308; }
+      .bar { fill: #1e293b; }
+    </style>
+  </defs>
+
+  <!-- Window Frame -->
+  <rect width="850" height="480" rx="12" fill="url(#bg)" stroke="#334155" stroke-width="1.5"/>
+  <rect width="850" height="38" rx="12" fill="#1e293b"/>
+  <rect y="26" width="850" height="12" fill="#1e293b"/>
+
+  <!-- Window Controls -->
+  <circle cx="20" cy="19" r="6" fill="#ef4444"/>
+  <circle cx="38" cy="19" r="6" fill="#f59e0b"/>
+  <circle cx="56" cy="19" r="6" fill="#10b981"/>
+  <text x="425" y="23" text-anchor="middle" fill="#94a3b8" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" font-size="12" font-weight="600">yamlr — terminal walkthrough</text>
+
+  <!-- Step 1: Scan -->
+  <text x="24" y="70" class="txt prompt">$ <tspan class="cmd">yamlr scan ./deploy/ --diff</tspan></text>
+  <text x="24" y="92" class="txt dim">[INFO] Indexed 42 Kubernetes manifests across 6 namespaces</text>
+  <text x="24" y="112" class="txt err">✖ [YM-204] Broken Service Link: frontend-svc:80 -&gt; containerPort mismatch (got 8080, expected 80)</text>
+  <text x="24" y="130" class="txt err">✖ [YM-102] Deprecated API: Ingress uses 'extensions/v1beta1' (removed in K8s v1.22+)</text>
+  <text x="24" y="148" class="txt err">✖ [YM-301] Missing Spec: Deployment 'api-server' missing securityContext.runAsNonRoot</text>
+
+  <!-- Divider -->
+  <line x1="24" y1="170" x2="826" y2="170" stroke="#334155" stroke-dasharray="4"/>
+
+  <!-- Step 2: Auto-Heal Preview & Apply -->
+  <text x="24" y="200" class="txt prompt">$ <tspan class="cmd">yamlr heal ./deploy/ --apply</tspan></text>
+  <text x="24" y="222" class="txt cyan">━━ Proposed Remediations (Comment-Preserving AST Engine) ━━━━━━━━━━━━━━</text>
+  
+  <!-- Diff block -->
+  <text x="24" y="246" class="txt comment"># deploy/ingress.yaml:1</text>
+  <text x="24" y="264" class="txt err">- apiVersion: extensions/v1beta1</text>
+  <text x="24" y="282" class="txt fix">+ apiVersion: networking.k8s.io/v1</text>
+  
+  <text x="24" y="306" class="txt comment"># deploy/frontend-svc.yaml:14 (reconciled targetPort to containerPort)</text>
+  <text x="24" y="324" class="txt err">-   targetPort: 80</text>
+  <text x="24" y="342" class="txt fix">+   targetPort: 8080</text>
+
+  <text x="24" y="366" class="txt comment"># deploy/api-server.yaml:22 (applied Pod Security Standards)</text>
+  <text x="24" y="384" class="txt fix">+       securityContext:</text>
+  <text x="24" y="402" class="txt fix">+         runAsNonRoot: true</text>
+
+  <!-- Summary Footer -->
+  <rect x="24" y="420" width="802" height="40" rx="8" class="bar"/>
+  <text x="40" y="445" class="txt fix">✔ Cleanly healed 3 files (100% comments &amp; formatting preserved) in 1.42ms</text>
+</svg>

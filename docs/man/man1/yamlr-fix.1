@@ -1,0 +1,39 @@
+.TH "YAMLR-FIX" "1" "November 2026" "Yamlr Manual" "User Commands"
+\fBInstant Zero-Configuration Auto-Repair\fR
+.PP
+The \fBfix\fR command is the zero-configuration auto-repair pathway for Kubernetes manifests, applying safe, non-destructive schema upgrades, deprecation migrations, and syntax fixes without requiring complex flags.
+.PP
+.SH "USAGE"
+.nf
+.RS
+yamlr fix [PATH]... [FLAGS]
+.RE
+.fi
+.SH "DESCRIPTION"
+Equivalent to running \fByamlr heal --apply\fR with conservative, deterministic defaults:
+.PP
+.IP "\(bu" 2
+  **Deprecation Upgrades**: Automatically transitions deprecated API groups to current stable versions (e.g. \fBextensions/v1beta1\fR -> \fBapps/v1\fR, \fBpolicy/v1beta1\fR -> \fBpolicy/v1\fR).
+.IP "\(bu" 2
+  **Floating Tag Pinning**: Detects dangerous \fB:latest\fR floating container tags and converts them to pinned references.
+.IP "\(bu" 2
+  **Zero-Comment Loss**: AST token-level rewrites ensure developer comments, Helm template blocks, and annotations remain 100% intact.
+.IP "\(bu" 2
+  **Atomic Invariant Rollback**: Verifies the mutated document before writing to disk; rolls back immediately if any syntax invariant is violated.
+.SH "FLAGS"
+.IP "\(bu" 2
+  \fB-k, --k8s-version <VERSION>\fR: Target Kubernetes version (default: \fB1.30\fR).
+.IP "\(bu" 2
+  \fB--diff\fR: Display colorized inline word diff before applying mutations.
+.IP "\(bu" 2
+  \fB-h, --help\fR: Display help information for \fBfix\fR.
+.SH "EXAMPLES"
+.nf
+.RS
+# Instantly heal all manifests in the current directory in-place
+yamlr fix .
+
+# Fix a specific deployment manifest
+yamlr fix ./k8s/deployment.yaml
+.RE
+.fi

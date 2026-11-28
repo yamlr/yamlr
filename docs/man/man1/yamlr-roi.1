@@ -1,0 +1,51 @@
+.TH "YAMLR-ROI" "1" "November 2026" "Yamlr Manual" "User Commands"
+\fBManifest Quality & Engineering Impact Analysis\fR
+.PP
+Displays verified manifest health metrics, defect remediation impact, and reliability statistics computed across Kubernetes workspaces.
+.PP
+.SH "USAGE"
+.nf
+.RS
+yamlr roi [PATH] [FLAGS]
+yamlr impact [PATH] [FLAGS]
+.RE
+.fi
+.SH "DESCRIPTION"
+The \fBroi\fR command (aliased to \fBimpact\fR) provides factual engineering analytics on the reliability value delivered by Yamlr's automated manifest parsing and remediation engine. Rather than using speculative financial models, Yamlr measures direct technical outcomes across syntax, schema, and relational topology.
+.PP
+.SH "FLAGS"
+.IP "\(bu" 2
+  \fB-h, --help\fR: Show this help message.
+.IP "\(bu" 2
+  \fB--output=json\fR: Output statistics as machine-readable structured JSON.
+.IP "\(bu" 2
+  \fB--verbose\fR: Full execution breakdown of analyzed resources.
+.IP "\(bu" 2
+  \fB-q\fR, \fB--quiet\fR: Minimal output mode (exit codes only).
+.SH "METRICS DISPLAYED"
+.IP "\(bu" 2
+  **Manifests Analyzed**: Total Kubernetes manifest files discovered and ingested.
+.IP "\(bu" 2
+  **Documents Parsed**: Discrete YAML document streams partitioned and validated.
+.IP "\(bu" 2
+  **Outages Prevented**: Critical cross-resource link failures (e.g. dangling Service selectors, orphaned Ingress backends, broken ConfigMap/Secret references) intercepted before cluster deployment.
+.IP "\(bu" 2
+  **Violations Remediated**: Schema errors, missing required fields, and policy violations safely fixed.
+.IP "\(bu" 2
+  **API Deprecations Upgraded**: Obsolete Kubernetes API versions automatically transitioned to stable counterparts.
+.IP "\(bu" 2
+  **Integrity Risk Mitigated**: Cumulative severity-weighted risk reduction score.
+.SH "EXAMPLES"
+.nf
+.RS
+# View workspace manifest quality and impact
+yamlr roi ./k8s
+
+# Export factual impact metrics for CI reporting or observability
+yamlr roi ./k8s --output=json
+.RE
+.fi
+---
+.PP
+\fINote: All telemetry is computed hermetically and locally from manifest AST and topological graphs. Zero data egress.\fR
+.PP

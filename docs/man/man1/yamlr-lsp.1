@@ -1,0 +1,38 @@
+.TH "YAMLR-LSP" "1" "November 2026" "Yamlr Manual" "User Commands"
+\fBLanguage Server Protocol (LSP) Engine (PRO)\fR
+.PP
+The \fByamlr lsp\fR command starts the LSP Server. This allows IDEs (like VS Code) to leverage Yamlr's forensic analysis and interactive healing directly in the editor.
+.PP
+.SH "USAGE"
+.nf
+.RS
+# Start the LSP server (Stdio mode)
+yamlr lsp
+.RE
+.fi
+.SH "IDE INTEGRATION"
+The LSP server is the "Language Server Proxy" that powers the \fBYamlr VS Code Extension\fR. It provides real-time feedback for:
+.PP
+.IP "\(bu" 2
+**Schema Violations**: Instant squiggles for invalid K8s types.
+.IP "\(bu" 2
+**Surgical Healing**: Quick-fixes for missing probes, limits, and resource gaps.
+.IP "\(bu" 2
+**Forensic Highlighting**: Specialized syntax highlighting for broken manifest shards.
+.SH "PROTOCOLS"
+.SS "1. Stdio Transport"
+By default, the LSP server communicates via Standard I/O, which is the standard for extension-to-binary communication.
+.PP
+.SS "2. Forensic Mode"
+When connected to an IDE, the engine operates in an incremental mode, analyzing only the active buffer to maintain sub-500ms latency.
+.PP
+---
+.PP
+> [!NOTE]
+.PP
+> The LSP server is intended to be started automatically by the Yamlr VS Code Extension. Manual execution is primarily used for debugging and CI integration tests.
+.PP
+> [!IMPORTANT]
+.PP
+> Real-time IDE forensics require a [PRO] license.
+.PP

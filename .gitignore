@@ -1,0 +1,16 @@
+
+# Internal Founder & AI Strategy Documents (Never Track in Git)
+_internal/
+docs/OUT_OF_THE_BOX_ACTION_PLAN.md
+docs/PROACTIVE_MARKET_ACTION_PLAN.md
+docs/BACKLOG.md
+docs/BATCH_PRS_*.md
+docs/BATCH5_PRS_*.md
+docs/CNCF_UPSTREAM_MASTER_TRACKER.md
+docs/REMEDIATION_STATUS.md
+docs/STATE_OF_K8S_MANIFESTS_2026.md
+docs/campaigns/
+docs/fleet_runs/
+docs/marketing/
+docs/backlog/
+docs/archive/

@@ -1,0 +1,7 @@
+.TH "YAMLR-WEBHOOK" "1" "November 2026" "Yamlr Manual" "User Commands"
+The webhook accepts Kubernetes \fBadmission.k8s.io/v1\fR \fBAdmissionReview\fR requests using HTTP \fBPOST\fR with a \fBContent-Length\fR header and a body of at most 2 MiB. It preserves the request API version, kind, and UID in its response. When healing changes the object, the response contains a base64-encoded RFC 6902 JSONPatch that replaces the object root; unchanged objects receive no patch.
+.PP
+Malformed requests and processing errors return HTTP 400 with a JSON error body. Kubernetes decides how webhook call failures affect admission according to the \fBfailurePolicy\fR in the cluster's \fBMutatingWebhookConfiguration\fR: \fBFail\fR fails closed, while \fBIgnore\fR fails open. Choose and review that policy in the cluster configuration.
+.PP
+The built-in listener speaks HTTP only. Terminate TLS with a trusted proxy or sidecar before exposing it to the Kubernetes API server. The listener rejects \fB--tls-cert\fR, \fB--tls-key\fR, and \fB--validate-only\fR because it does not implement TLS termination or validation-only behavior. It also rejects unknown options and invalid port values.
+.PP

@@ -1,0 +1,14 @@
+{
+  "timestamp": "2026-03-31T14:23:52.579270",
+  "config": {
+    "count": 15000,
+    "max_memory_gb": 1.5,
+    "min_files_per_sec": 50
+  },
+  "results": {
+    "duration_sec": 2.057182299962733,
+    "peak_memory_gb": 0.0642242431640625,
+    "files_per_sec": 7291.526861898304,
+    "success": true
+  }
+}

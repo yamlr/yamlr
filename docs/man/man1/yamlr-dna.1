@@ -1,0 +1,54 @@
+.TH "YAMLR-DNA" "1" "November 2026" "Yamlr Manual" "User Commands"
+Calculate or verify the \fBSemantic SHA-256 DNA\fR of a Kubernetes manifest \fB[Pro]\fR.
+.PP
+.SH "USAGE"
+.nf
+.RS
+yamlr dna <path> [flags]
+.RE
+.fi
+.SH "DESCRIPTION"
+The \fBdna\fR command is a core component of Yamlr's \fBZero-Failure Trust Pillar\fR. It calculates a cryptographic hash that is invariant to formatting, comments, and field ordering. This allows you to mathematically prove that the \fImeaning\fR of a manifest has not changed, even if the file structure has been reformatted or healed.
+.PP
+.SS "Why use Semantic DNA?"
+.IP "\(bu" 2
+**Drift Detection**: Verify that a manifest in Git matches the intent in your cluster, even if whitespace differs.
+.IP "\(bu" 2
+**Healing Integrity**: Prove that \fByamlr heal\fR preserved your original intent while fixing syntax or security issues.
+.IP "\(bu" 2
+**CI/CD Gates**: Fail builds if the Semantic DNA changes unexpectedly during a pipeline run.
+.SH "ARGUMENTS"
+.IP "\(bu" 2
+\fBpath\fR: The path to the manifest file (required).
+.SH "FLAGS"
+.IP "\(bu" 2
+\fB--hash <SHA-256>\fR: Expected hash for verification. If the calculated DNA does not match this hash, the command exits with code 1.
+.IP "\(bu" 2
+\fB--output <format>\fR: Output format. Options: \fBtext\fR (default), \fBjson\fR.
+.IP "\(bu" 2
+\fB-h, --help\fR: Show help for the \fBdna\fR command.
+.SH "EXAMPLES"
+.SS "Generate Semantic DNA"
+.nf
+.RS
+yamlr dna deployment.yaml
+.RE
+.fi
+.SS "Verify Integrity in CI/CD"
+.nf
+.RS
+# This will fail if the semantic meaning of deployment.yaml changes
+yamlr dna deployment.yaml --hash 250f0af28fe5f1bc89f88eeb0ac086aa70d6028a955fee7d500336b
+.RE
+.fi
+.SS "Get DNA as JSON"
+.nf
+.RS
+yamlr dna pod.yaml --output json
+.RE
+.fi
+.SH "SEE ALSO"
+.IP "\(bu" 2
+[yamlr status](yamlr_status.md) - View project-wide health and HAS metrics.
+.IP "\(bu" 2
+[yamlr heal](yamlr_heal.md) - Repair manifesting while preserving DNA integrity.

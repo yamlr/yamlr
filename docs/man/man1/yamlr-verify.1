@@ -1,0 +1,78 @@
+.TH "YAMLR-VERIFY" "1" "November 2026" "Yamlr Manual" "User Commands"
+\fBCryptographic Manifest Signature Verification\fR
+.PP
+The \fByamlr verify\fR command verifies the cryptographic non-repudiation signature and Semantic DNA integrity of signed Kubernetes manifests \fB[Pro]\fR.
+.PP
+---
+.PP
+.SH "SYNOPSIS"
+.nf
+.RS
+yamlr verify [path] [flags]
+.RE
+.fi
+---
+.PP
+.SH "DESCRIPTION"
+The \fBverify\fR command provides a supply-chain trust anchor for GitOps and regulated enterprise environments (SOC2, HIPAA, PCI-DSS).
+.PP
+Yamlr embeds a cryptographic signature directly into \fBmetadata.annotations['yamlr.dev/signature']\fR. When \fByamlr verify\fR is run:
+.PP
+1. It canonicalizes the manifest AST on disk.
+.PP
+2. Extracts and verifies the cryptographic signature against the embedded or local public key.
+.PP
+3. Mathematically proves that the manifest has not been modified or tampered with since it was signed.
+.PP
+---
+.PP
+.SH "EXAMPLES"
+.nf
+.RS
+# Verify all signed manifests in the current directory
+yamlr verify .
+
+# Verify a specific signed manifest
+yamlr verify deployment.yaml
+
+# Verify in CI/CD pipeline gate (blocks merge on tampering)
+yamlr verify ./manifests/prod/
+.RE
+.fi
+---
+.PP
+.SH "OPTIONS & FLAGS"
+.IP "\(bu" 2
+  **\fBpath\fR** *(positional, optional)*:
+    Path to manifest file or directory of manifests. Defaults to \fB.\fR.
+.PP
+.IP "\(bu" 2
+  **\fB--k8s-version <VERSION>\fR**:
+    Target Kubernetes schema version context.
+.PP
+.IP "\(bu" 2
+  **\fB-f, --output-file <PATH>\fR**:
+    Path to write verification report (JSON).
+.PP
+.IP "\(bu" 2
+  **\fB--exit-zero\fR**:
+    Exit with code \fB0\fR even if verification fails.
+.PP
+---
+.PP
+.SH "EXIT CODES"
+.IP "\(bu" 2
+  **\fB0\fR** (\fBEXIT_SUCCESS\fR): Manifest signatures are cryptographically valid.
+.IP "\(bu" 2
+  **\fB1\fR** (\fBEXIT_VIOLATIONS\fR): Signature mismatch, manifest tampered, or unsigned.
+.IP "\(bu" 2
+  **\fB4\fR** (\fBEXIT_SYSTEM_ERROR\fR): File I/O failure or missing manifest.
+---
+.PP
+.SH "SEE ALSO"
+.IP "\(bu" 2
+  [\fByamlr sign\fR](yamlr_sign.md) — Cryptographically sign manifests with DNA receipts.
+.IP "\(bu" 2
+  [\fByamlr dna\fR](yamlr_dna.md) — Inspect raw semantic AST fingerprints.
+.IP "\(bu" 2
+  [\fByamlr evidence\fR](yamlr_evidence.md) — Package cryptographic audit bundles.

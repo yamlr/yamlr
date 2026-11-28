@@ -1,0 +1,41 @@
+.TH "YAMLR-STATS" "1" "November 2026" "Yamlr Manual" "User Commands"
+\fBSurgical ROI Calculator\fR
+.PP
+Displays project-wide metrics on healing impact, productivity gains, and technical mastery.
+.PP
+.SH "USAGE"
+.nf
+.RS
+yamlr stats [FLAGS]
+.RE
+.fi
+.SH "FLAGS"
+.IP "\(bu" 2
+  \fB-h, --help\fR: Show this help message.
+.IP "\(bu" 2
+  \fB--output=json\fR: Output statistics as structured JSON for reporting.
+.SH "METRICS DISPLAYED"
+.IP "\(bu" 2
+  **Total Scans**: Number of times the project has been audited.
+.IP "\(bu" 2
+  **Issues Auto-Fixed**: Cumulative count of manual corrections saved by the engine.
+.IP "\(bu" 2
+  **Est. Time Saved**: Total engineering time reclaimed (based on a conservative 2-minute baseline per fix).
+.IP "\(bu" 2
+  **Surgical Efficiency**: The average number of fixes applied per healing session.
+.IP "\(bu" 2
+  **Project Mastery**: Your rank based on efficiency (Novice, Surgical Lead, Architect, Grandmaster).
+.SH "EXAMPLES"
+.nf
+.RS
+# View the ROI dashboard for the current project
+yamlr stats
+
+# Export stats for external reporting
+yamlr stats --output=json
+.RE
+.fi
+---
+.PP
+\fINote: Telemetry is stored locally in \fB.yamlr/telemetry.json\fR and is never shared outside your system.\fR
+.PP

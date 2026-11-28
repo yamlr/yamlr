@@ -1,0 +1,45 @@
+.TH "YAMLR-GRAPH" "1" "November 2026" "Yamlr Manual" "User Commands"
+Visualize resource dependencies and analyze the blast radius of potential failures.
+.PP
+.SH "SUBCOMMANDS"
+.SS "topo"
+Displays an ASCII tree of all resource relationships in the current workspace.
+.PP
+.nf
+.RS
+yamlr graph topo
+.RE
+.fi
+.SS "blast-radius"
+Analyzes the impact of a specific resource. Shows all downstream dependents that would be affected if the root resource fails or is modified.
+.PP
+.nf
+.RS
+yamlr graph blast-radius --resource Deployment/my-app
+.RE
+.fi
+.SS "export"
+Exports the ResourceGraph in professional diagram formats.
+.PP
+.nf
+.RS
+yamlr graph export --format mermaid
+yamlr graph export --format dot
+.RE
+.fi
+.SH "FLAGS"
+.IP "\(bu" 2
+\fB--resource\fR: The target resource key (e.g., \fBService/my-svc\fR or \fBDeployment/ns/my-app\fR).
+.IP "\(bu" 2
+\fB--format\fR: Export format (\fBmermaid\fR, \fBdot\fR, \fBjson\fR). Default: \fBmermaid\fR.
+.SS "Universal Expert Flags"
+Available across primary commands:
+.PP
+.IP "\(bu" 2
+  **\fB--timing\fR**: [PERFORMANCE] Output surgical execution timing breakdown.
+.IP "\(bu" 2
+  **\fB--timing-file <FILE>\fR**: [PERFORMANCE] Save performance profiling data to a JSON file.
+.IP "\(bu" 2
+  **\fB--verbose\fR**: Full audit logs and engine stages.
+.IP "\(bu" 2
+  \fB-q\fR, \fB--quiet\fR: Minimal output mode (exit codes only).

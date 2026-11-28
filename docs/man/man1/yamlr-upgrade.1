@@ -1,0 +1,53 @@
+.TH "YAMLR-UPGRADE" "1" "November 2026" "Yamlr Manual" "User Commands"
+\fBRelease Upgrade & Offline Token Management\fR
+.PP
+The \fByamlr upgrade\fR command displays offline release upgrade instructions and guides teams on updating the native binary and offline license entitlements.
+.PP
+> [!NOTE]
+.PP
+> \fBKubernetes API Migrations:\fR To modernize deprecated Kubernetes API versions (e.g., \fBextensions/v1beta1\fR -> \fBapps/v1\fR, Ingress migrations), use the dedicated [\fByamlr migrate\fR](yamlr_migrate.md) command.
+.PP
+.SH "USAGE"
+.nf
+.RS
+# Display upgrade instructions and release check
+yamlr upgrade
+
+# Check active license and upgrade options
+yamlr subscribe
+.RE
+.fi
+.SH "OPTIONS & FLAGS"
+.IP "\(bu" 2
+\fB-h, --help\fR: Display help information.
+.SH "UPGRADING THE STANDALONE BINARY"
+Yamlr is distributed as a single standalone native binary. To upgrade:
+.PP
+.SS "Homebrew (macOS & Linux)"
+.nf
+.RS
+brew update && brew upgrade yamlr/tap/yamlr
+.RE
+.fi
+.SS "GitHub Releases (Direct Download)"
+Download the latest pre-compiled archive for your architecture:
+.PP
+.IP "\(bu" 2
+Linux x86_64: \fByamlr-linux-x86_64.tar.gz\fR
+.IP "\(bu" 2
+Linux aarch64: \fByamlr-linux-aarch64.tar.gz\fR
+.IP "\(bu" 2
+macOS Apple Silicon: \fByamlr-macos-aarch64.tar.gz\fR
+.IP "\(bu" 2
+macOS Intel: \fByamlr-macos-x86_64.tar.gz\fR
+.IP "\(bu" 2
+Windows x64: \fByamlr-windows-x86_64.zip\fR
+Extract and overwrite your existing \fByamlr\fR binary. No system dependencies or runtime packages are required.
+.PP
+.SH "RELATED COMMANDS"
+.IP "\(bu" 2
+[\fByamlr migrate\fR](yamlr_migrate.md) — Modernize deprecated Kubernetes API versions.
+.IP "\(bu" 2
+[\fByamlr auth\fR](yamlr_auth.md) — Inspect or activate air-gapped signed license tokens.
+.IP "\(bu" 2
+[\fByamlr version\fR](yamlr_version.md) — Show current binary version and architecture.

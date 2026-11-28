@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "benchmark": "native-cli-directory-scan-json",
+  "binary": "D:\\yamlr\\native_core\\target\\release\\yamlr.exe",
+  "binary_sha256": "f958a548841ddee848cb6463c202845266a148dbdeb4356b113fa84ff3904e8d",
+  "build_profile": "release",
+  "corpus_sha256": "b679bbb642a039d305e2b37499c16d58adbf77a476c954961e913950a88d6a5f",
+  "k8s_version": "1.30",
+  "fidelity_check": "Pod missing required spec rejected with schema findings",
+  "warmup_ms": 68.786,
+  "files": 1,
+  "samples": 31,
+  "latency_ms": {
+    "samples": [
+      59.381,
+      53.77,
+      55.286,
+      57.734,
+      59.327,
+      50.655,
+      57.095,
+      60.486,
+      51.476,
+      49.121,
+      52.749,
+      51.144,
+      55.305,
+      59.738,
+      51.377,
+      50.895,
+      55.995,
+      56.496,
+      64.478,
+      59.293,
+      50.181,
+      55.292,
+      56.693,
+      56.489,
+      49.673,
+      53.161,
+      60.101,
+      56.941,
+      55.693,
+      58.069,
+      50.833
+    ],
+    "median": 55.693,
+    "p95": 60.486
+  },
+  "throughput_files_per_second_median": 17.96,
+  "report": {
+    "schema_violations": 0,
+    "integrity_violations": 0
+  },
+  "environment": {
+    "platform": "Windows-11-10.0.26300-SP0",
+    "python": "3.14.3",
+    "processor": "Intel64 Family 6 Model 186 Stepping 3, GenuineIntel",
+    "github_runner_os": null,
+    "git_sha": null
+  }
+}

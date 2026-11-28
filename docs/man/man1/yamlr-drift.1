@@ -1,0 +1,51 @@
+.TH "YAMLR-DRIFT" "1" "November 2026" "Yamlr Manual" "User Commands"
+\fBLive-Manifest Reconciliation Engine (PRO)\fR
+.PP
+The \fByamlr drift\fR command audits your live Kubernetes cluster against your local YAML manifests to detect undocumented changes and out-of-band configurations.
+.PP
+.SH "USAGE"
+.nf
+.RS
+# Basic Drift Detection (All Namespaces)
+yamlr drift .
+
+# Reconcile Local Manifests with Cluster (S2 Apply Mode)
+yamlr drift . --apply
+
+# Fleet View: Scan across all available Kubeconfig contexts
+yamlr drift . --all-contexts
+
+# Filter by Specific Namespace
+yamlr drift . --namespace production
+.RE
+.fi
+.SH "HOW IT WORKS"
+Yamlr analyzes the "Live Truth" from your cluster and compares it with the "Proposed Truth" in your local directory using its \fBSemantic DNA\fR engine. It ignores non-vital mutations (like status timestamps or system annotations) and focuses on structural drift (image tags, replicas, resource limits).
+.PP
+.SH "ENTERPRISE FEATURES"
+.SS "1. Loop-Closing Sync (`--apply`)"
+Transforms Yamlr into a reconciliation engine. When \fB--apply\fR is passed, Yamlr will update your local manifests to match the live cluster state (after cleaning transient metadata), ensuring your GitOps source of truth is perfectly aligned with reality.
+.PP
+.SS "2. Fleet View (`--all-contexts`)"
+Orchestrate drift analysis across your entire fleet. Yamlr will cycle through every context in your kubeconfig and aggregate a global drift report, identifying inconsistencies across dev, staging, and production clusters.
+.PP
+.SS "3. Namespace Scoping (`--namespace`)"
+Limit the audit to a specific namespace to reduce noise and analysis latency in multi-tenant clusters.
+.PP
+.SS "4. Reporting Tiers"
+.IP "\(bu" 2
+  **Missing**: Local manifests that are not found in the cluster.
+.IP "\(bu" 2
+  **Shadow**: Live resources that have no local manifest counterpart.
+.IP "\(bu" 2
+  **Mutated**: Structural differences between local and live state.
+---
+.PP
+> [!IMPORTANT]
+.PP
+> \fBSafety First:\fR The \fB--apply\fR mode will modify your local files. It is recommended to run a dry-run (default) first and ensure your local workspace is under version control (Git) before applying cluster-wide synchronization.
+.PP
+> [!NOTE]
+.PP
+> This feature requires a [PRO] license. Run \fByamlr auth login\fR to activate your enterprise tier.
+.PP
